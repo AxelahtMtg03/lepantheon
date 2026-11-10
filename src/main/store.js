@@ -18,6 +18,7 @@ function load() {
   }
   const favorites = Array.isArray(raw.favorites) ? raw.favorites.filter(isAppId).map(Number) : [];
   cache = { favorites: [...new Set(favorites)] };
+  for (const k of Object.keys(TEXT_SETTINGS)) if (typeof raw[k] === 'string') cache[k] = raw[k].slice(0, TEXT_SETTINGS[k]);
   return cache;
 }
 
@@ -32,6 +33,21 @@ function save() {
   }
 }
 
+// Réglages texte modifiables (chemin Steam, SteamID64) ; l'écran de réglages arrive à l'étape 7.
+const TEXT_SETTINGS = { steamPath: 260, steamId: 17 };
+
+function getSetting(key) {
+  const v = Object.hasOwn(TEXT_SETTINGS, key) ? load()[key] : undefined;
+  return typeof v === 'string' && v ? v : null;
+}
+
+function setSetting(key, value) {
+  if (!Object.hasOwn(TEXT_SETTINGS, key)) throw new Error('Réglage inconnu');
+  const s = load();
+  s[key] = typeof value === 'string' ? value.trim().slice(0, TEXT_SETTINGS[key]) : '';
+  save();
+}
+
 function getFavorites() {
   return [...load().favorites];
 }
@@ -44,4 +60,4 @@ function toggleFavorite(appid) {
   return [...s.favorites];
 }
 
-module.exports = { getFavorites, toggleFavorite };
+module.exports = { getFavorites, toggleFavorite, getSetting, setSetting };

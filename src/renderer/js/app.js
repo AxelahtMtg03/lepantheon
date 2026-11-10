@@ -27,7 +27,7 @@ function renderSidebar(current, info, profile) {
   const avatar = h('div', { class: 'avatar' }, profile.avatarUrl ? h('img', { src: profile.avatarUrl, alt: '' }) : initial);
   sidebar.replaceChildren(
     h('div', { class: 'brand' }, logoMark(), h('span', { class: 'brand-name' }, t('app.name'))),
-    info.mock ? h('span', { class: 'demo-badge' }, t('app.demo')) : null,
+    ...(info.mock ? [h('span', { class: 'demo-badge' }, t('app.demo'))] : []),
     h('nav', { 'aria-label': t('nav.label'), style: { display: 'flex', flexDirection: 'column', gap: '6px' } }, NAV.map((n) => navLink(n, current))),
     h('div', { class: 'spacer' }),
     navLink({ id: 'settings', icon: 'settings' }, current),
@@ -44,13 +44,17 @@ function soon(titleKey) {
   return [h('header', { class: 'page-head' }, h('h1', { class: 'page-title' }, t(titleKey))), h('div', { class: 'notice' }, h('h2', null, t('soon.title')), h('p', null, t('soon.text')))];
 }
 
+let view = null; // vue active (pour arrêter ses minuteurs)
+
 async function route(info, profile) {
+  view?.dispose?.();
+  view = null;
   const [, section = 'library'] = location.hash.split('/');
   const current = NAV.some((n) => n.id === section) || section === 'settings' ? section : 'library';
   renderSidebar(current, info, profile);
   try {
     if (section === 'game') main.replaceChildren(...soon('nav.library')); // fiche : étape 5
-    else if (current === 'library') await renderLibrary(main, api);
+    else if (current === 'library') view = await renderLibrary(main, api);
     else main.replaceChildren(...soon(`nav.${current}`));
   } catch (err) {
     console.error(err);

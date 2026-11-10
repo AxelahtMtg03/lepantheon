@@ -128,7 +128,7 @@ function buildContinue(api, games) {
 
 export async function renderLibrary(root, api) {
   const data = await api.getLibrary();
-  const games = data.games;
+  let games = data.games;
   const favs = new Set(data.favorites);
   const state = { filter: 'all', sort: 'recent', query: '' };
   const cards = new Map();
@@ -144,14 +144,16 @@ export async function renderLibrary(root, api) {
     },
   };
 
-  const title = h('div', null, h('h1', { class: 'page-title' }, t('lib.title')), h('p', { class: 'page-sub' }, countsText(games)));
+  const sub = h('p', { class: 'page-sub' }, countsText(games));
+  const title = h('div', null, h('h1', { class: 'page-title' }, t('lib.title')), sub);
   const input = h('input', { type: 'search', id: 'lib-search', placeholder: t('lib.search'), autocomplete: 'off', oninput: (e) => { state.query = e.target.value; renderGrid(); } });
   const search = h('label', { class: 'search', for: 'lib-search' }, icon('search', 18), h('span', { class: 'sr-only' }, t('lib.searchLabel')), input);
   const head = h('header', { class: 'page-head' }, title, search);
 
   if (games.length === 0) {
-    root.replaceChildren(head, h('div', { class: 'notice' }, h('h2', null, t('empty.noneTitle')), h('p', null, t('empty.noneText'))));
-    return;
+    const key = data.status === 'steam-not-found' ? 'empty.noSteam' : 'empty.none';
+    root.replaceChildren(head, h('div', { class: 'notice' }, h('h2', null, t(`${key}Title`)), h('p', null, t(`${key}Text`))));
+    return { dispose() {} };
   }
 
   const chipBtns = FILTERS.map((f) =>
@@ -170,10 +172,51 @@ export async function renderLibrary(root, api) {
     const visible = games
       .filter((g) => filterFns[state.filter](g, favs) && (!q || norm(g.name).includes(q)))
       .sort(sortFns[state.sort]);
-    grid.replaceChildren(...visible.map((g) => cards.get(g.appid).el));
+    const els = visible.map((g) => cards.get(g.appid).el);
+    // On ne touche au DOM que si l'ordre ou le contenu change (garde le focus clavier).
+    if (els.length !== grid.children.length || els.some((e, i) => e !== grid.children[i])) grid.replaceChildren(...els);
     empty.classList.toggle('hidden', visible.length > 0);
   }
 
-  root.replaceChildren(head, buildContinue(api, games), toolbar, grid, empty);
+  const bannerKey = () => {
+    const last = games.filter((g) => g.installed && g.lastPlayed).sort(sortFns.recent)[0];
+    return last ? `${last.appid}|${last.playtimeMin}|${last.lastPlayed}` : '';
+  };
+  let banner = buildContinue(api, games);
+  let shownKey = bannerKey();
+  root.replaceChildren(...[head, banner, toolbar, grid, empty].filter(Boolean));
   renderGrid();
+
+  // Mise à jour douce (installations/téléchargements) : seules les cartes modifiées sont retouchées.
+  async function refresh() {
+    if (document.hidden) return;
+    let next;
+    try {
+      next = await api.getLibrary();
+    } catch {
+      return;
+    }
+    games = next.games;
+    favs.clear();
+    next.favorites.forEach((id) => favs.add(id));
+    const seen = new Set(games.map((g) => g.appid));
+    for (const g of games) {
+      if (cards.has(g.appid)) cards.get(g.appid).update(g);
+      else cards.set(g.appid, buildCard(g, ctx));
+    }
+    for (const id of [...cards.keys()]) if (!seen.has(id)) cards.delete(id);
+    sub.textContent = countsText(games);
+    const key = bannerKey();
+    if (key !== shownKey) {
+      const fresh = buildContinue(api, games);
+      if (banner && fresh) banner.replaceWith(fresh);
+      else if (fresh) toolbar.before(fresh);
+      else banner?.remove();
+      banner = fresh;
+      shownKey = key;
+    }
+    renderGrid();
+  }
+  const timer = setInterval(refresh, 8000);
+  return { dispose: () => clearInterval(timer) };
 }
