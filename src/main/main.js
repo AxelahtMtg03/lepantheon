@@ -147,7 +147,7 @@ function createWindow() {
         const img = await win.webContents.capturePage();
         require('node:fs').writeFileSync(shot, img.toPNG());
         app.quit();
-      }, 1500);
+      }, Number(process.env.PANTHEON_DELAY) || 1500);
     });
   }
 }

@@ -19,6 +19,11 @@ function officialImage(appid, files) {
     if (i < files.length) img.src = `${CDN}/${appid}/${files[i]}`;
     else img.remove();
   });
+  // Une vraie jaquette contient déjà le titre : on masque alors la tuile. Le héros seul n'en a pas : on garde le titre.
+  img.addEventListener('load', () => {
+    const cover = img.closest('.cover');
+    if (cover) cover.classList.add(files[i] === 'library_hero.jpg' ? 'has-hero-art' : 'has-art');
+  });
   img.src = `${CDN}/${appid}/${files[0]}`;
   return img;
 }
@@ -31,7 +36,7 @@ export function artLayers(game, kind) {
     h('div', { class: 'tile-ring', style: { borderColor: c.shape } }),
   ];
   if (!game.mock) {
-    layers.push(officialImage(game.appid, kind === 'hero' ? ['library_hero.jpg', 'header.jpg'] : ['library_600x900.jpg', 'header.jpg']));
+    layers.push(officialImage(game.appid, kind === 'hero' ? ['library_hero.jpg', 'header.jpg'] : ['library_600x900.jpg', 'header.jpg', 'library_hero.jpg']));
   }
   return { bg: c.bg, layers };
 }
