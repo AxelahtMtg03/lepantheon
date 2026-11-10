@@ -76,6 +76,40 @@ function overview() {
   return { rows, rarest: rarestUnlocked(entries, 10), pending: 0, scanning: false, played: rows.length, known: rows.length };
 }
 
+// Boutique et amis fictifs (démo).
+const SHOP = [
+  ['Aether Drift', 2499, 40], ['Brume d’Or', 1999, 0], ['Clockwork Saints', 3499, 25], ['Dernières Cendres', 1499, 60],
+  ['Echo Garden', 999, 0], ['Fer et Sel', 2999, 0], ['Glacier Run', 1299, 33], ['Halo Cartographers', 1999, 50],
+  ['Ivoire', 4999, 0], ['Jardin Mécanique', 1799, 20], ['Kraken Sound', 2299, 0], ['Lanterne Noire', 3999, 15],
+].map(([name, initial, d], i) => ({ appid: 9100001 + i, name, mock: true, price: { currency: 'EUR', initial, final: Math.round(initial * (100 - d) / 100), discountPct: d } }));
+
+function featured() {
+  const pick = (from, n) => SHOP.slice(from, from + n);
+  return [
+    { id: 'specials', items: SHOP.filter((g) => g.price.discountPct > 0).slice(0, 6) },
+    { id: 'top_sellers', items: pick(0, 6) },
+    { id: 'new_releases', items: pick(6, 6) },
+    { id: 'coming_soon', items: pick(3, 4).map((g) => ({ ...g, price: null })) },
+  ];
+}
+
+const search = (term) => SHOP.filter((g) => g.name.toLowerCase().includes(String(term).trim().toLowerCase())).slice(0, 24);
+
+function storeApp(appid) {
+  const g = SHOP.find((x) => x.appid === Number(appid));
+  if (!g) return null;
+  return { game: { appid: g.appid, name: g.name, mock: true }, store: { name: g.name, description: 'Un jeu inventé pour la démonstration de la boutique. Les achats se font toujours dans le vrai Steam.', genres: ['Aventure', 'Indépendant'], developers: ['Studio Fictif'], releaseDate: '3 avr. 2025', price: g.price, screenshots: [] } };
+}
+
+function friends() {
+  const now = Math.floor(Date.now() / 1000);
+  const mk = (i, name, state, gameName, ago) => ({ steamId: `7656119800000${String(1000 + i)}`, name, avatarUrl: null, state, gameName, lastLogoff: ago == null ? null : now - ago });
+  return [
+    mk(1, 'Nyx', 1, 'Hollow Reach', null), mk(2, 'Orion', 1, null, null), mk(3, 'Selene', 2, null, null), mk(4, 'Atlas', 3, null, null),
+    mk(5, 'Pythie', 0, null, 3600 * 5), mk(6, 'Hermès', 0, null, 86400 * 2), mk(7, 'Gaïa', 0, null, 86400 * 9), mk(8, 'Chronos', 1, 'Opus Lumen', null),
+  ];
+}
+
 const profile = () => ({ name: 'Axel', status: 'online', steamId: null, avatarUrl: null });
 
-module.exports = { build, profile, detail, overview };
+module.exports = { build, profile, detail, overview, featured, search, storeApp, friends };

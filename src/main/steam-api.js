@@ -24,6 +24,45 @@ const imageOrNull = (u) => (isSteamImageUrl(u) ? u : null);
 // Le texte est ensuite affiché avec textContent : on retire juste les balises pour la lisibilité.
 const stripHtml = (s, max) => cleanStr(String(s).replace(/<[^>]*>/g, ' ').replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/\s+/g, ' '), max);
 
+const FEATURED_IDS = ['specials', 'top_sellers', 'new_releases', 'coming_soon'];
+
+// Prix en centimes + devise ISO ; valeurs invalides -> null.
+function priceOf(currency, initial, final, discountPct) {
+  const cents = (v) => (Number.isSafeInteger(v) && v >= 0 ? v : null);
+  return {
+    currency: typeof currency === 'string' && /^[A-Z]{3}$/.test(currency) ? currency : null,
+    initial: cents(initial),
+    final: cents(final),
+    discountPct: isInt(discountPct) && discountPct <= 100 ? discountPct : 0,
+  };
+}
+
+// Entrée de la boutique (mises en avant ou recherche) ; l'image est reconstruite depuis l'appid.
+function storeItem(i) {
+  if (!i || !isAppId(i.id)) return null;
+  const nested = i.price && typeof i.price === 'object' ? i.price : null;
+  let price = null; // null = prix inconnu ou jeu gratuit / non sorti
+  if (nested) price = priceOf(nested.currency, nested.initial, nested.final, nested.initial > nested.final ? Math.round((1 - nested.final / nested.initial) * 100) : 0);
+  else if (i.final_price != null) price = priceOf(i.currency, i.original_price, i.final_price, i.discount_percent);
+  return {
+    appid: Number(i.id),
+    name: typeof i.name === 'string' && i.name.trim() ? cleanStr(i.name, 200) : `App ${i.id}`,
+    price,
+  };
+}
+
+const PERSONA_STATES = [0, 1, 2, 3, 4, 5, 6];
+function friendOf(p) {
+  return {
+    steamId: p.steamid,
+    name: typeof p.personaname === 'string' && p.personaname.trim() ? cleanStr(p.personaname, 64) : p.steamid,
+    avatarUrl: imageOrNull(p.avatarmedium),
+    state: PERSONA_STATES.includes(p.personastate) ? p.personastate : 0, // 0 hors ligne, 1 en ligne, 2 occupé, 3 absent, 4 sieste...
+    gameName: typeof p.gameextrainfo === 'string' && p.gameextrainfo.trim() ? cleanStr(p.gameextrainfo, 120) : null,
+    lastLogoff: isInt(p.lastlogoff) && p.lastlogoff > 0 ? p.lastlogoff : null,
+  };
+}
+
 function createSteamApi({
   getKey,
   cache,
@@ -215,17 +254,19 @@ function createSteamApi({
     // Fiche boutique (publique, sans clé). Retourne null si le jeu n'a pas de fiche.
     async getStoreDetails(appid) {
       needAppId(appid);
-      return cached(`store:${appid}`, 24 * HOUR, async () => {
+      return cached(`store2:${appid}`, 24 * HOUR, async () => {
         const json = await request('/api/appdetails', { appids: appid, l: 'french', cc: 'fr' }, { host: STORE_HOST, noKey: true });
         const entry = json && json[String(appid)];
         if (!entry || entry.success !== true || !entry.data || typeof entry.data !== 'object') return null;
         const d = entry.data;
         const strs = (arr, field, max) => (Array.isArray(arr) ? arr.map((x) => (field ? x && x[field] : x)).filter((x) => typeof x === 'string').map((x) => cleanStr(x, max)).filter(Boolean).slice(0, 8) : []);
         return {
+          name: typeof d.name === 'string' ? cleanStr(d.name, 200) : '',
           description: typeof d.short_description === 'string' ? stripHtml(d.short_description, 800) : '',
           genres: strs(d.genres, 'description', 40),
           developers: strs(d.developers, null, 80),
           releaseDate: d.release_date && typeof d.release_date.date === 'string' ? cleanStr(d.release_date.date, 40) : '',
+          price: d.is_free === true ? { free: true } : d.price_overview && typeof d.price_overview === 'object' ? { free: false, ...priceOf(d.price_overview.currency, d.price_overview.initial, d.price_overview.final, d.price_overview.discount_percent) } : null,
           headerImage: imageOrNull(d.header_image),
           screenshots: Array.isArray(d.screenshots)
             ? d.screenshots.map((s) => ({ thumb: imageOrNull(s && s.path_thumbnail), full: imageOrNull(s && s.path_full) })).filter((s) => s.thumb && s.full).slice(0, 12)
@@ -233,6 +274,53 @@ function createSteamApi({
         };
       });
     },
+    // Mises en avant de la boutique (publiques, sans clé).
+    async getFeatured() {
+      return cached('featured', 30 * MIN, async () => {
+        const json = await request('/api/featuredcategories', { cc: 'fr', l: 'french' }, { host: STORE_HOST, noKey: true });
+        if (!json || typeof json !== 'object') throw new SteamApiError('bad-response');
+        const out = [];
+        for (const id of FEATURED_IDS) {
+          const items = json[id] && Array.isArray(json[id].items) ? json[id].items : [];
+          const list = items.map(storeItem).filter(Boolean).slice(0, 12);
+          if (list.length) out.push({ id, items: list });
+        }
+        return out;
+      });
+    },
+    // Recherche dans la boutique (publique, sans clé).
+    async searchStore(term) {
+      const q = typeof term === 'string' ? term.trim().slice(0, 100) : '';
+      if (!q) return [];
+      return cached(`search:${q.toLowerCase()}`, 5 * MIN, async () => {
+        const json = await request('/api/storesearch/', { term: q, l: 'french', cc: 'fr' }, { host: STORE_HOST, noKey: true });
+        const items = json && Array.isArray(json.items) ? json.items : [];
+        return items.filter((i) => !i || !i.type || i.type === 'app').map(storeItem).filter(Boolean).slice(0, 24);
+      });
+    },
+    // Amis : { status: 'ok' | 'private', friends: [...] } (profil de chaque ami : pseudo, avatar, statut, jeu en cours).
+    async getFriends(steamId) {
+      needSteamId(steamId);
+      const list = await cached(`friends:${steamId}`, 5 * MIN, async () => {
+        const { status, json } = await request('/ISteamUser/GetFriendList/v1/', { steamid: steamId, relationship: 'friend' }, { passStatuses: [401, 403] });
+        if (status === 401 || status === 403) return { status: 'private', ids: [] };
+        const raw = json && json.friendslist && Array.isArray(json.friendslist.friends) ? json.friendslist.friends : [];
+        return { status: 'ok', ids: raw.map((f) => f && f.steamid).filter(isSteamId64).slice(0, 2000) };
+      }, (d) => d.status !== 'private');
+      if (list.status !== 'ok' || list.ids.length === 0) return { status: list.status, friends: [] };
+      const friends = [];
+      for (let i = 0; i < list.ids.length; i += 100) {
+        const chunk = list.ids.slice(i, i + 100);
+        const part = await cached(`players:${chunk.join(',')}`, 2 * MIN, async () => {
+          const json = await request('/ISteamUser/GetPlayerSummaries/v2/', { steamids: chunk.join(','), format: 'json' });
+          const players = json && json.response && Array.isArray(json.response.players) ? json.response.players : [];
+          return players.filter((p) => p && isSteamId64(p.steamid)).map(friendOf);
+        });
+        friends.push(...part);
+      }
+      return { status: 'ok', friends };
+    },
+    peekFriends: (steamId) => peek(`friends:${steamId}`),
     // Lectures du cache sans réseau (affichage immédiat, calculs globaux).
     peekPlayerAchievements: (steamId, appid) => peek(`pach:${steamId}:${appid}`),
     peekSchema: (appid) => peek(`schema:${appid}`),

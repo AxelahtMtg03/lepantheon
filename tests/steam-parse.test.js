@@ -20,11 +20,13 @@ test('appmanifest : téléchargement en cours (StateFlags 1026)', () => {
   assert.equal(g.installed, false);
   assert.equal(g.state, 'downloading');
   assert.equal(g.downloadPct, 25);
+  assert.equal(g.bytesDownloaded, 250000);
+  assert.equal(g.bytesToDownload, 1000000);
 });
 
 test('appmanifest : jeu installé et mise à jour en cours', () => {
   const ok = parseAppManifest(acf({ appid: 730, name: 'Counter-Strike 2', StateFlags: 4, SizeOnDisk: 5000 }));
-  assert.deepEqual(ok, { appid: 730, name: 'Counter-Strike 2', installed: true, state: 'installed', downloadPct: null, sizeBytes: 5000 });
+  assert.deepEqual(ok, { appid: 730, name: 'Counter-Strike 2', installed: true, state: 'installed', downloadPct: null, sizeBytes: 5000, bytesDownloaded: 0, bytesToDownload: 0 });
   const upd = parseAppManifest(acf({ appid: 730, name: 'X', StateFlags: 1028, BytesToDownload: 200, BytesDownloaded: 50 }));
   assert.equal(upd.installed, true);
   assert.equal(upd.state, 'downloading');

@@ -49,6 +49,8 @@ function parseAppManifest(text) {
     state: busy ? 'downloading' : 'installed',
     downloadPct: pct,
     sizeBytes: Math.max(0, toInt(getCI(st, 'SizeOnDisk'))),
+    bytesDownloaded: busy ? Math.min(downloaded, toDownload || downloaded) : 0,
+    bytesToDownload: busy ? toDownload : 0,
   };
 }
 

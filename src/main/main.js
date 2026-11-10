@@ -58,6 +58,14 @@ function registerIpc() {
     return provider.getGame(appid);
   });
   handle('achievements:overview', () => provider.getAchievementsOverview());
+  handle('store:featured', () => provider.getFeatured());
+  handle('store:search', (term) => provider.searchStore(typeof term === 'string' ? term.slice(0, 100) : ''));
+  handle('store:app', (appid) => {
+    if (!isAppId(appid)) throw new Error('Identifiant invalide');
+    return provider.getStoreApp(appid);
+  });
+  handle('friends:get', () => provider.getFriends());
+  handle('badges:get', () => provider.getBadges());
   handle('favorites:toggle', (appid) => {
     if (!isAppId(appid)) throw new Error('Identifiant invalide');
     return store.toggleFavorite(appid);

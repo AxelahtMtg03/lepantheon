@@ -30,6 +30,21 @@ export function formatSize(bytes) {
   return `${nf.format(b / 1024 ** 2)} Mo`;
 }
 
+// Prix (centimes + devise ISO) -> « 19,99 € » ; « Gratuit » ; chaîne vide si inconnu.
+export function formatPrice(p) {
+  if (!p) return '';
+  if (p.free || p.final === 0) return t('store.free');
+  if (p.final === null || p.final === undefined || !p.currency) return '';
+  try {
+    return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: p.currency }).format(p.final / 100);
+  } catch {
+    return '';
+  }
+}
+export function formatInitialPrice(p) {
+  return p && p.discountPct > 0 && p.initial && p.currency ? formatPrice({ currency: p.currency, final: p.initial }) : '';
+}
+
 export function achievementPct(game) {
   const a = game.achievements;
   return a && a.total > 0 ? Math.round((a.unlocked / a.total) * 100) : null;

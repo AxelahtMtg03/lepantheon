@@ -3,6 +3,7 @@
 const mock = require('./mock-data');
 const store = require('./store');
 const local = require('./steam-local');
+const { sortFriends } = require('../shared/friends');
 
 // deps : { api, hasKey } (absents en mode démo)
 function createProvider(isMock, deps = {}) {
@@ -88,6 +89,50 @@ function createProvider(isMock, deps = {}) {
       const steamId = steamIdOf(s);
       if (!steamId) return { status: 'no-steamid', rows: [], rarest: [], pending: 0, scanning: false, played: 0, known: 0 };
       return { status: 'ok', ...deps.achievements.overview(steamId, lib.games) };
+    },
+    // Boutique (lecture seule, sans clé).
+    async getFeatured() {
+      if (isMock) return { status: 'ok', categories: mock.featured() };
+      try {
+        return { status: 'ok', categories: await deps.api.getFeatured() };
+      } catch (err) {
+        return { status: err.code === 'network' ? 'network' : 'error', categories: [] };
+      }
+    },
+    async searchStore(term) {
+      if (isMock) return { status: 'ok', items: mock.search(term) };
+      try {
+        return { status: 'ok', items: await deps.api.searchStore(term) };
+      } catch (err) {
+        return { status: err.code === 'network' ? 'network' : 'error', items: [] };
+      }
+    },
+    async getStoreApp(appid) {
+      if (isMock) return mock.storeApp(appid);
+      try {
+        const store = await deps.api.getStoreDetails(Number(appid));
+        return store ? { game: { appid: Number(appid), name: store.name || `App ${appid}` }, store } : null;
+      } catch {
+        return null;
+      }
+    },
+    // Amis : liste triée (en jeu, en ligne, absent, hors ligne).
+    async getFriends() {
+      if (isMock) return { status: 'ok', friends: sortFriends(mock.friends()) };
+      if (!deps.hasKey()) return { status: 'no-key', friends: [] };
+      const steamId = steamIdOf(await readLocal());
+      if (!steamId) return { status: 'no-steamid', friends: [] };
+      try {
+        const r = await deps.api.getFriends(steamId);
+        return { status: r.status, friends: sortFriends(r.friends) };
+      } catch (err) {
+        return { status: err.code === 'network' ? 'network' : err.code === 'invalid-key' ? 'invalid-key' : 'error', friends: [] };
+      }
+    },
+    // Pastille « Téléchargements » du menu (lecture locale uniquement, aucun appel réseau).
+    async getBadges() {
+      const games = isMock ? mock.build() : (await readLocal()).games;
+      return { downloads: games.filter((g) => g.state === 'downloading').length };
     },
     async getSettingsInfo() {
       const s = isMock ? { found: false, steamPath: null, account: null } : await readLocal();
