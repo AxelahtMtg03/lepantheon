@@ -1,0 +1,22 @@
+"libraryfolders"
+{
+	"0"
+	{
+		"path"		"C:\\Program Files (x86)\\Steam"
+		"label"		""
+		"contentid"		"123456789"
+		"apps"
+		{
+			"228980"		"1234567"
+			"440"		"9876543210"
+		}
+	}
+	"1"
+	{
+		"path"		"D:\\Jeux\\SteamLibrary"
+		"apps"
+		{
+			"730"		"55555"
+		}
+	}
+}
