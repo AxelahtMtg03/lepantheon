@@ -56,7 +56,19 @@ function isAllowedExternalUrl(value) {
   return u.protocol === 'https:' && !u.username && !u.password && isAllowedHost(u.hostname);
 }
 
+// URL d'image Steam acceptée : https et CDN Steam uniquement (sinon on n'affiche rien).
+function isSteamImageUrl(value) {
+  if (typeof value !== 'string' || value.length > 1024) return false;
+  try {
+    const u = new URL(value);
+    return u.protocol === 'https:' && !u.username && !u.password && (u.hostname.endsWith('.steamstatic.com') || u.hostname.endsWith('.akamaihd.net'));
+  } catch {
+    return false;
+  }
+}
+
 module.exports = {
+  isSteamImageUrl,
   ALLOWED_HOSTS,
   STEAM_ACTIONS,
   isAppId,

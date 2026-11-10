@@ -119,3 +119,83 @@ input.text{height:44px;padding:0 14px;border-radius:12px;background:var(--bg);bo
 input.text:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .form-msg{font-size:13px;min-height:20px;color:var(--text-2)}
 .form-msg[data-ok="false"]{color:var(--rarity-ultra)}
+
+/* Fiche d'un jeu */
+.main.flush{padding:0;gap:0}
+.back-link{position:absolute;left:40px;top:56px;z-index:2;display:flex;align-items:center;gap:8px;min-height:44px;color:#C9D3F2;font-size:14px;font-weight:500;text-decoration:none}
+.back-link.dark{position:static;padding:56px 40px 0;color:var(--text-2)}
+.back-link:hover{color:#fff}
+.game-hero{position:relative;overflow:hidden;min-height:400px;display:flex;flex-direction:column;justify-content:flex-end;background:#1A2147}
+.game-hero .art{position:absolute;inset:0}
+.game-hero::before{content:"";position:absolute;left:0;right:0;top:0;height:140px;background:linear-gradient(to bottom,rgba(11,13,18,.85),transparent);z-index:1;pointer-events:none}
+.hero-fade{position:absolute;left:0;right:0;bottom:0;height:260px;background:linear-gradient(to bottom,rgba(11,13,18,0),var(--bg))}
+.hero-body{position:relative;padding:0 40px 28px;display:flex;flex-direction:column;gap:18px}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 11px;border-radius:99px;background:rgba(11,13,18,.7);color:var(--text)}
+.pill.gold{color:var(--rarity-ultra)}
+.hero-body h1{margin:0;font-family:var(--font-display);font-weight:700;font-size:64px;line-height:1;letter-spacing:-.02em;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.5)}
+.btn.big{height:52px;border-radius:14px;font-size:16px;padding:0 34px}
+.btn.on-art{height:52px;border-radius:14px;border-color:#435089;background:rgba(11,13,18,.55)}
+.stats{display:flex;flex-wrap:wrap;padding:0 40px;border-bottom:1px solid var(--border-soft)}
+.stat{flex:1 1 180px;display:flex;flex-direction:column;gap:4px;padding:22px 0}
+.eyebrow.muted{color:var(--muted);letter-spacing:.1em}
+.stat-val,.big-num{font-family:var(--font-display);font-weight:700;font-size:26px}
+.tabs{display:flex;flex-wrap:wrap;gap:28px;padding:0 40px;border-bottom:1px solid var(--border-soft)}
+.tab{min-height:52px;padding:0;background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;font-size:14px;font-weight:500;color:var(--muted)}
+.tab:hover{color:var(--text)}
+.tab[aria-selected="true"]{color:var(--text);border-bottom-color:var(--accent)}
+.tab-body{padding:32px 40px 48px}
+.panel-text{max-width:760px;display:flex;flex-direction:column;gap:20px}
+.lead{font-size:16px;line-height:1.6;color:var(--text-2)}
+.facts{display:grid;grid-template-columns:max-content 1fr;gap:8px 24px;margin:0}
+.facts dt{color:var(--muted)}
+.facts dd{margin:0}
+.shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.shots img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:14px;background:var(--surface)}
+
+/* Succès */
+.ach-layout{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start}
+.ach-summary{flex:0 0 300px;display:flex;flex-direction:column;gap:20px;padding:24px;border-radius:18px;background:var(--surface);border:1px solid var(--border-soft)}
+.ach-summary hr{width:100%;border:0;height:1px;background:var(--border-soft);margin:0}
+.ring-row{display:flex;align-items:center;gap:20px}
+.big-num{display:block;font-size:30px}
+.mini{display:flex;flex-direction:column;gap:6px}
+.mini-name{font-size:15px;font-weight:600}
+.ach-main{flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:18px}
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
+.ach{display:flex;gap:16px;padding:16px;border-radius:16px;background:var(--surface);border:1px solid var(--border-soft);content-visibility:auto;contain-intrinsic-size:auto 120px}
+.ach.done{border-color:var(--border-strong)}
+.ach-icon{flex:0 0 56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:var(--surface-hi);color:var(--text-2);overflow:hidden}
+.ach-icon img{width:100%;height:100%;object-fit:cover}
+.ach-icon.locked{color:var(--muted)}
+.ach-icon.locked img{filter:grayscale(1);opacity:.7}
+.ach-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.ach-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.ach-top h3{margin:0;font-size:15px;font-weight:600}
+.ach:not(.done) .ach-top h3{color:var(--text-2)}
+.ach-rarity{font-size:12px;font-weight:600;white-space:nowrap}
+.ach-desc{font-size:13px;line-height:1.4;color:var(--muted)}
+.ach-status{font-size:12px;color:var(--text-2)}
+.ach-players{font-size:12px;color:var(--muted)}
+.r-common{color:var(--rarity-common)}
+.r-uncommon{color:var(--rarity-uncommon)}
+.r-rare{color:var(--rarity-rare)}
+.r-ultra{color:var(--rarity-ultra)}
+
+/* Page Succès */
+.ach-page{display:flex;flex-direction:column;gap:28px}
+.tiles{display:flex;flex-wrap:wrap;gap:16px}
+.tile{flex:1 1 200px;display:flex;flex-direction:column;gap:6px;padding:20px 24px;border-radius:16px;background:var(--surface);border:1px solid var(--border-soft)}
+.block{display:flex;flex-direction:column;gap:12px}
+.block h2{font-family:var(--font-display);font-size:22px}
+.gods{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.god{display:flex;align-items:center;gap:12px;min-height:56px;padding:12px 16px;border-radius:14px;background:var(--surface);border:1px solid var(--border-strong);text-decoration:none;color:var(--rarity-ultra)}
+.god:hover{background:var(--surface-hi)}
+.god-name{flex:1;color:var(--text);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.plain{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.close-row,.rare-row{display:flex;align-items:center;gap:16px;padding:12px 16px;min-height:48px;border-radius:14px;background:var(--surface);border:1px solid var(--border-soft)}
+.rare-row{justify-content:space-between}
+.row-link{flex:0 1 260px;font-weight:600;text-decoration:none;min-height:24px}
+.row-link:hover{text-decoration:underline}
+.progress.grow{flex:1;min-width:80px}
+.close-row .page-sub{flex:0 0 150px;text-align:right}

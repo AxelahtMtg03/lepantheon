@@ -19,6 +19,17 @@ export function formatRelative(epochSec) {
   return rtf.format(Math.round(diffSec / (86400 * 365)), 'year');
 }
 
+const df = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long' });
+export const formatDate = (epochSec) => df.format(new Date(Number(epochSec) * 1000));
+export const formatHoursShort = (min) => `${nf.format((Number(min) || 0) / 60)} h`;
+export const formatPct = (p) => (typeof p === 'number' ? `${nf.format(p)} %` : '—');
+export function formatSize(bytes) {
+  const b = Number(bytes);
+  if (!Number.isFinite(b) || b <= 0) return '—';
+  if (b >= 1024 ** 3) return `${nf.format(b / 1024 ** 3)} Go`;
+  return `${nf.format(b / 1024 ** 2)} Mo`;
+}
+
 export function achievementPct(game) {
   const a = game.achievements;
   return a && a.total > 0 ? Math.round((a.unlocked / a.total) * 100) : null;

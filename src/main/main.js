@@ -8,6 +8,7 @@ const secrets = require('./secrets');
 const { createCache } = require('./cache');
 const { createSteamApi } = require('./steam-api');
 const { createProvider } = require('./provider');
+const { createAchievementService } = require('./achievements');
 const { isSteamId64 } = require('../shared/validation');
 
 const MOCK = process.env.PANTHEON_MOCK === '1' || process.argv.includes('--mock');
@@ -52,6 +53,11 @@ function registerIpc() {
   handle('app:info', () => ({ version: app.getVersion(), mock: MOCK, platform: process.platform }));
   handle('library:get', () => provider.getLibrary());
   handle('profile:get', () => provider.getProfile());
+  handle('game:get', (appid) => {
+    if (!isAppId(appid)) throw new Error('Identifiant invalide');
+    return provider.getGame(appid);
+  });
+  handle('achievements:overview', () => provider.getAchievementsOverview());
   handle('favorites:toggle', (appid) => {
     if (!isAppId(appid)) throw new Error('Identifiant invalide');
     return store.toggleFavorite(appid);
@@ -158,7 +164,7 @@ app.whenReady().then(async () => {
   const userData = app.getPath('userData');
   cache = createCache(path.join(userData, 'cache'));
   steamApi = createSteamApi({ getKey: secrets.getKey, cache, quotaCache: createCache(path.join(userData, 'state')) });
-  provider = createProvider(MOCK, { api: steamApi, hasKey: secrets.hasKey });
+  provider = createProvider(MOCK, { api: steamApi, hasKey: secrets.hasKey, achievements: createAchievementService({ api: steamApi }) });
   registerAppProtocol();
   registerIpc();
   createWindow();

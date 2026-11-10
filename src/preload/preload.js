@@ -10,6 +10,8 @@ contextBridge.exposeInMainWorld(
     getInfo: () => call('app:info'),
     getLibrary: () => call('library:get'),
     getProfile: () => call('profile:get'),
+    getGame: (appid) => call('game:get', appid),
+    getAchievementsOverview: () => call('achievements:overview'),
     getSettings: () => call('settings:get'),
     saveSettings: (values) => call('settings:set', values),
     setApiKey: (key) => call('apikey:set', key),

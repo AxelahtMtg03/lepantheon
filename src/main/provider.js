@@ -28,6 +28,7 @@ function createProvider(isMock, deps = {}) {
           notice = err.code || 'network';
         }
       }
+      const canAch = deps.hasKey();
       const byId = new Map(s.games.map((g) => [g.appid, { ...g }]));
       for (const o of owned ? owned.games : []) {
         const g = byId.get(o.appid);
@@ -38,7 +39,8 @@ function createProvider(isMock, deps = {}) {
           byId.set(o.appid, { appid: o.appid, name: o.name, installed: false, state: 'not-installed', downloadPct: null, sizeBytes: 0, playtimeMin: o.playtimeMin, lastPlayed: o.lastPlayed });
         }
       }
-      const games = [...byId.values()].map((g) => ({ achievements: null, ...g }));
+      const games = [...byId.values()].map((g) => ({ ...g, achievements: canAch && steamId ? deps.achievements.peekSummary(steamId, g.appid) : null }));
+      if (canAch && steamId && notice !== 'private') deps.achievements.scan(steamId, games); // en arrière-plan, espacé
       if (!s.found && games.length === 0) return { status: 'steam-not-found', games: [], favorites, notice };
       return { status: 'ok', games, favorites, notice };
     },
@@ -57,6 +59,35 @@ function createProvider(isMock, deps = {}) {
         }
       }
       return profile;
+    },
+    // Fiche d'un jeu : infos boutique + succès. Ne lève pas d'exception : chaque partie a son statut.
+    async getGame(appid) {
+      if (isMock) return mock.detail(appid);
+      const lib = await this.getLibrary();
+      const game = lib.games.find((g) => g.appid === Number(appid));
+      if (!game) return null;
+      const s = await readLocal();
+      const steamId = steamIdOf(s);
+      const out = { game, store: null, achievements: { status: 'no-key', unlocked: 0, total: 0, list: [] } };
+      if (!deps.hasKey()) return out;
+      const [store, ach] = await Promise.allSettled([
+        deps.api.getStoreDetails(game.appid),
+        steamId ? deps.achievements.detail(steamId, game.appid) : Promise.resolve({ status: 'no-steamid', unlocked: 0, total: 0, list: [] }),
+      ]);
+      if (store.status === 'fulfilled') out.store = store.value;
+      if (ach.status === 'fulfilled') out.achievements = ach.value;
+      else out.achievements = { status: ach.reason && ach.reason.code === 'network' ? 'network' : 'error', unlocked: 0, total: 0, list: [] };
+      if (out.achievements.status === 'ok') out.game = { ...game, achievements: { unlocked: out.achievements.unlocked, total: out.achievements.total } };
+      return out;
+    },
+    async getAchievementsOverview() {
+      if (isMock) return { status: 'ok', ...mock.overview() };
+      if (!deps.hasKey()) return { status: 'no-key', rows: [], rarest: [], pending: 0, scanning: false, played: 0, known: 0 };
+      const lib = await this.getLibrary();
+      const s = await readLocal();
+      const steamId = steamIdOf(s);
+      if (!steamId) return { status: 'no-steamid', rows: [], rarest: [], pending: 0, scanning: false, played: 0, known: 0 };
+      return { status: 'ok', ...deps.achievements.overview(steamId, lib.games) };
     },
     async getSettingsInfo() {
       const s = isMock ? { found: false, steamPath: null, account: null } : await readLocal();

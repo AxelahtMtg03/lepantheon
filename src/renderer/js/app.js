@@ -2,6 +2,8 @@ import { h, icon, logoMark } from './dom.js';
 import { t } from './i18n.js';
 import { renderLibrary } from './views/library.js';
 import { renderSettings } from './views/settings.js';
+import { renderGame } from './views/game.js';
+import { renderAchievements } from './views/achievements.js';
 
 const api = window.pantheon;
 const NAV = [
@@ -50,11 +52,13 @@ let view = null; // vue active (pour arrêter ses minuteurs)
 async function route(info, profile) {
   view?.dispose?.();
   view = null;
-  const [, section = 'library'] = location.hash.split('/');
+  main.classList.remove('flush');
+  const [, section = 'library', ...rest] = location.hash.split('/');
   const current = NAV.some((n) => n.id === section) || section === 'settings' ? section : 'library';
   renderSidebar(current, info, profile);
   try {
-    if (section === 'game') main.replaceChildren(...soon('nav.library')); // fiche : étape 5
+    if (section === 'game') view = await renderGame(main, api, rest[0]);
+    else if (current === 'achievements') view = await renderAchievements(main, api);
     else if (current === 'library') view = await renderLibrary(main, api);
     else if (current === 'settings') await renderSettings(main, api);
     else main.replaceChildren(...soon(`nav.${current}`));
