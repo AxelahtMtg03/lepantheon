@@ -56,9 +56,18 @@ test('getPlayerAchievements : succès, profil privé (403), jeu sans stats (400)
   const r = await setup([json(ok)]).api.getPlayerAchievements(ID, 440);
   assert.equal(r.status, 'ok');
   assert.deepEqual(r.list.map((a) => [a.id, a.unlocked, a.unlockTime]), [['A', true, 1700000000], ['B', false, null]]);
-  assert.equal((await setup([json({ playerstats: { error: 'Profile is not public', success: false } }, 403)]).api.getPlayerAchievements(ID, 440)).status, 'private');
+  const priv403 = () => json({ playerstats: { error: 'Profile is not public', success: false } }, 403);
+  assert.equal((await setup([priv403()]).api.getPlayerAchievements(ID, 440)).status, 'private');
   assert.equal((await setup([json({ playerstats: { error: 'Requested app has no stats', success: false } }, 400)]).api.getPlayerAchievements(ID, 440)).status, 'none');
   assert.equal((await setup([json({ playerstats: { success: true, gameName: 'X' } })]).api.getPlayerAchievements(ID, 440)).status, 'none');
+});
+
+test('profil privé : jamais mis en cache (un changement de réglage prend effet tout de suite)', async () => {
+  const priv = json({ playerstats: { error: 'Profile is not public', success: false } }, 403);
+  const pub = json({ playerstats: { success: true, achievements: [{ apiname: 'A', achieved: 1, unlocktime: 5 }] } });
+  const { api } = setup([priv, pub]);
+  assert.equal((await api.getPlayerAchievements(ID, 440)).status, 'private');
+  assert.equal((await api.getPlayerAchievements(ID, 440)).status, 'ok');
 });
 
 test('schéma, % globaux : validation des valeurs et des images', async () => {

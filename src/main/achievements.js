@@ -13,6 +13,8 @@ function createAchievementService({ api, now = Date.now }) {
   let steamIdInUse = null;
   let stopped = null; // 'private' | 'invalid-key' | 'no-key' | 'rate' : on arrête d'insister
 
+  let stoppedAt = 0;
+  let privateStreak = 0;
   let wantDeep = false; // charger aussi schéma + % global (page Succès)
 
   async function loop() {
@@ -23,8 +25,10 @@ function createAchievementService({ api, now = Date.now }) {
         const appid = queue.shift();
         try {
           const p = await api.getPlayerAchievements(steamIdInUse, appid);
-          if (p.status === 'private') {
-            stopped = 'private'; // inutile d'insister jeu par jeu
+          privateStreak = p.status === 'private' ? privateStreak + 1 : 0;
+          if (privateStreak >= 3) {
+            stopped = 'private'; // vraiment privé : inutile d'insister jeu par jeu (nouvel essai après 1 minute)
+            stoppedAt = now();
             queue = [];
           }
           const s = summarize(p);
@@ -53,6 +57,10 @@ function createAchievementService({ api, now = Date.now }) {
       deepDone.clear();
     }
     const t = now();
+    if (stopped === 'private' && t - stoppedAt > 60 * 1000) {
+      stopped = null; // l'utilisateur a peut-être changé ses réglages de confidentialité
+      lastScan.clear();
+    }
     if (deep) wantDeep = true;
     for (const id of appids) {
       if (queue.includes(id)) continue;

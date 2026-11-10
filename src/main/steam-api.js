@@ -92,12 +92,13 @@ function createSteamApi({
   }
 
   // Cache frais, sinon appel ; en cas de réseau coupé ou de quota, on retombe sur la dernière copie.
-  async function cached(cacheKey, ttlMs, fetcher) {
+  // keep(data) = false : résultat renvoyé mais pas mémorisé (ex. « profil privé » : l'utilisateur peut le changer à tout moment).
+  async function cached(cacheKey, ttlMs, fetcher, keep = () => true) {
     const fresh = cache.get(cacheKey, ttlMs);
     if (fresh !== undefined) return fresh;
     try {
       const data = await fetcher();
-      cache.write(cacheKey, data);
+      if (keep(data)) cache.write(cacheKey, data);
       return data;
     } catch (err) {
       const stale = cache.read(cacheKey);
@@ -176,7 +177,7 @@ function createSteamApi({
           });
         }
         return { status: list.length ? 'ok' : 'none', list };
-      });
+      }, (d) => d.status !== 'private');
     },
     // Noms, descriptions et icônes officiels.
     async getSchema(appid) {
