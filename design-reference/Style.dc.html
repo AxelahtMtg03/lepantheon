@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Pantheon, guide de style</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0b0d12}
+.card .playbtn{opacity:0;transform:scale(.9);transition:opacity .15s,transform .15s}
+.card:hover .playbtn{opacity:1;transform:scale(1)}
+.card:hover .cover{border-color:#3a4458}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="min-height:1000px;box-sizing:border-box;padding:64px 56px;background:#0b0d12;color:#e9ecf3;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:48px">
+
+  <header style="display:flex;flex-direction:column;gap:10px;max-width:760px">
+    <span style="font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:{{accent}}">Direction : sombre, aérée, centrée sur les jaquettes</span>
+    <h1 style="margin:0;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:48px;letter-spacing:-.02em">Le Pantheon</h1>
+    <p style="margin:0;font-size:16px;line-height:1.6;color:#c3cad6">Un fond presque noir, peu de bordures, de grands visuels et un seul accent bleu électrique pour tout ce qui est action : jouer, progresser, installer. Les jaquettes et les héros viendront des vrais jeux de ta bibliothèque Steam.</p>
+  </header>
+
+  <div style="display:flex;flex-wrap:wrap;gap:48px">
+
+    <section style="flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:20px">
+      <h2 style="margin:0;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#8f98a8">Couleurs</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px">
+        <sc-for list="{{swatches}}" as="s" hint-placeholder-count="10">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="height:72px;border-radius:12px;border:1px solid #2a3243;background:{{s.hex}}"></div>
+            <div style="display:flex;flex-direction:column;gap:1px">
+              <span style="font-size:13px;font-weight:600">{{s.name}}</span>
+              <span style="font-size:12px;color:#8f98a8">{{s.hex}} · {{s.role}}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:20px">
+      <h2 style="margin:0;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#8f98a8">Typographie</h2>
+      <div style="display:flex;flex-direction:column;gap:18px;padding:24px;border-radius:16px;background:#12161e;border:1px solid #1b212c">
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <span style="font-size:12px;color:#8f98a8">Space Grotesk Bold · titres, noms de jeux, chiffres</span>
+          <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:40px;line-height:1.05">Hollow Reach</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <span style="font-size:12px;color:#8f98a8">Inter Medium · interface et listes</span>
+          <span style="font-size:18px;font-weight:500">12,4 h de jeu · 18 succès sur 42</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <span style="font-size:12px;color:#8f98a8">Inter Regular · descriptions</span>
+          <span style="font-size:14px;line-height:1.5;color:#c3cad6">Révéler 100 % de la carte du Val creux.</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#8f98a8">Composants</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start">
+
+      <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:14px;padding:24px;border-radius:16px;background:#12161e;border:1px solid #1b212c">
+        <span style="font-size:12px;color:#8f98a8">Boutons</span>
+        <div style="display:flex;flex-wrap:wrap;gap:12px">
+          <button style="height:46px;padding:0 26px;border:0;border-radius:12px;background:{{accent}};color:#06122b;font-size:15px;font-weight:600;cursor:pointer">Jouer</button>
+          <button style="height:46px;padding:0 22px;border-radius:12px;border:1px solid #2a3243;background:transparent;color:#e9ecf3;font-size:15px;font-weight:500;cursor:pointer">Page boutique</button>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <button style="height:36px;padding:0 16px;border-radius:99px;border:1px solid #e9ecf3;background:#e9ecf3;color:#0b0d12;font-size:13px;font-weight:500">Tous</button>
+          <button style="height:36px;padding:0 16px;border-radius:99px;border:1px solid #2a3243;background:transparent;color:#c3cad6;font-size:13px;font-weight:500">Installés</button>
+        </div>
+      </div>
+
+      <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:14px;padding:24px;border-radius:16px;background:#12161e;border:1px solid #1b212c">
+        <span style="font-size:12px;color:#8f98a8">Progression</span>
+        <div style="display:flex;align-items:center;gap:12px"><span style="flex:1;height:6px;border-radius:99px;background:#232a37;overflow:hidden"><span style="display:block;width:61%;height:100%;background:{{accent}}"></span></span><span style="font-size:12px;color:#c3cad6">61 %</span></div>
+        <div style="display:flex;align-items:center;gap:12px"><span style="flex:1;height:6px;border-radius:99px;background:#232a37;overflow:hidden"><span style="display:block;width:76%;height:100%;background:{{accent}}"></span></span><span style="font-size:12px;color:#c3cad6">38 / 50</span></div>
+        <span style="font-size:12px;color:#8f98a8;margin-top:6px">Rareté des succès</span>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:13px;font-weight:600">
+          <span style="color:#8f98a8">Commun</span><span style="color:#e9ecf3">Peu commun</span><span style="color:#c58cff">Rare</span><span style="color:#ffd37a">Ultra rare</span>
+        </div>
+      </div>
+
+      <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:14px;padding:24px;border-radius:16px;background:#12161e;border:1px solid #1b212c">
+        <span style="font-size:12px;color:#8f98a8">Carte de jeu au survol</span>
+        <div style="display:flex;gap:16px;align-items:center">
+          <div style="position:relative;width:104px;aspect-ratio:2/3;border-radius:14px;overflow:hidden;background:#1c2a5a;border:1px solid #3a4458;flex:0 0 auto">
+            <div style="position:absolute;width:150%;aspect-ratio:1;border-radius:50%;left:-35%;top:50%;opacity:.22;background:#6f8dff"></div>
+            <span style="position:absolute;left:10px;right:10px;bottom:12px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;line-height:1.05;color:#fff">Hollow Reach</span>
+            <span style="position:absolute;left:calc(50% - 18px);top:calc(50% - 18px);width:36px;height:36px;border-radius:50%;background:{{accent}};color:#06122b;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg></span>
+          </div>
+          <span style="font-size:13px;line-height:1.5;color:#c3cad6">Le bouton Jouer apparaît au survol, la bordure s’éclaircit. Un clic ailleurs ouvre la fiche.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:14px;max-width:760px">
+    <h2 style="margin:0;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#8f98a8">Principes</h2>
+    <ul style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.5;color:#c3cad6">
+      <li>Un seul accent par écran, réservé aux actions et aux progressions.</li>
+      <li>Les jaquettes sont les héros : tout le reste reste discret.</li>
+      <li>La rareté d’un succès est toujours écrite, jamais portée par la couleur seule.</li>
+      <li>Ce qui ne peut pas être refait (chat, boutique, paiement) renvoie vers le vrai Steam en un clic.</li>
+    </ul>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#4d8dff","options":["#4d8dff","#ffffff","#c58cff","#ff5a64"]},"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const swatches = [
+      { name: 'Fond', hex: '#0B0D12', role: 'arrière-plan' },
+      { name: 'Surface', hex: '#12161E', role: 'cartes' },
+      { name: 'Surface haute', hex: '#181D27', role: 'élément actif' },
+      { name: 'Bordure', hex: '#232A37', role: 'contours' },
+      { name: 'Texte', hex: '#E9ECF3', role: 'principal' },
+      { name: 'Texte discret', hex: '#8F98A8', role: 'secondaire' },
+      { name: 'Bleu électrique', hex: '#4D8DFF', role: 'accent, actions' },
+      { name: 'Bleu ciel', hex: '#8FB4FF', role: 'décor, héros' },
+      { name: 'Violet', hex: '#C58CFF', role: 'rare' },
+      { name: 'Or', hex: '#FFD37A', role: 'ultra rare' }
+    ];
+    return { accent: this.props.accent ?? '#4d8dff', swatches };
+  }
+}
+</script>
+</body>
+</html>

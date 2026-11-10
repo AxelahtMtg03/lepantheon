@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Pantheon, fiche d’un jeu</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0b0d12}
+.card .playbtn{opacity:0;transform:scale(.9);transition:opacity .15s,transform .15s}
+.card:hover .playbtn{opacity:1;transform:scale(1)}
+.card:hover .cover{border-color:#3a4458}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="display:flex;flex-wrap:wrap;min-height:1500px;background:#0b0d12;color:#e9ecf3;font-family:'Inter',system-ui,sans-serif">
+
+  <aside style="flex:0 0 232px;box-sizing:border-box;padding:56px 16px 20px;border-right:1px solid #1b212c;display:flex;flex-direction:column;gap:6px;background:#0d1016">
+    <div style="display:flex;align-items:center;gap:10px;padding:0 10px 22px">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="11" fill="none" stroke="{{accent}}" stroke-width="2"/><circle cx="13" cy="13" r="5" fill="{{accent}}"/></svg>
+      <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;letter-spacing:.02em">Le Pantheon</span>
+    </div>
+    <sc-for list="{{nav}}" as="n" hint-placeholder-count="5">
+      <a href="#" style="display:flex;align-items:center;gap:12px;padding:11px 12px;min-height:22px;border-radius:10px;text-decoration:none;font-size:14px;font-weight:500;background:{{n.bg}};color:{{n.color}}">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.d}}"/></svg>
+        <span style="flex:1">{{n.label}}</span>
+        <sc-if value="{{n.badge}}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;font-weight:600;padding:2px 8px;border-radius:99px;background:#232a37;color:#e9ecf3">{{n.badge}}</span></sc-if>
+      </a>
+    </sc-for>
+    <div style="flex:1"></div>
+    <div style="display:flex;flex-direction:column;gap:12px;padding:14px;border-radius:14px;background:#12161e;border:1px solid #1b212c">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:40px;height:40px;border-radius:50%;background:#2a3358;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px">A</div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <span style="font-size:14px;font-weight:600">Axel</span>
+          <span style="font-size:12px;color:#8f98a8;display:flex;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:50%;background:{{accent}}"></span>En ligne</span>
+        </div>
+      </div>
+      <button style="height:36px;border-radius:9px;border:1px solid #2a3243;background:transparent;color:#e9ecf3;font-size:13px;font-weight:500;cursor:pointer">Ouvrir Steam</button>
+    </div>
+  </aside>
+
+  <main style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column">
+
+    <section style="position:relative;overflow:hidden;background:#1a2147;min-height:400px;display:flex;flex-direction:column;justify-content:flex-end;border-bottom:1px solid #28315f">
+      <div style="position:absolute;right:-80px;top:-120px;width:560px;height:560px;border-radius:50%;background:#6f8dff;opacity:.2"></div>
+      <div style="position:absolute;right:220px;top:90px;width:260px;height:260px;border-radius:50%;border:2px solid #8fb4ff;opacity:.4"></div>
+      <div style="position:absolute;left:0;right:0;bottom:0;height:220px;background:linear-gradient(to bottom,rgba(11,13,18,0),#0b0d12)"></div>
+      <a href="Main.dc.html" style="position:absolute;left:40px;top:56px;display:flex;align-items:center;gap:8px;min-height:44px;color:#c9d3f2;font-size:14px;font-weight:500;text-decoration:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Bibliothèque</a>
+      <div style="position:relative;padding:0 40px 28px;display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <span style="font-size:12px;font-weight:600;padding:5px 11px;border-radius:99px;background:rgba(11,13,18,.7);color:#e9ecf3">Action-aventure</span>
+          <span style="font-size:12px;font-weight:600;padding:5px 11px;border-radius:99px;background:rgba(11,13,18,.7);color:#e9ecf3">Solo</span>
+          <span style="font-size:12px;font-weight:600;padding:5px 11px;border-radius:99px;background:rgba(11,13,18,.7);color:#e9ecf3">Succès Steam</span>
+        </div>
+        <h1 style="margin:0;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:64px;line-height:1;letter-spacing:-.02em;color:#fff">Hollow Reach</h1>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+          <button style="display:flex;align-items:center;gap:10px;height:52px;padding:0 34px;border:0;border-radius:14px;background:{{accent}};color:#06122b;font-size:16px;font-weight:600;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>Jouer</button>
+          <button style="height:52px;padding:0 22px;border-radius:14px;border:1px solid #435089;background:rgba(11,13,18,.45);color:#e9ecf3;font-size:15px;font-weight:500;cursor:pointer">Page boutique</button>
+          <button style="height:52px;padding:0 22px;border-radius:14px;border:1px solid #435089;background:rgba(11,13,18,.45);color:#e9ecf3;font-size:15px;font-weight:500;cursor:pointer">Désinstaller</button>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Statistiques" style="display:flex;flex-wrap:wrap;gap:0;padding:0 40px;border-bottom:1px solid #1b212c">
+      <sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
+        <div style="flex:1 1 180px;display:flex;flex-direction:column;gap:4px;padding:22px 0">
+          <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#8f98a8">{{s.label}}</span>
+          <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:26px">{{s.value}}</span>
+        </div>
+      </sc-for>
+    </section>
+
+    <nav aria-label="Sections du jeu" style="display:flex;flex-wrap:wrap;gap:28px;padding:0 40px;border-bottom:1px solid #1b212c">
+      <sc-for list="{{tabs}}" as="t" hint-placeholder-count="4">
+        <a href="#" style="display:flex;align-items:center;min-height:52px;font-size:14px;font-weight:500;text-decoration:none;color:{{t.color}};border-bottom:2px solid {{t.line}};margin-bottom:-1px">{{t.label}}</a>
+      </sc-for>
+    </nav>
+
+    <section aria-label="Succès" style="display:flex;flex-wrap:wrap;gap:32px;padding:32px 40px 48px;align-items:flex-start">
+
+      <div style="flex:0 0 300px;display:flex;flex-direction:column;gap:20px;padding:24px;border-radius:18px;background:#12161e;border:1px solid #1b212c">
+        <div style="display:flex;align-items:center;gap:20px">
+          <svg width="124" height="124" viewBox="0 0 124 124" role="img" aria-label="43 % des succès débloqués">
+            <circle cx="62" cy="62" r="54" fill="none" stroke="#232a37" stroke-width="10"/>
+            <circle cx="62" cy="62" r="54" fill="none" stroke="{{accent}}" stroke-width="10" stroke-linecap="round" stroke-dasharray="146 339.3" transform="rotate(-90 62 62)"/>
+            <text x="62" y="70" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="28" fill="#e9ecf3">43 %</text>
+          </svg>
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:30px">18 / 42</span>
+            <span style="font-size:13px;color:#8f98a8">succès débloqués</span>
+          </div>
+        </div>
+        <div style="height:1px;background:#1b212c"></div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#8f98a8">Le plus proche</span>
+          <span style="font-size:15px;font-weight:600">Cartographe</span>
+          <span style="font-size:13px;color:#8f98a8">7 zones sur 10 révélées</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#8f98a8">Le plus rare obtenu</span>
+          <span style="font-size:15px;font-weight:600">Dernier écho</span>
+          <span style="font-size:13px;color:#c58cff">Rare · 3,2 % des joueurs</span>
+        </div>
+      </div>
+
+      <div style="flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{chips}}" as="c" hint-placeholder-count="4">
+              <button style="height:36px;padding:0 16px;border-radius:99px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid {{c.border}};background:{{c.bg}};color:{{c.color}}">{{c.label}}</button>
+            </sc-for>
+          </div>
+          <span style="font-size:13px;color:#8f98a8">Trier par : <span style="color:#e9ecf3;font-weight:500">Rareté</span></span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px">
+          <sc-for list="{{achievements}}" as="a" hint-placeholder-count="10">
+            <article style="display:flex;gap:16px;padding:16px;border-radius:16px;background:#12161e;border:1px solid {{a.border}}">
+              <div style="flex:0 0 56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:{{a.iconBg}};color:{{a.iconColor}}">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{a.icon}}"/></svg>
+              </div>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5px">
+                <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">
+                  <h3 style="margin:0;font-size:15px;font-weight:600;color:{{a.nameColor}}">{{a.name}}</h3>
+                  <span style="font-size:12px;font-weight:600;white-space:nowrap;color:{{a.rarityColor}}">{{a.rarityLabel}}</span>
+                </div>
+                <span style="font-size:13px;line-height:1.4;color:#8f98a8">{{a.desc}}</span>
+                <sc-if value="{{a.hasBar}}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
+                    <span style="flex:1;height:6px;border-radius:99px;background:#232a37;overflow:hidden"><span style="display:block;height:100%;width:{{a.pct}};background:{{accent}}"></span></span>
+                    <span style="font-size:12px;color:#c3cad6">{{a.status}}</span>
+                  </div>
+                </sc-if>
+                <sc-if value="{{a.noBar}}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size:12px;color:#c3cad6;margin-top:2px">{{a.status}}</span>
+                </sc-if>
+                <span style="font-size:12px;color:#8f98a8">{{a.pctPlayers}} des joueurs</span>
+              </div>
+            </article>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#4d8dff","options":["#4d8dff","#ffffff","#c58cff","#ff5a64"]},"$preview":{"width":1440,"height":1500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const DL = 'M12 4v11 M7 11l5 5 5-5 M5 20h14';
+    const nav = [
+      { label: 'Bibliothèque', d: 'M4 5h6v6H4z M14 5h6v6h-6z M4 15h6v4H4z M14 15h6v4h-6z', active: true },
+      { label: 'Boutique', d: 'M5 8h14l-1 11H6L5 8z M9 8V6a3 3 0 0 1 6 0v2' },
+      { label: 'Amis', d: 'M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M3 19c0-3 3-5 6-5s6 2 6 5 M16 6.5a3 3 0 0 1 0 5 M18 14c2 .6 3 2.2 3 5', badge: '3' },
+      { label: 'Téléchargements', d: DL, badge: '1' },
+      { label: 'Succès', d: 'M8 4h8v5a4 4 0 0 1-8 0V4z M8 6H5v1a3 3 0 0 0 3 3 M16 6h3v1a3 3 0 0 1-3 3 M12 13v4 M9 20h6' }
+    ].map(n => ({ ...n, active: n.label === 'Bibliothèque', bg: n.label === 'Bibliothèque' ? '#181d27' : 'transparent', color: n.label === 'Bibliothèque' ? '#e9ecf3' : '#8f98a8' }));
+    const stats = [
+      { label: 'Temps de jeu', value: '12,4 h' },
+      { label: 'Dernière session', value: 'Hier' },
+      { label: 'Succès', value: '18 / 42' },
+      { label: 'Taille sur disque', value: '8,2 Go' }
+    ];
+    const tabs = ['Aperçu', 'Succès', 'Captures', 'Actualités'].map(l => ({ label: l, color: l === 'Succès' ? '#e9ecf3' : '#8f98a8', line: l === 'Succès' ? (this.props.accent ?? '#4d8dff') : 'transparent' }));
+    const chips = [{ label: 'Tous (42)', on: true }, { label: 'Débloqués (18)' }, { label: 'Verrouillés (24)' }, { label: 'Rares' }]
+      .map(c => ({ label: c.label, bg: c.on ? '#e9ecf3' : 'transparent', color: c.on ? '#0b0d12' : '#c3cad6', border: c.on ? '#e9ecf3' : '#2a3243' }));
+    const TROPHY = 'M8 4h8v5a4 4 0 0 1-8 0V4z M8 6H5v1a3 3 0 0 0 3 3 M16 6h3v1a3 3 0 0 1-3 3 M12 13v4 M9 20h6';
+    const STAR = 'M12 4l2.4 5 5.4.7-4 3.8 1 5.4-4.8-2.7-4.8 2.7 1-5.4-4-3.8 5.4-.7z';
+    const LOCK = 'M7 11V8a5 5 0 0 1 10 0v3 M6 11h12v9H6z';
+    const rar = (p) => p >= 25 ? ['Commun', '#8f98a8'] : p >= 10 ? ['Peu commun', '#e9ecf3'] : p >= 3 ? ['Rare', '#c58cff'] : ['Ultra rare', '#ffd37a'];
+    const ach = (name, desc, p, done, status, pct) => {
+      const [rarityLabel, rarityColor] = rar(p);
+      return {
+        name, desc, rarityLabel, rarityColor,
+        pctPlayers: String(p).replace('.', ',') + ' %',
+        icon: done ? (p < 10 ? STAR : TROPHY) : LOCK,
+        iconBg: done ? '#1b2c52' : '#1b212c',
+        iconColor: done ? (this.props.accent ?? '#4d8dff') : '#8f98a8',
+        nameColor: done ? '#e9ecf3' : '#c3cad6',
+        border: done ? '#2a4580' : '#1b212c',
+        status, pct: pct || '0%',
+        hasBar: !done && !!pct, noBar: done || !pct
+      };
+    };
+    const achievements = [
+      ach('Dernier écho', 'Voir la véritable fin de Hollow Reach.', 3.2, true, 'Débloqué le 8 nov. 2026'),
+      ach('Chasseur d\u2019échos', 'Trouver 10 échos cachés dans le Val creux.', 34.5, true, 'Débloqué le 4 nov. 2026'),
+      ach('Maître du carillon', 'Vaincre la Gardienne du beffroi.', 19.8, true, 'Débloqué le 6 nov. 2026'),
+      ach('Cartographe', 'Révéler 100 % de la carte du Val creux.', 5.7, false, '7 / 10 zones', '70%'),
+      ach('Collectionneur', 'Ramasser 50 reliques.', 22, false, '38 / 50', '76%'),
+      ach('Sans lumière', 'Terminer la zone 3 sans allumer la lanterne.', 1.4, false, 'Verrouillé'),
+      ach('Course de fond', 'Terminer l\u2019aventure en moins de 6 heures.', 0.9, false, 'Verrouillé'),
+      ach('Ami des ombres', 'Se réconcilier avec le Veilleur.', 12.6, true, 'Débloqué le 7 nov. 2026'),
+      ach('Pas un pas de plus', 'Terminer le chapitre 2 sans mourir.', 8.1, false, '0 / 1'),
+      ach('Premier souffle', 'Quitter la crypte.', 91.2, true, 'Débloqué le 2 nov. 2026')
+    ];
+    return { accent: this.props.accent ?? '#4d8dff', nav, stats, tabs, chips, achievements };
+  }
+}
+</script>
+</body>
+</html>
