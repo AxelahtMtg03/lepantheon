@@ -10,6 +10,11 @@ contextBridge.exposeInMainWorld(
     getInfo: () => call('app:info'),
     getLibrary: () => call('library:get'),
     getProfile: () => call('profile:get'),
+    getSettings: () => call('settings:get'),
+    saveSettings: (values) => call('settings:set', values),
+    setApiKey: (key) => call('apikey:set', key),
+    clearApiKey: () => call('apikey:clear'),
+    clearCache: () => call('cache:clear'),
     toggleFavorite: (appid) => call('favorites:toggle', appid),
     steam: Object.freeze({
       play: (appid) => call('steam:action', 'rungameid', appid),

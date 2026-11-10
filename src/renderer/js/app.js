@@ -1,6 +1,7 @@
 import { h, icon, logoMark } from './dom.js';
 import { t } from './i18n.js';
 import { renderLibrary } from './views/library.js';
+import { renderSettings } from './views/settings.js';
 
 const api = window.pantheon;
 const NAV = [
@@ -55,6 +56,7 @@ async function route(info, profile) {
   try {
     if (section === 'game') main.replaceChildren(...soon('nav.library')); // fiche : étape 5
     else if (current === 'library') view = await renderLibrary(main, api);
+    else if (current === 'settings') await renderSettings(main, api);
     else main.replaceChildren(...soon(`nav.${current}`));
   } catch (err) {
     console.error(err);

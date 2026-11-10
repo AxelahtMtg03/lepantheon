@@ -162,6 +162,7 @@ export async function renderLibrary(root, api) {
   const select = h('select', { id: 'lib-sort', onchange: (e) => { state.sort = e.target.value; renderGrid(); } }, SORTS.map((s) => h('option', { value: s }, t(`sort.${s}`))));
   const toolbar = h('div', { class: 'toolbar' }, h('div', { class: 'chips' }, chipBtns), h('label', { class: 'sort', for: 'lib-sort' }, t('lib.sortBy'), select));
 
+  const noticeSlot = h('div');
   const grid = h('section', { class: 'grid', 'aria-label': t('lib.games') });
   const empty = h('p', { class: 'page-sub hidden' }, t('empty.filter'));
 
@@ -182,9 +183,16 @@ export async function renderLibrary(root, api) {
     const last = games.filter((g) => g.installed && g.lastPlayed).sort(sortFns.recent)[0];
     return last ? `${last.appid}|${last.playtimeMin}|${last.lastPlayed}` : '';
   };
+  const setNotice = (code) => {
+    const key = code === 'rate' || code === 'bad-response' ? 'network' : code;
+    noticeSlot.replaceChildren(
+      ...(key ? [h('div', { class: 'notice inline' }, h('p', null, t(`notice.${key}`)), h('a', { href: '#/settings' }, t('notice.settings')))] : []),
+    );
+  };
+  setNotice(data.notice);
   let banner = buildContinue(api, games);
   let shownKey = bannerKey();
-  root.replaceChildren(...[head, banner, toolbar, grid, empty].filter(Boolean));
+  root.replaceChildren(...[head, noticeSlot, banner, toolbar, grid, empty].filter(Boolean));
   renderGrid();
 
   // Mise à jour douce (installations/téléchargements) : seules les cartes modifiées sont retouchées.
@@ -206,6 +214,7 @@ export async function renderLibrary(root, api) {
     }
     for (const id of [...cards.keys()]) if (!seen.has(id)) cards.delete(id);
     sub.textContent = countsText(games);
+    setNotice(next.notice);
     const key = bannerKey();
     if (key !== shownKey) {
       const fresh = buildContinue(api, games);
