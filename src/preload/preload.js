@@ -44,6 +44,7 @@ contextBridge.exposeInMainWorld(
       store: (appid) => call('steam:action', 'store', appid),
       chat: (steamId) => call('steam:action', 'friends/message', steamId),
       openSteam: () => call('steam:action', 'open/main'),
+      openDownloads: () => call('steam:action', 'open/downloads'),
     }),
     openExternal: (url) => call('external:open', url),
   }),

@@ -9,6 +9,7 @@ test('buildSteamUrl accepte les actions autorisées', () => {
   assert.equal(buildSteamUrl('uninstall', 440), 'steam://uninstall/440');
   assert.equal(buildSteamUrl('store', 440), 'steam://store/440');
   assert.equal(buildSteamUrl('open/main'), 'steam://open/main');
+  assert.equal(buildSteamUrl('open/downloads'), 'steam://open/downloads');
   assert.equal(buildSteamUrl('friends/message', '76561198000000000'), 'steam://friends/message/76561198000000000');
 });
 

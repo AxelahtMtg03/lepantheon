@@ -18,6 +18,7 @@ const STEAM_ACTIONS = Object.freeze({
   store: 'appid',
   'friends/message': 'steamid',
   'open/main': 'none',
+  'open/downloads': 'none',
 });
 
 const APPID_RE = /^[1-9]\d{0,9}$/;

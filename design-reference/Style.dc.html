@@ -12,13 +12,53 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <style>
 body{margin:0;background:#0b0d12}
-.card .playbtn{opacity:0;transform:scale(.9);transition:opacity .15s,transform .15s}
-.card:hover .playbtn{opacity:1;transform:scale(1)}
-.card:hover .cover{border-color:#3a4458}
 button{font-family:inherit}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+@keyframes skelOut{to{opacity:0;visibility:hidden}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes stripes{to{background-position:28px 0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 55%,transparent)}70%,100%{box-shadow:0 0 0 12px transparent}}
+@keyframes ringIn{from{stroke-dasharray:0 339.3}to{stroke-dasharray:146 339.3}}
+.fadeUp{animation:fadeUp .6s cubic-bezier(.2,.7,.2,1) both}
+.skel{position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(100deg,#141925 30%,#242c3d 50%,#141925 70%);background-size:800px 100%;animation-name:shimmer,skelOut;animation-duration:1.4s,.45s;animation-iteration-count:infinite,1;animation-timing-function:linear,ease;animation-fill-mode:none,forwards}
+.grow{transform-origin:left;animation:grow 1s .3s cubic-bezier(.3,.7,.2,1) both}
+.dl{background-image:repeating-linear-gradient(115deg,rgba(255,255,255,.3) 0 8px,transparent 8px 16px)!important;background-size:28px 100%;animation:stripes .8s linear infinite}
+.float1{animation:float 9s ease-in-out infinite}
+.float2{animation:float 7s ease-in-out -3s infinite}
+.pulse{animation:pulse 2s infinite}
+.ring{animation:ringIn 1.3s .3s cubic-bezier(.3,.7,.2,1) both}
+.nav{transition:background .2s,color .2s,transform .2s}
+.nav:hover{background:#151a23!important;color:#e9ecf3!important;transform:translateX(3px)}
+.chip{transition:filter .2s,transform .2s}
+.chip:hover{transform:translateY(-1px);filter:brightness(1.25)}
+.btn-primary{transition:transform .2s,box-shadow .2s,filter .2s}
+.btn-primary:hover{transform:translateY(-2px);filter:brightness(1.1);box-shadow:0 12px 28px -10px var(--accent)}
+.btn-primary:active{transform:translateY(0)}
+.btn-ghost,.btn-outline{transition:background .2s,border-color .2s,transform .2s}
+.btn-ghost:hover{background:#181d27!important;border-color:#4a5671!important}
+.btn-outline:hover{background:rgba(255,255,255,.08)!important;border-color:#6b7bbf!important;transform:translateY(-2px)}
+.search{transition:border-color .2s,box-shadow .2s}
+.search:hover{border-color:#3a4458!important}
+.search:focus-within{border-color:var(--accent)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+.card{animation:fadeUp .55s cubic-bezier(.2,.7,.2,1) both}
+.card .cover{transition:transform .25s ease,border-color .25s,box-shadow .25s}
+.card:hover .cover{transform:translateY(-5px);border-color:#3a4458!important;box-shadow:0 20px 40px -18px rgba(0,0,0,.8)}
+.card .playbtn{opacity:0;transform:scale(.85);transition:opacity .2s,transform .2s}
+.card:hover .playbtn{opacity:1;transform:scale(1);animation:pulse 1.6s infinite}
+.ach{animation:fadeUp .5s cubic-bezier(.2,.7,.2,1) both;transition:transform .2s,border-color .2s,box-shadow .2s}
+.ach:hover{transform:translateY(-3px);border-color:#3a4458!important;box-shadow:0 14px 30px -18px rgba(0,0,0,.9)}
+.tab{transition:color .2s}
+.tab:hover{color:#e9ecf3!important}
+.back{transition:transform .2s,color .2s}
+.back:hover{transform:translateX(-3px);color:#fff!important}
+.swatch{transition:transform .2s}
+.swatch:hover{transform:translateY(-3px)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.skel{display:none!important}}
 </style>
 </helmet>
-<div style="min-height:1000px;box-sizing:border-box;padding:64px 56px;background:#0b0d12;color:#e9ecf3;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:48px">
+<div style="--accent:{{accent}};min-height:1000px;box-sizing:border-box;padding:64px 56px;background:#0b0d12;color:#e9ecf3;font-family:'Inter',system-ui,sans-serif;display:flex;flex-direction:column;gap:48px">
 
   <header style="display:flex;flex-direction:column;gap:10px;max-width:760px">
     <span style="font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:{{accent}}">Direction : sombre, aérée, centrée sur les jaquettes</span>
@@ -32,7 +72,7 @@ button{font-family:inherit}
       <h2 style="margin:0;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#8f98a8">Couleurs</h2>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px">
         <sc-for list="{{swatches}}" as="s" hint-placeholder-count="10">
-          <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="swatch" style="display:flex;flex-direction:column;gap:8px">
             <div style="height:72px;border-radius:12px;border:1px solid #2a3243;background:{{s.hex}}"></div>
             <div style="display:flex;flex-direction:column;gap:1px">
               <span style="font-size:13px;font-weight:600">{{s.name}}</span>
@@ -69,8 +109,8 @@ button{font-family:inherit}
       <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:14px;padding:24px;border-radius:16px;background:#12161e;border:1px solid #1b212c">
         <span style="font-size:12px;color:#8f98a8">Boutons</span>
         <div style="display:flex;flex-wrap:wrap;gap:12px">
-          <button style="height:46px;padding:0 26px;border:0;border-radius:12px;background:{{accent}};color:#06122b;font-size:15px;font-weight:600;cursor:pointer">Jouer</button>
-          <button style="height:46px;padding:0 22px;border-radius:12px;border:1px solid #2a3243;background:transparent;color:#e9ecf3;font-size:15px;font-weight:500;cursor:pointer">Page boutique</button>
+          <button class="btn-primary" style="height:46px;padding:0 26px;border:0;border-radius:12px;background:{{accent}};color:#06122b;font-size:15px;font-weight:600;cursor:pointer">Jouer</button>
+          <button class="btn-ghost" style="height:46px;padding:0 22px;border-radius:12px;border:1px solid #2a3243;background:transparent;color:#e9ecf3;font-size:15px;font-weight:500;cursor:pointer">Page boutique</button>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:8px">
           <button style="height:36px;padding:0 16px;border-radius:99px;border:1px solid #e9ecf3;background:#e9ecf3;color:#0b0d12;font-size:13px;font-weight:500">Tous</button>
@@ -80,8 +120,8 @@ button{font-family:inherit}
 
       <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:14px;padding:24px;border-radius:16px;background:#12161e;border:1px solid #1b212c">
         <span style="font-size:12px;color:#8f98a8">Progression</span>
-        <div style="display:flex;align-items:center;gap:12px"><span style="flex:1;height:6px;border-radius:99px;background:#232a37;overflow:hidden"><span style="display:block;width:61%;height:100%;background:{{accent}}"></span></span><span style="font-size:12px;color:#c3cad6">61 %</span></div>
-        <div style="display:flex;align-items:center;gap:12px"><span style="flex:1;height:6px;border-radius:99px;background:#232a37;overflow:hidden"><span style="display:block;width:76%;height:100%;background:{{accent}}"></span></span><span style="font-size:12px;color:#c3cad6">38 / 50</span></div>
+        <div style="display:flex;align-items:center;gap:12px"><span style="flex:1;height:6px;border-radius:99px;background:#232a37;overflow:hidden"><span class="dl" style="display:block;width:61%;height:100%;background:{{accent}}"></span></span><span style="font-size:12px;color:#c3cad6">61 %</span></div>
+        <div style="display:flex;align-items:center;gap:12px"><span style="flex:1;height:6px;border-radius:99px;background:#232a37;overflow:hidden"><span class="grow" style="display:block;width:76%;height:100%;background:{{accent}}"></span></span><span style="font-size:12px;color:#c3cad6">38 / 50</span></div>
         <span style="font-size:12px;color:#8f98a8;margin-top:6px">Rareté des succès</span>
         <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:13px;font-weight:600">
           <span style="color:#8f98a8">Commun</span><span style="color:#e9ecf3">Peu commun</span><span style="color:#c58cff">Rare</span><span style="color:#ffd37a">Ultra rare</span>
@@ -94,11 +134,21 @@ button{font-family:inherit}
           <div style="position:relative;width:104px;aspect-ratio:2/3;border-radius:14px;overflow:hidden;background:#1c2a5a;border:1px solid #3a4458;flex:0 0 auto">
             <div style="position:absolute;width:150%;aspect-ratio:1;border-radius:50%;left:-35%;top:50%;opacity:.22;background:#6f8dff"></div>
             <span style="position:absolute;left:10px;right:10px;bottom:12px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;line-height:1.05;color:#fff">Hollow Reach</span>
-            <span style="position:absolute;left:calc(50% - 18px);top:calc(50% - 18px);width:36px;height:36px;border-radius:50%;background:{{accent}};color:#06122b;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg></span>
+            <span style="position:absolute;left:calc(50% - 20px);top:calc(50% - 20px);width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.14);color:#fff;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg></span>
           </div>
-          <span style="font-size:13px;line-height:1.5;color:#c3cad6">Le bouton Jouer apparaît au survol, la bordure s’éclaircit. Un clic ailleurs ouvre la fiche.</span>
+          <span style="font-size:13px;line-height:1.5;color:#c3cad6">Au survol : la jaquette se soulève très doucement et un bouton rond en verre dépoli apparaît au centre. Il devient bleu quand on le touche.</span>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#8f98a8">Logo</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:32px;align-items:center;padding:28px;border-radius:16px;background:#12161e;border:1px solid #1b212c">
+      <svg width="120" height="120" viewBox="0 0 120 120" role="img" aria-label="Logo Le Pantheon"><circle cx="60" cy="60" r="54" fill="none" stroke="{{accent}}" stroke-width="6"/><polygon points="28,48 92,48 60,28" fill="#E9ECF3"/><rect x="28" y="51" width="64" height="5" fill="#E9ECF3"/><rect x="32" y="59" width="8" height="26" fill="#E9ECF3"/><rect x="48" y="59" width="8" height="26" fill="#E9ECF3"/><rect x="64" y="59" width="8" height="26" fill="#E9ECF3"/><rect x="80" y="59" width="8" height="26" fill="#E9ECF3"/><rect x="28" y="88" width="64" height="4" fill="#E9ECF3"/></svg>
+      <div style="width:104px;height:104px;border-radius:24px;background:#0b0d12;border:1px solid #2a3243;display:flex;align-items:center;justify-content:center"><svg width="72" height="72" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54" fill="none" stroke="{{accent}}" stroke-width="6"/><polygon points="28,48 92,48 60,28" fill="#E9ECF3"/><rect x="28" y="51" width="64" height="5" fill="#E9ECF3"/><rect x="32" y="59" width="8" height="26" fill="#E9ECF3"/><rect x="48" y="59" width="8" height="26" fill="#E9ECF3"/><rect x="64" y="59" width="8" height="26" fill="#E9ECF3"/><rect x="80" y="59" width="8" height="26" fill="#E9ECF3"/><rect x="28" y="88" width="64" height="4" fill="#E9ECF3"/></svg></div>
+      <div style="display:flex;align-items:center;gap:12px"><svg width="40" height="40" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54" fill="none" stroke="{{accent}}" stroke-width="6"/><polygon points="28,48 92,48 60,28" fill="#E9ECF3"/><rect x="28" y="51" width="64" height="5" fill="#E9ECF3"/><rect x="32" y="59" width="8" height="26" fill="#E9ECF3"/><rect x="48" y="59" width="8" height="26" fill="#E9ECF3"/><rect x="64" y="59" width="8" height="26" fill="#E9ECF3"/><rect x="80" y="59" width="8" height="26" fill="#E9ECF3"/><rect x="28" y="88" width="64" height="4" fill="#E9ECF3"/></svg><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:26px;letter-spacing:.02em">Le Pantheon</span></div>
+      <p style="margin:0;flex:1 1 280px;font-size:14px;line-height:1.55;color:#c3cad6">Un anneau bleu et un temple blanc : fronton, quatre colonnes et soubassement. Il se lit en grand comme en icône d’appli.</p>
     </div>
   </section>
 

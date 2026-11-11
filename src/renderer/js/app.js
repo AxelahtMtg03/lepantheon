@@ -7,6 +7,9 @@ import { renderAchievements } from './views/achievements.js';
 import { renderStore, renderStoreApp } from './views/store.js';
 import { renderFriends } from './views/friends.js';
 import { renderDownloads } from './views/downloads.js';
+import { createSplash } from './splash.js';
+import { buildSplash } from './splash-view.js';
+import { skeletonPage } from './skeleton.js';
 
 const api = window.pantheon;
 const NAV = [
@@ -82,6 +85,10 @@ async function route(info, profile) {
   const [, section = 'library', ...rest] = location.hash.split('/');
   const current = NAV.some((n) => n.id === section) || section === 'settings' ? section : 'library';
   renderSidebar(current, info, profile);
+  // Page de chargement : seulement si la page tarde (> 150 ms), jamais un délai artificiel.
+  const skelTimer = setTimeout(() => {
+    if (seq === routeSeq) main.replaceChildren(...skeletonPage());
+  }, 150);
   try {
     let v;
     if (section === 'game') v = await renderGame(main, api, rest[0]);
@@ -98,6 +105,12 @@ async function route(info, profile) {
     console.error(err);
     main.replaceChildren(h('div', { class: 'notice' }, h('h2', null, t('error.title')), h('p', null, t('error.text'))));
   }
+  clearTimeout(skelTimer);
+  if (seq === routeSeq) {
+    main.classList.remove('page-in');
+    void main.offsetWidth; // relance l'animation d'entrée
+    main.classList.add('page-in');
+  }
   main.scrollTop = 0;
 }
 
@@ -110,13 +123,32 @@ async function start() {
     console.error(err);
   }
   await initI18n(info.language); // la langue doit être chargée avant le premier affichage
+
+  // Écran de démarrage : seulement si le vrai chargement dépasse 400 ms, fermé dès que tout est prêt (3 s max), une seule fois.
+  let splashUi = null;
+  const splash = createSplash({
+    show() {
+      splashUi = buildSplash('splash.steam');
+      document.body.append(splashUi.root);
+    },
+    hide() {
+      splashUi?.hide();
+    },
+  });
+  splash.start();
+  const skip = () => splash.skip();
+  document.addEventListener('pointerdown', skip, { once: true });
+  document.addEventListener('keydown', skip, { once: true });
+
   try {
     profile = await api.getProfile();
   } catch (err) {
     console.error(err);
   }
+  splashUi?.setStage('splash.library');
   window.addEventListener('hashchange', () => route(info, profile));
-  route(info, profile);
+  await route(info, profile);
+  splash.ready();
 
   // Pastilles : téléchargements (lecture locale, toutes les 8 s) et amis connectés (toutes les 5 min, réponses en cache).
   const refreshDownloads = async () => {

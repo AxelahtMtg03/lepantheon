@@ -322,6 +322,8 @@ function createSteamApi({
       }
       return { status: 'ok', friends };
     },
+    peekOwnedGames: (steamId) => peek(`owned:${steamId}`),
+    peekPlayerSummary: (steamId) => peek(`summary:${steamId}`),
     peekFriends: (steamId) => peek(`friends:${steamId}`),
     // Lectures du cache sans réseau (affichage immédiat, calculs globaux).
     peekPlayerAchievements: (steamId, appid) => peek(`pach:${getLang()}:${steamId}:${appid}`),

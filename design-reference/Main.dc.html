@@ -12,21 +12,69 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <style>
 body{margin:0;background:#0b0d12}
-.card .playbtn{opacity:0;transform:scale(.9);transition:opacity .15s,transform .15s}
-.card:hover .playbtn{opacity:1;transform:scale(1)}
-.card:hover .cover{border-color:#3a4458}
 button{font-family:inherit}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+@keyframes skelOut{to{opacity:0;visibility:hidden}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes stripes{to{background-position:28px 0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 55%,transparent)}70%,100%{box-shadow:0 0 0 12px transparent}}
+@keyframes ringIn{from{stroke-dasharray:0 339.3}to{stroke-dasharray:146 339.3}}
+@keyframes pageIn{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+.pageIn{animation:pageIn .5s cubic-bezier(.2,.7,.2,1) both}
+.fadeUp{animation:fadeUp .6s cubic-bezier(.2,.7,.2,1) both}
+.skel{position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(100deg,#141925 30%,#242c3d 50%,#141925 70%);background-size:800px 100%;animation-name:shimmer,skelOut;animation-duration:1.4s,.45s;animation-iteration-count:infinite,1;animation-timing-function:linear,ease;animation-fill-mode:none,forwards}
+.grow{transform-origin:left;animation:grow 1s .3s cubic-bezier(.3,.7,.2,1) both}
+.dl{background-image:repeating-linear-gradient(115deg,rgba(255,255,255,.3) 0 8px,transparent 8px 16px)!important;background-size:28px 100%;animation:stripes .8s linear infinite}
+.float1{animation:float 9s ease-in-out infinite}
+.float2{animation:float 7s ease-in-out -3s infinite}
+.pulse{animation:pulse 2s infinite}
+.ring{animation:ringIn 1.3s .3s cubic-bezier(.3,.7,.2,1) both}
+.nav{transition:background .2s,color .2s,transform .2s}
+.nav:hover{background:#151a23!important;color:#e9ecf3!important;transform:translateX(3px)}
+.chip{transition:filter .2s,transform .2s}
+.chip:hover{transform:translateY(-1px);filter:brightness(1.25)}
+.btn-primary{transition:transform .2s,box-shadow .2s,filter .2s}
+.btn-primary:hover{transform:translateY(-2px);filter:brightness(1.1);box-shadow:0 12px 28px -10px var(--accent)}
+.btn-primary:active{transform:translateY(0)}
+.btn-ghost,.btn-outline{transition:background .2s,border-color .2s,transform .2s}
+.btn-ghost:hover{background:#181d27!important;border-color:#4a5671!important}
+.btn-outline:hover{background:rgba(255,255,255,.08)!important;border-color:#6b7bbf!important;transform:translateY(-2px)}
+.search{transition:border-color .2s,box-shadow .2s}
+.search:hover{border-color:#3a4458!important}
+.search:focus-within{border-color:var(--accent)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+.card{animation:fadeUp .55s cubic-bezier(.2,.7,.2,1) both}
+.card .cover{transition:transform .45s ease,border-color .35s,box-shadow .45s}
+.card:hover .cover,.card:focus-within .cover{transform:translateY(-3px);border-color:rgba(255,255,255,.22)!important;box-shadow:0 18px 36px -22px rgba(0,0,0,.9)}
+.card .art{transition:transform .9s ease}
+.card:hover .art,.card:focus-within .art{transform:scale(1.05)}
+.veil{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;background:rgba(8,10,16,.28);opacity:0;transition:opacity .35s ease}
+.card:hover .veil,.card:focus-within .veil{opacity:1}
+.playbtn{transform:scale(.9);transition:transform .4s ease,background .25s,color .25s,border-color .25s}
+.card:hover .playbtn,.card:focus-within .playbtn{transform:scale(1)}
+.playbtn:hover{background:var(--accent)!important;color:#06122b!important;border-color:var(--accent)!important;transform:scale(1.06)!important}
+.playbtn:active{transform:scale(.96)!important}
+.ach{animation:fadeUp .5s cubic-bezier(.2,.7,.2,1) both;transition:transform .2s,border-color .2s,box-shadow .2s}
+.ach:hover{transform:translateY(-3px);border-color:#3a4458!important;box-shadow:0 14px 30px -18px rgba(0,0,0,.9)}
+.tab{transition:color .2s}
+.tab:hover{color:#e9ecf3!important}
+.back{transition:transform .2s,color .2s}
+.back:hover{transform:translateX(-3px);color:#fff!important}
+.swatch{transition:transform .2s}
+.swatch:hover{transform:translateY(-3px)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.skel{display:none!important}}
 </style>
 </helmet>
-<div style="display:flex;flex-wrap:wrap;min-height:980px;background:#0b0d12;color:#e9ecf3;font-family:'Inter',system-ui,sans-serif">
+<div style="--accent:{{accent}};display:flex;flex-wrap:wrap;min-height:980px;background:#0b0d12;color:#e9ecf3;font-family:'Inter',system-ui,sans-serif">
 
   <aside style="flex:0 0 232px;box-sizing:border-box;padding:56px 16px 20px;border-right:1px solid #1b212c;display:flex;flex-direction:column;gap:6px;background:#0d1016">
     <div style="display:flex;align-items:center;gap:10px;padding:0 10px 22px">
-      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="11" fill="none" stroke="{{accent}}" stroke-width="2"/><circle cx="13" cy="13" r="5" fill="{{accent}}"/></svg>
+      <svg width="30" height="30" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54" fill="none" stroke="{{accent}}" stroke-width="6"/><polygon points="28,48 92,48 60,28" fill="#E9ECF3"/><rect x="28" y="51" width="64" height="5" fill="#E9ECF3"/><rect x="32" y="59" width="8" height="26" fill="#E9ECF3"/><rect x="48" y="59" width="8" height="26" fill="#E9ECF3"/><rect x="64" y="59" width="8" height="26" fill="#E9ECF3"/><rect x="80" y="59" width="8" height="26" fill="#E9ECF3"/><rect x="28" y="88" width="64" height="4" fill="#E9ECF3"/></svg>
       <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;letter-spacing:.02em">Le Pantheon</span>
     </div>
     <sc-for list="{{nav}}" as="n" hint-placeholder-count="5">
-      <a href="#" style="display:flex;align-items:center;gap:12px;padding:11px 12px;min-height:22px;border-radius:10px;text-decoration:none;font-size:14px;font-weight:500;background:{{n.bg}};color:{{n.color}}">
+      <a class="nav" href="#" style="display:flex;align-items:center;gap:12px;padding:11px 12px;min-height:22px;border-radius:10px;text-decoration:none;font-size:14px;font-weight:500;background:{{n.bg}};color:{{n.color}}">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.d}}"/></svg>
         <span style="flex:1">{{n.label}}</span>
         <sc-if value="{{n.badge}}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;font-weight:600;padding:2px 8px;border-radius:99px;background:#232a37;color:#e9ecf3">{{n.badge}}</span></sc-if>
@@ -38,40 +86,41 @@ button{font-family:inherit}
         <div style="width:40px;height:40px;border-radius:50%;background:#2a3358;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px">A</div>
         <div style="display:flex;flex-direction:column;gap:2px">
           <span style="font-size:14px;font-weight:600">Axel</span>
-          <span style="font-size:12px;color:#8f98a8;display:flex;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:50%;background:{{accent}}"></span>En ligne</span>
+          <span style="font-size:12px;color:#8f98a8;display:flex;align-items:center;gap:6px"><span class="pulse" style="width:7px;height:7px;border-radius:50%;background:{{accent}}"></span>En ligne</span>
         </div>
       </div>
-      <button style="height:36px;border-radius:9px;border:1px solid #2a3243;background:transparent;color:#e9ecf3;font-size:13px;font-weight:500;cursor:pointer">Ouvrir Steam</button>
+      <button class="btn-ghost" style="height:36px;border-radius:9px;border:1px solid #2a3243;background:transparent;color:#e9ecf3;font-size:13px;font-weight:500;cursor:pointer">Ouvrir Steam</button>
     </div>
   </aside>
 
-  <main style="flex:999 1 560px;min-width:0;box-sizing:border-box;padding:56px 40px 40px;display:flex;flex-direction:column;gap:28px">
+  <main class="pageIn" style="flex:999 1 560px;min-width:0;box-sizing:border-box;padding:56px 40px 40px;display:flex;flex-direction:column;gap:28px">
 
     <header style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px">
       <div style="display:flex;flex-direction:column;gap:4px">
         <h1 style="margin:0;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:34px;letter-spacing:-.01em">Bibliothèque</h1>
         <span style="font-size:14px;color:#8f98a8">142 jeux · 18 installés · 1 téléchargement en cours</span>
       </div>
-      <label style="display:flex;align-items:center;gap:10px;height:44px;box-sizing:border-box;padding:0 14px;min-width:280px;border-radius:12px;background:#12161e;border:1px solid #232a37;color:#8f98a8">
+      <label class="search" style="display:flex;align-items:center;gap:10px;height:44px;box-sizing:border-box;padding:0 14px;min-width:280px;border-radius:12px;background:#12161e;border:1px solid #232a37;color:#8f98a8">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14z M20 20l-4-4"/></svg>
         <span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Rechercher dans la bibliothèque</span>
         <input type="search" placeholder="Rechercher un jeu" style="flex:1;min-width:0;background:transparent;border:0;outline:0;color:#e9ecf3;font-family:inherit;font-size:14px">
       </label>
     </header>
 
-    <section aria-label="Continuer à jouer" style="position:relative;overflow:hidden;border-radius:20px;background:#1a2147;border:1px solid #28315f;min-height:230px;display:flex;align-items:center">
-      <div style="position:absolute;right:-60px;top:-90px;width:420px;height:420px;border-radius:50%;background:#6f8dff;opacity:.2"></div>
-      <div style="position:absolute;right:140px;top:50px;width:200px;height:200px;border-radius:50%;border:2px solid #8fb4ff;opacity:.45"></div>
+    <section class="fadeUp" aria-label="Continuer à jouer" style="position:relative;overflow:hidden;border-radius:20px;background:#1a2147;border:1px solid #28315f;min-height:230px;display:flex;align-items:center">
+      <div class="skel" style="border-radius:20px;animation-delay:0s,.7s"></div>
+      <div class="float1" style="position:absolute;right:-60px;top:-90px;width:420px;height:420px;border-radius:50%;background:#6f8dff;opacity:.2"></div>
+      <div class="float2" style="position:absolute;right:140px;top:50px;width:200px;height:200px;border-radius:50%;border:2px solid #8fb4ff;opacity:.45"></div>
       <div style="position:relative;display:flex;flex-direction:column;gap:14px;padding:32px 36px;max-width:560px">
         <span style="font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#b9c6ee">Continuer à jouer · hier</span>
         <h2 style="margin:0;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:44px;line-height:1;color:#fff">Hollow Reach</h2>
         <div style="display:flex;align-items:center;gap:14px;color:#c9d3f2;font-size:14px">
           <span>12,4 h de jeu</span><span aria-hidden="true">·</span><span>Succès 18 / 42</span>
-          <span style="width:110px;height:6px;border-radius:99px;background:#2e3a74;overflow:hidden;display:inline-block"><span style="display:block;width:43%;height:100%;background:{{accent}}"></span></span>
+          <span style="width:110px;height:6px;border-radius:99px;background:#2e3a74;overflow:hidden;display:inline-block"><span class="grow" style="display:block;width:43%;height:100%;background:{{accent}}"></span></span>
         </div>
         <div style="display:flex;gap:12px;margin-top:6px">
-          <button style="display:flex;align-items:center;gap:10px;height:46px;padding:0 26px;border:0;border-radius:12px;background:{{accent}};color:#06122b;font-size:15px;font-weight:600;cursor:pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>Jouer</button>
-          <a href="Jeu.dc.html" style="display:flex;align-items:center;height:46px;box-sizing:border-box;padding:0 22px;border-radius:12px;border:1px solid #435089;color:#e9ecf3;font-size:15px;font-weight:500;text-decoration:none">Voir la fiche</a>
+          <button class="btn-primary" style="display:flex;align-items:center;gap:10px;height:46px;padding:0 26px;border:0;border-radius:12px;background:{{accent}};color:#06122b;font-size:15px;font-weight:600;cursor:pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>Jouer</button>
+          <a class="btn-outline" href="Jeu.dc.html" style="display:flex;align-items:center;height:46px;box-sizing:border-box;padding:0 22px;border-radius:12px;border:1px solid #435089;color:#e9ecf3;font-size:15px;font-weight:500;text-decoration:none">Voir la fiche</a>
         </div>
       </div>
     </section>
@@ -79,7 +128,7 @@ button{font-family:inherit}
     <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
       <div style="display:flex;flex-wrap:wrap;gap:8px">
         <sc-for list="{{chips}}" as="c" hint-placeholder-count="4">
-          <button style="height:36px;padding:0 16px;border-radius:99px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid {{c.border}};background:{{c.bg}};color:{{c.color}}">{{c.label}}</button>
+          <button class="chip" style="height:36px;padding:0 16px;border-radius:99px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid {{c.border}};background:{{c.bg}};color:{{c.color}}">{{c.label}}</button>
         </sc-for>
       </div>
       <span style="font-size:13px;color:#8f98a8">Trier par : <span style="color:#e9ecf3;font-weight:500">Récemment joués</span></span>
@@ -87,17 +136,20 @@ button{font-family:inherit}
 
     <section aria-label="Jeux" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:24px 20px">
       <sc-for list="{{games}}" as="g" hint-placeholder-count="12">
-        <div class="card" style="display:flex;flex-direction:column;gap:10px">
+        <div class="card" style="display:flex;flex-direction:column;gap:10px;animation-delay:{{g.delay}}">
           <div class="cover" style="position:relative;aspect-ratio:2/3;border-radius:14px;overflow:hidden;border:1px solid #232a37;background:{{g.bg}}">
-            <div style="position:absolute;width:150%;aspect-ratio:1;border-radius:50%;left:-35%;top:50%;opacity:.22;background:{{g.shape}}"></div>
-            <div style="position:absolute;width:62%;aspect-ratio:1;border-radius:50%;right:-14%;top:8%;opacity:.5;border:2px solid {{g.shape}}"></div>
+            <div class="art" style="position:absolute;width:150%;aspect-ratio:1;border-radius:50%;left:-35%;top:50%;opacity:.22;background:{{g.shape}}"></div>
+            <div class="art" style="position:absolute;width:62%;aspect-ratio:1;border-radius:50%;right:-14%;top:8%;opacity:.5;border:2px solid {{g.shape}}"></div>
             <span style="position:absolute;left:10px;top:10px;font-size:11px;font-weight:600;padding:4px 9px;border-radius:99px;background:rgba(11,13,18,.78);color:#e9ecf3">{{g.tag}}</span>
             <span style="position:absolute;left:14px;right:14px;bottom:16px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:21px;line-height:1.05;color:#fff">{{g.title}}</span>
-            <button class="playbtn" aria-label="{{g.action}} {{g.title}}" style="position:absolute;left:calc(50% - 22px);top:calc(50% - 22px);width:44px;height:44px;border-radius:50%;border:0;background:{{accent}};color:#06122b;display:flex;align-items:center;justify-content:center;cursor:pointer">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="{{g.icon}}"/></svg>
-            </button>
+            <div class="veil">
+              <button class="playbtn" aria-label="{{g.action}} {{g.title}}" style="display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.14);color:#fff;cursor:pointer;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="{{g.fill}}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{g.icon}}"/></svg>
+              </button>
+            </div>
+            <div class="skel" style="animation-delay:0s,{{g.skel}}"></div>
             <sc-if value="{{g.downloading}}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute;left:0;right:0;bottom:0;height:5px;background:rgba(255,255,255,.14)"><div style="height:100%;width:{{g.pct}};background:{{accent}}"></div></div>
+              <div style="position:absolute;left:0;right:0;bottom:0;height:5px;background:rgba(255,255,255,.14)"><div class="dl" style="height:100%;width:{{g.pct}};background:{{accent}}"></div></div>
             </sc-if>
           </div>
           <div style="display:flex;flex-direction:column;gap:2px;padding:0 2px">
@@ -115,12 +167,15 @@ class Component extends DCLogic {
   renderVals() {
     const PLAY = 'M7 4v16l13-8z';
     const DL = 'M12 4v11 M7 11l5 5 5-5 M5 20h14';
+    const PAUSE = 'M9 5v14 M15 5v14';
     const mk = (title, bg, shape, meta, kind, pct) => ({
       title, bg, shape, meta,
       tag: kind === 'on' ? 'Installé' : kind === 'dl' ? 'Téléchargement ' + pct : 'À installer',
       downloading: kind === 'dl', pct: pct || '0%',
-      icon: kind === 'off' ? 'M12 4v11 M7 11l5 5 5-5 M5 20h14' : PLAY,
-      action: kind === 'off' ? 'Installer' : 'Jouer à'
+      icon: kind === 'off' ? DL : kind === 'dl' ? PAUSE : PLAY,
+      fill: kind === 'on' ? 'currentColor' : 'none',
+      label: kind === 'off' ? 'Installer' : kind === 'dl' ? 'Mettre en pause' : 'Jouer',
+      action: kind === 'off' ? 'Installer' : kind === 'dl' ? 'Mettre en pause' : 'Jouer à'
     });
     const nav = [
       { label: 'Bibliothèque', d: 'M4 5h6v6H4z M14 5h6v6h-6z M4 15h6v4H4z M14 15h6v4h-6z', active: true },
@@ -146,6 +201,7 @@ class Component extends DCLogic {
       mk('Gravel & Gold', '#34301c', '#e0d25c', 'Jamais lancé', 'off'),
       mk('Static Bloom', '#2b1f45', '#c58cff', '5,5 h · 7/28 succès', 'on')
     ];
+    games.forEach((g, i) => { g.delay = (0.1 + i * 0.06).toFixed(2) + 's'; g.skel = (0.9 + i * 0.09).toFixed(2) + 's'; });
     return { accent: this.props.accent ?? '#4d8dff', nav, chips, games };
   }
 }

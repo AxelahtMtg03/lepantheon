@@ -10,6 +10,9 @@ function createProvider(isMock, deps = {}) {
   const readLocal = () => local.readSteam({ steamPath: store.getSetting('steamPath'), steamId: store.getSetting('steamId') });
   const steamIdOf = (s) => store.getSetting('steamId') || (s.account && s.account.id64) || null;
 
+  let ownedPending = null;
+  let ownedError = null;
+
   return {
     mock: isMock,
     async getLibrary() {
@@ -19,14 +22,25 @@ function createProvider(isMock, deps = {}) {
       const steamId = steamIdOf(s);
       let owned = null;
       let notice = null;
+      let loading = false;
       if (!deps.hasKey()) notice = 'no-key';
       else if (!steamId) notice = 'no-steamid';
       else {
-        try {
-          owned = await deps.api.getOwnedGames(steamId);
+        // Non bloquant : on prend le cache s'il existe, sinon la récupération réseau se fait en arrière-plan
+        // et l'interface redemande la bibliothèque (loading = true).
+        owned = deps.api.peekOwnedGames(steamId);
+        if (owned) {
           if (owned.hidden) notice = 'private';
-        } catch (err) {
-          notice = err.code || 'network';
+        } else {
+          if (ownedError) {
+            notice = ownedError; // l'échec est montré une fois ; la prochaine demande réessaie
+            ownedError = null;
+          } else {
+            loading = true;
+            if (!ownedPending) {
+              ownedPending = deps.api.getOwnedGames(steamId).then(() => {}, (err) => { ownedError = err.code || 'network'; }).then(() => { ownedPending = null; });
+            }
+          }
         }
       }
       const canAch = deps.hasKey();
@@ -43,7 +57,7 @@ function createProvider(isMock, deps = {}) {
       const games = [...byId.values()].map((g) => ({ ...g, achievements: canAch && steamId ? deps.achievements.peekSummary(steamId, g.appid) : null }));
       if (canAch && steamId && notice !== 'private') deps.achievements.scan(steamId, games); // en arrière-plan, espacé
       if (!s.found && games.length === 0) return { status: 'steam-not-found', games: [], favorites, notice };
-      return { status: 'ok', games, favorites, notice };
+      return { status: 'ok', games, favorites, notice, loading };
     },
     async getProfile() {
       if (isMock) return mock.profile();
@@ -52,9 +66,13 @@ function createProvider(isMock, deps = {}) {
       const profile = { name: (s.account && s.account.name) || null, status: s.running ? 'online' : 'offline', steamId, avatarUrl: null };
       if (steamId && deps.hasKey()) {
         try {
-          const p = await deps.api.getPlayerSummary(steamId);
-          if (p.name) profile.name = p.name;
-          profile.avatarUrl = p.avatarUrl;
+          // Non bloquant : cache d'abord ; sinon récupération en arrière-plan (visible au prochain affichage).
+          let p = deps.api.peekPlayerSummary(steamId);
+          if (!p) deps.api.getPlayerSummary(steamId).catch(() => {});
+          else {
+            if (p.name) profile.name = p.name;
+            profile.avatarUrl = p.avatarUrl;
+          }
         } catch {
           // sans avatar : l'initiale du pseudo est affichée
         }

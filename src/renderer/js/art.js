@@ -11,14 +11,23 @@ function tileColors(game) {
 }
 
 // Image officielle avec repli : library_600x900 -> header -> tuile colorée.
-function officialImage(appid, files) {
+function officialImage(appid, files, skel) {
   let i = 0;
   const img = h('img', { class: 'art-img', alt: '', loading: 'lazy', decoding: 'async', referrerpolicy: 'no-referrer' });
+  // Le squelette scintillant disparaît (fondu) dès que l'image est réellement chargée, ou abandonnée.
+  const dropSkel = () => {
+    skel.classList.add('out');
+    setTimeout(() => skel.remove(), 400);
+  };
   img.addEventListener('error', () => {
     i += 1;
     if (i < files.length) img.src = `${CDN}/${appid}/${files[i]}`;
-    else img.remove();
+    else {
+      img.remove();
+      dropSkel();
+    }
   });
+  img.addEventListener('load', dropSkel);
   // Une vraie jaquette contient déjà le titre : on masque alors la tuile. Le héros seul n'en a pas : on garde le titre.
   img.addEventListener('load', () => {
     const cover = img.closest('.cover');
@@ -36,7 +45,8 @@ export function artLayers(game, kind) {
     h('div', { class: 'tile-ring', style: { borderColor: c.shape } }),
   ];
   if (!game.mock) {
-    layers.push(officialImage(game.appid, kind === 'hero' ? ['library_hero.jpg', 'header.jpg'] : ['library_600x900.jpg', 'header.jpg', 'library_hero.jpg']));
+    const skel = h('div', { class: 'skel art-skel' });
+    layers.push(skel, officialImage(game.appid, kind === 'hero' ? ['library_hero.jpg', 'header.jpg'] : ['library_600x900.jpg', 'header.jpg', 'library_hero.jpg'], skel));
   }
   return { bg: c.bg, layers };
 }

@@ -42,7 +42,7 @@ function tagText(g) {
 }
 
 function actionOf(api, g) {
-  if (g.state === 'downloading') return null;
+  if (g.state === 'downloading') return { icon: 'pause', aria: 'card.downloadAria', run: () => api.steam.openDownloads() };
   return g.installed
     ? { icon: 'play', aria: 'card.playAria', run: () => api.steam.play(g.appid) }
     : { icon: 'downloads', aria: 'card.installAria', run: () => api.steam.install(g.appid) };
@@ -61,7 +61,8 @@ function buildCard(game, ctx) {
   const open = h('button', { class: 'cover-open', type: 'button', onclick: () => { location.hash = `#/game/${g.appid}`; } });
   const fav = h('button', { class: 'fav', type: 'button', onclick: () => ctx.toggleFav(g.appid) });
   const play = h('button', { class: 'playbtn', type: 'button', onclick: () => actionOf(ctx.api, g)?.run() });
-  const cover = h('div', { class: 'cover', style: { background: bg } }, layers, tileTitle, open, tag, bar, fav, play);
+  const veil = h('div', { class: 'veil', 'aria-hidden': 'true' });
+  const cover = h('div', { class: 'cover', style: { background: bg } }, h('div', { class: 'art' }, layers), tileTitle, veil, open, tag, bar, fav, play);
   const el = h('article', { class: 'card' }, cover, nameEl, metaEl);
 
   function update(next) {
@@ -78,11 +79,8 @@ function buildCard(game, ctx) {
     fav.setAttribute('aria-label', t(isFav ? 'card.favRemove' : 'card.favAdd', { name: g.name }));
     fav.replaceChildren(icon(isFav ? 'starFill' : 'star', 20));
     const act = actionOf(ctx.api, g);
-    play.classList.toggle('hidden', !act);
-    if (act) {
-      play.setAttribute('aria-label', t(act.aria, { name: g.name }));
-      play.replaceChildren(icon(act.icon, 18));
-    }
+    play.setAttribute('aria-label', t(act.aria, { name: g.name }));
+    play.replaceChildren(icon(act.icon, 18));
   }
   update(g);
   return { el, update };
@@ -127,7 +125,12 @@ function buildContinue(api, games) {
 }
 
 export async function renderLibrary(root, api) {
-  const data = await api.getLibrary();
+  let data = await api.getLibrary();
+  // Rien en local et réseau en cours : on patiente un peu (la page de chargement reste visible), sans bloquer l'appli.
+  for (let n = 0; data.loading && data.games.length === 0 && n < 12; n++) {
+    await new Promise((r) => setTimeout(r, 500));
+    data = await api.getLibrary();
+  }
   let games = data.games;
   const favs = new Set(data.favorites);
   const state = { filter: 'all', sort: 'recent', query: '' };
@@ -166,7 +169,14 @@ export async function renderLibrary(root, api) {
   const grid = h('section', { class: 'grid', 'aria-label': t('lib.games') });
   const empty = h('p', { class: 'page-sub hidden' }, t('empty.filter'));
 
-  for (const g of games) cards.set(g.appid, buildCard(g, ctx));
+  // Apparition en cascade à la première affichage seulement (retirée dès la fin, pour ne pas rejouer au tri/filtre).
+  games.forEach((g, i) => {
+    const c = buildCard(g, ctx);
+    c.el.classList.add('enter');
+    c.el.style.setProperty('--i', String(Math.min(i, 14)));
+    c.el.addEventListener('animationend', () => c.el.classList.remove('enter'), { once: true });
+    cards.set(g.appid, c);
+  });
 
   function renderGrid() {
     const q = norm(state.query.trim());
@@ -226,6 +236,23 @@ export async function renderLibrary(root, api) {
     }
     renderGrid();
   }
+  // Réseau encore en cours au démarrage : on redemande vite (1,5 s) jusqu'à l'arrivée des données, puis toutes les 8 s.
+  let fast = null;
+  if (data.loading) {
+    fast = setInterval(async () => {
+      let next;
+      try {
+        next = await api.getLibrary();
+      } catch {
+        return;
+      }
+      if (!next.loading) {
+        clearInterval(fast);
+        fast = null;
+        await refresh();
+      }
+    }, 1500);
+  }
   const timer = setInterval(refresh, 8000);
-  return { dispose: () => clearInterval(timer) };
+  return { dispose: () => { clearInterval(timer); if (fast) clearInterval(fast); } };
 }

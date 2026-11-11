@@ -12,21 +12,63 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <style>
 body{margin:0;background:#0b0d12}
-.card .playbtn{opacity:0;transform:scale(.9);transition:opacity .15s,transform .15s}
-.card:hover .playbtn{opacity:1;transform:scale(1)}
-.card:hover .cover{border-color:#3a4458}
 button{font-family:inherit}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+@keyframes skelOut{to{opacity:0;visibility:hidden}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes stripes{to{background-position:28px 0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 55%,transparent)}70%,100%{box-shadow:0 0 0 12px transparent}}
+@keyframes ringIn{from{stroke-dasharray:0 339.3}to{stroke-dasharray:146 339.3}}
+@keyframes pageIn{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+.pageIn{animation:pageIn .5s cubic-bezier(.2,.7,.2,1) both}
+.fadeUp{animation:fadeUp .6s cubic-bezier(.2,.7,.2,1) both}
+.skel{position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(100deg,#141925 30%,#242c3d 50%,#141925 70%);background-size:800px 100%;animation-name:shimmer,skelOut;animation-duration:1.4s,.45s;animation-iteration-count:infinite,1;animation-timing-function:linear,ease;animation-fill-mode:none,forwards}
+.grow{transform-origin:left;animation:grow 1s .3s cubic-bezier(.3,.7,.2,1) both}
+.dl{background-image:repeating-linear-gradient(115deg,rgba(255,255,255,.3) 0 8px,transparent 8px 16px)!important;background-size:28px 100%;animation:stripes .8s linear infinite}
+.float1{animation:float 9s ease-in-out infinite}
+.float2{animation:float 7s ease-in-out -3s infinite}
+.pulse{animation:pulse 2s infinite}
+.ring{animation:ringIn 1.3s .3s cubic-bezier(.3,.7,.2,1) both}
+.nav{transition:background .2s,color .2s,transform .2s}
+.nav:hover{background:#151a23!important;color:#e9ecf3!important;transform:translateX(3px)}
+.chip{transition:filter .2s,transform .2s}
+.chip:hover{transform:translateY(-1px);filter:brightness(1.25)}
+.btn-primary{transition:transform .2s,box-shadow .2s,filter .2s}
+.btn-primary:hover{transform:translateY(-2px);filter:brightness(1.1);box-shadow:0 12px 28px -10px var(--accent)}
+.btn-primary:active{transform:translateY(0)}
+.btn-ghost,.btn-outline{transition:background .2s,border-color .2s,transform .2s}
+.btn-ghost:hover{background:#181d27!important;border-color:#4a5671!important}
+.btn-outline:hover{background:rgba(255,255,255,.08)!important;border-color:#6b7bbf!important;transform:translateY(-2px)}
+.search{transition:border-color .2s,box-shadow .2s}
+.search:hover{border-color:#3a4458!important}
+.search:focus-within{border-color:var(--accent)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+.card{animation:fadeUp .55s cubic-bezier(.2,.7,.2,1) both}
+.card .cover{transition:transform .25s ease,border-color .25s,box-shadow .25s}
+.card:hover .cover{transform:translateY(-5px);border-color:#3a4458!important;box-shadow:0 20px 40px -18px rgba(0,0,0,.8)}
+.card .playbtn{opacity:0;transform:scale(.85);transition:opacity .2s,transform .2s}
+.card:hover .playbtn{opacity:1;transform:scale(1);animation:pulse 1.6s infinite}
+.ach{animation:fadeUp .5s cubic-bezier(.2,.7,.2,1) both;transition:transform .2s,border-color .2s,box-shadow .2s}
+.ach:hover{transform:translateY(-3px);border-color:#3a4458!important;box-shadow:0 14px 30px -18px rgba(0,0,0,.9)}
+.tab{transition:color .2s}
+.tab:hover{color:#e9ecf3!important}
+.back{transition:transform .2s,color .2s}
+.back:hover{transform:translateX(-3px);color:#fff!important}
+.swatch{transition:transform .2s}
+.swatch:hover{transform:translateY(-3px)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.skel{display:none!important}}
 </style>
 </helmet>
-<div style="display:flex;flex-wrap:wrap;min-height:1500px;background:#0b0d12;color:#e9ecf3;font-family:'Inter',system-ui,sans-serif">
+<div style="--accent:{{accent}};display:flex;flex-wrap:wrap;min-height:1500px;background:#0b0d12;color:#e9ecf3;font-family:'Inter',system-ui,sans-serif">
 
   <aside style="flex:0 0 232px;box-sizing:border-box;padding:56px 16px 20px;border-right:1px solid #1b212c;display:flex;flex-direction:column;gap:6px;background:#0d1016">
     <div style="display:flex;align-items:center;gap:10px;padding:0 10px 22px">
-      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="11" fill="none" stroke="{{accent}}" stroke-width="2"/><circle cx="13" cy="13" r="5" fill="{{accent}}"/></svg>
+      <svg width="30" height="30" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54" fill="none" stroke="{{accent}}" stroke-width="6"/><polygon points="28,48 92,48 60,28" fill="#E9ECF3"/><rect x="28" y="51" width="64" height="5" fill="#E9ECF3"/><rect x="32" y="59" width="8" height="26" fill="#E9ECF3"/><rect x="48" y="59" width="8" height="26" fill="#E9ECF3"/><rect x="64" y="59" width="8" height="26" fill="#E9ECF3"/><rect x="80" y="59" width="8" height="26" fill="#E9ECF3"/><rect x="28" y="88" width="64" height="4" fill="#E9ECF3"/></svg>
       <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;letter-spacing:.02em">Le Pantheon</span>
     </div>
     <sc-for list="{{nav}}" as="n" hint-placeholder-count="5">
-      <a href="#" style="display:flex;align-items:center;gap:12px;padding:11px 12px;min-height:22px;border-radius:10px;text-decoration:none;font-size:14px;font-weight:500;background:{{n.bg}};color:{{n.color}}">
+      <a class="nav" href="#" style="display:flex;align-items:center;gap:12px;padding:11px 12px;min-height:22px;border-radius:10px;text-decoration:none;font-size:14px;font-weight:500;background:{{n.bg}};color:{{n.color}}">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.d}}"/></svg>
         <span style="flex:1">{{n.label}}</span>
         <sc-if value="{{n.badge}}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;font-weight:600;padding:2px 8px;border-radius:99px;background:#232a37;color:#e9ecf3">{{n.badge}}</span></sc-if>
@@ -38,21 +80,22 @@ button{font-family:inherit}
         <div style="width:40px;height:40px;border-radius:50%;background:#2a3358;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px">A</div>
         <div style="display:flex;flex-direction:column;gap:2px">
           <span style="font-size:14px;font-weight:600">Axel</span>
-          <span style="font-size:12px;color:#8f98a8;display:flex;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:50%;background:{{accent}}"></span>En ligne</span>
+          <span style="font-size:12px;color:#8f98a8;display:flex;align-items:center;gap:6px"><span class="pulse" style="width:7px;height:7px;border-radius:50%;background:{{accent}}"></span>En ligne</span>
         </div>
       </div>
-      <button style="height:36px;border-radius:9px;border:1px solid #2a3243;background:transparent;color:#e9ecf3;font-size:13px;font-weight:500;cursor:pointer">Ouvrir Steam</button>
+      <button class="btn-ghost" style="height:36px;border-radius:9px;border:1px solid #2a3243;background:transparent;color:#e9ecf3;font-size:13px;font-weight:500;cursor:pointer">Ouvrir Steam</button>
     </div>
   </aside>
 
-  <main style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column">
+  <main class="pageIn" style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column">
 
     <section style="position:relative;overflow:hidden;background:#1a2147;min-height:400px;display:flex;flex-direction:column;justify-content:flex-end;border-bottom:1px solid #28315f">
-      <div style="position:absolute;right:-80px;top:-120px;width:560px;height:560px;border-radius:50%;background:#6f8dff;opacity:.2"></div>
-      <div style="position:absolute;right:220px;top:90px;width:260px;height:260px;border-radius:50%;border:2px solid #8fb4ff;opacity:.4"></div>
+      <div class="skel" style="animation-delay:0s,.8s"></div>
+      <div class="float1" style="position:absolute;right:-80px;top:-120px;width:560px;height:560px;border-radius:50%;background:#6f8dff;opacity:.2"></div>
+      <div class="float2" style="position:absolute;right:220px;top:90px;width:260px;height:260px;border-radius:50%;border:2px solid #8fb4ff;opacity:.4"></div>
       <div style="position:absolute;left:0;right:0;bottom:0;height:220px;background:linear-gradient(to bottom,rgba(11,13,18,0),#0b0d12)"></div>
-      <a href="Main.dc.html" style="position:absolute;left:40px;top:56px;display:flex;align-items:center;gap:8px;min-height:44px;color:#c9d3f2;font-size:14px;font-weight:500;text-decoration:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Bibliothèque</a>
-      <div style="position:relative;padding:0 40px 28px;display:flex;flex-direction:column;gap:18px">
+      <a class="back" href="Main.dc.html" style="position:absolute;left:40px;top:56px;display:flex;align-items:center;gap:8px;min-height:44px;color:#c9d3f2;font-size:14px;font-weight:500;text-decoration:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Bibliothèque</a>
+      <div class="fadeUp" style="position:relative;padding:0 40px 28px;display:flex;flex-direction:column;gap:18px">
         <div style="display:flex;flex-wrap:wrap;gap:8px">
           <span style="font-size:12px;font-weight:600;padding:5px 11px;border-radius:99px;background:rgba(11,13,18,.7);color:#e9ecf3">Action-aventure</span>
           <span style="font-size:12px;font-weight:600;padding:5px 11px;border-radius:99px;background:rgba(11,13,18,.7);color:#e9ecf3">Solo</span>
@@ -60,16 +103,16 @@ button{font-family:inherit}
         </div>
         <h1 style="margin:0;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:64px;line-height:1;letter-spacing:-.02em;color:#fff">Hollow Reach</h1>
         <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
-          <button style="display:flex;align-items:center;gap:10px;height:52px;padding:0 34px;border:0;border-radius:14px;background:{{accent}};color:#06122b;font-size:16px;font-weight:600;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>Jouer</button>
-          <button style="height:52px;padding:0 22px;border-radius:14px;border:1px solid #435089;background:rgba(11,13,18,.45);color:#e9ecf3;font-size:15px;font-weight:500;cursor:pointer">Page boutique</button>
-          <button style="height:52px;padding:0 22px;border-radius:14px;border:1px solid #435089;background:rgba(11,13,18,.45);color:#e9ecf3;font-size:15px;font-weight:500;cursor:pointer">Désinstaller</button>
+          <button class="btn-primary" style="display:flex;align-items:center;gap:10px;height:52px;padding:0 34px;border:0;border-radius:14px;background:{{accent}};color:#06122b;font-size:16px;font-weight:600;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>Jouer</button>
+          <button class="btn-outline" style="height:52px;padding:0 22px;border-radius:14px;border:1px solid #435089;background:rgba(11,13,18,.45);color:#e9ecf3;font-size:15px;font-weight:500;cursor:pointer">Page boutique</button>
+          <button class="btn-outline" style="height:52px;padding:0 22px;border-radius:14px;border:1px solid #435089;background:rgba(11,13,18,.45);color:#e9ecf3;font-size:15px;font-weight:500;cursor:pointer">Désinstaller</button>
         </div>
       </div>
     </section>
 
     <section aria-label="Statistiques" style="display:flex;flex-wrap:wrap;gap:0;padding:0 40px;border-bottom:1px solid #1b212c">
       <sc-for list="{{stats}}" as="s" hint-placeholder-count="4">
-        <div style="flex:1 1 180px;display:flex;flex-direction:column;gap:4px;padding:22px 0">
+        <div class="fadeUp" style="flex:1 1 180px;display:flex;flex-direction:column;gap:4px;padding:22px 0;animation-delay:{{s.delay}}">
           <span style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#8f98a8">{{s.label}}</span>
           <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:26px">{{s.value}}</span>
         </div>
@@ -78,7 +121,7 @@ button{font-family:inherit}
 
     <nav aria-label="Sections du jeu" style="display:flex;flex-wrap:wrap;gap:28px;padding:0 40px;border-bottom:1px solid #1b212c">
       <sc-for list="{{tabs}}" as="t" hint-placeholder-count="4">
-        <a href="#" style="display:flex;align-items:center;min-height:52px;font-size:14px;font-weight:500;text-decoration:none;color:{{t.color}};border-bottom:2px solid {{t.line}};margin-bottom:-1px">{{t.label}}</a>
+        <a class="tab" href="#" style="display:flex;align-items:center;min-height:52px;font-size:14px;font-weight:500;text-decoration:none;color:{{t.color}};border-bottom:2px solid {{t.line}};margin-bottom:-1px">{{t.label}}</a>
       </sc-for>
     </nav>
 
@@ -88,7 +131,7 @@ button{font-family:inherit}
         <div style="display:flex;align-items:center;gap:20px">
           <svg width="124" height="124" viewBox="0 0 124 124" role="img" aria-label="43 % des succès débloqués">
             <circle cx="62" cy="62" r="54" fill="none" stroke="#232a37" stroke-width="10"/>
-            <circle cx="62" cy="62" r="54" fill="none" stroke="{{accent}}" stroke-width="10" stroke-linecap="round" stroke-dasharray="146 339.3" transform="rotate(-90 62 62)"/>
+            <circle class="ring" cx="62" cy="62" r="54" fill="none" stroke="{{accent}}" stroke-width="10" stroke-linecap="round" stroke-dasharray="146 339.3" transform="rotate(-90 62 62)"/>
             <text x="62" y="70" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="28" fill="#e9ecf3">43 %</text>
           </svg>
           <div style="display:flex;flex-direction:column;gap:2px">
@@ -113,7 +156,7 @@ button{font-family:inherit}
         <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
           <div style="display:flex;flex-wrap:wrap;gap:8px">
             <sc-for list="{{chips}}" as="c" hint-placeholder-count="4">
-              <button style="height:36px;padding:0 16px;border-radius:99px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid {{c.border}};background:{{c.bg}};color:{{c.color}}">{{c.label}}</button>
+              <button class="chip" style="height:36px;padding:0 16px;border-radius:99px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid {{c.border}};background:{{c.bg}};color:{{c.color}}">{{c.label}}</button>
             </sc-for>
           </div>
           <span style="font-size:13px;color:#8f98a8">Trier par : <span style="color:#e9ecf3;font-weight:500">Rareté</span></span>
@@ -121,7 +164,7 @@ button{font-family:inherit}
 
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px">
           <sc-for list="{{achievements}}" as="a" hint-placeholder-count="10">
-            <article style="display:flex;gap:16px;padding:16px;border-radius:16px;background:#12161e;border:1px solid {{a.border}}">
+            <article class="ach" style="display:flex;gap:16px;padding:16px;border-radius:16px;background:#12161e;border:1px solid {{a.border}};animation-delay:{{a.delay}}">
               <div style="flex:0 0 56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:{{a.iconBg}};color:{{a.iconColor}}">
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{a.icon}}"/></svg>
               </div>
@@ -133,7 +176,7 @@ button{font-family:inherit}
                 <span style="font-size:13px;line-height:1.4;color:#8f98a8">{{a.desc}}</span>
                 <sc-if value="{{a.hasBar}}" hint-placeholder-val="{{ false }}">
                   <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
-                    <span style="flex:1;height:6px;border-radius:99px;background:#232a37;overflow:hidden"><span style="display:block;height:100%;width:{{a.pct}};background:{{accent}}"></span></span>
+                    <span style="flex:1;height:6px;border-radius:99px;background:#232a37;overflow:hidden"><span class="grow" style="display:block;height:100%;width:{{a.pct}};background:{{accent}}"></span></span>
                     <span style="font-size:12px;color:#c3cad6">{{a.status}}</span>
                   </div>
                 </sc-if>
@@ -200,6 +243,8 @@ class Component extends DCLogic {
       ach('Pas un pas de plus', 'Terminer le chapitre 2 sans mourir.', 8.1, false, '0 / 1'),
       ach('Premier souffle', 'Quitter la crypte.', 91.2, true, 'Débloqué le 2 nov. 2026')
     ];
+    stats.forEach((s, i) => { s.delay = (0.15 + i * 0.08).toFixed(2) + 's'; });
+    achievements.forEach((a, i) => { a.delay = (0.5 + i * 0.07).toFixed(2) + 's'; });
     return { accent: this.props.accent ?? '#4d8dff', nav, stats, tabs, chips, achievements };
   }
 }

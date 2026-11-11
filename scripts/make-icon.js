@@ -1,51 +1,47 @@
 'use strict';
-// Génère build/icon.png (512 px) et build/icon.ico (PNG 16 à 256 px) : logo « oculus percé » (temple blanc dans un anneau bleu).
-// Aucune dépendance : PNG écrit à la main avec zlib. Usage : node scripts/make-icon.js
+// Génère build/icon.png (512 px) et build/icon.ico (PNG de 16 à 256 px) d'après assets/icon.svg :
+// carré sombre arrondi avec bordure, anneau bleu et temple blanc (fronton, entablement, 4 colonnes, soubassement).
+// Aucune dépendance : le dessin est recalculé ici à partir des mêmes coordonnées que le SVG, et le PNG est écrit avec zlib.
+// Usage : node scripts/make-icon.js
 const fs = require('node:fs');
 const path = require('node:path');
 const zlib = require('node:zlib');
 
 const BG = [0x0b, 0x0d, 0x12];
+const BORDER = [0x2a, 0x32, 0x43];
 const ACCENT = [0x4d, 0x8d, 0xff];
-const WHITE = [0xf4, 0xf6, 0xfb];
+const TEMPLE = [0xe9, 0xec, 0xf3];
 const SS = 4; // suréchantillonnage pour lisser les bords
 
-// Logo « oculus percé » : anneau bleu autour d'un temple blanc dont le fronton est percé d'un trou rond.
-// Coordonnées du logo sur une grille de 100 ; le temple est dessiné sur sa propre grille puis réduit.
-const K = 0.74; // taille du temple par rapport à l'anneau
-function logoColor(u, v) {
-  const d = Math.hypot(u - 50, v - 50);
-  if (Math.abs(d - 46) <= 2.3) return ACCENT;
-  const x = (u - 50) / K + 50;
-  const y = (v - 50) / K + 50;
-  // fronton (triangle) avec oculus
-  if (y >= 22 && y <= 40 && Math.abs(x - 50) <= ((y - 22) / 18) * 34) return Math.hypot(x - 50, y - 34) <= 3.4 ? BG : WHITE;
-  if (x >= 16 && x <= 84 && y >= 42 && y <= 46) return WHITE; // entablement
-  if (y >= 48 && y <= 68 && [22, 36, 50, 64, 78].some((c) => Math.abs(x - c) <= 3)) return WHITE; // colonnes
-  if (x >= 14 && x <= 86 && y >= 70 && y <= 74) return WHITE; // marche haute
-  if (x >= 10 && x <= 90 && y >= 76 && y <= 80) return WHITE; // marche basse
-  return BG;
+// Logo sur la grille 120 x 120 de assets/logo.svg ; null = fond.
+function logoColor(x, y) {
+  if (Math.abs(Math.hypot(x - 60, y - 60) - 54) <= 3) return ACCENT; // anneau (rayon 54, trait 6)
+  if (y >= 28 && y <= 48 && Math.abs(x - 60) <= ((y - 28) / 20) * 32) return TEMPLE; // fronton
+  if (x >= 28 && x <= 92 && y >= 51 && y <= 56) return TEMPLE; // entablement
+  if (y >= 59 && y <= 85 && [32, 48, 64, 80].some((c) => x >= c && x <= c + 8)) return TEMPLE; // colonnes
+  if (x >= 28 && x <= 92 && y >= 88 && y <= 92) return TEMPLE; // soubassement
+  return null;
+}
+
+// Carré arrondi de l'icône (grille 512) : distance signée au bord (négative à l'intérieur).
+function roundedSquareDistance(x, y) {
+  const qx = Math.abs(x - 256) - (248 - 112);
+  const qy = Math.abs(y - 256) - (248 - 112);
+  return Math.hypot(Math.max(qx, 0), Math.max(qy, 0)) + Math.min(Math.max(qx, qy), 0) - 112;
 }
 
 function render(size) {
   const px = Buffer.alloc(size * size * 4);
-  const c = size / 2;
-  const radius = size * 0.22; // coins arrondis
-  const scale = 0.8; // part de l'icône occupée par le logo
-  const roundedSquare = (x, y) => {
-    const dx = Math.max(Math.abs(x - c) - (c - radius), 0);
-    const dy = Math.max(Math.abs(y - c) - (c - radius), 0);
-    return dx * dx + dy * dy <= radius * radius;
-  };
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       let a = 0, r = 0, g = 0, b = 0;
       for (let sy = 0; sy < SS; sy++) {
         for (let sx = 0; sx < SS; sx++) {
-          const fx = x + (sx + 0.5) / SS;
-          const fy = y + (sy + 0.5) / SS;
-          if (!roundedSquare(fx, fy)) continue;
-          const col = logoColor(((fx / size - 0.5) / scale) * 100 + 50, ((fy / size - 0.5) / scale) * 100 + 50);
+          const fx = ((x + (sx + 0.5) / SS) / size) * 512;
+          const fy = ((y + (sy + 0.5) / SS) / size) * 512;
+          const d = roundedSquareDistance(fx, fy);
+          if (d > 2) continue; // hors de l'icône : transparent
+          const col = d >= -2 ? BORDER : logoColor((fx - 106) / 2.5, (fy - 106) / 2.5) || BG;
           a++; r += col[0]; g += col[1]; b += col[2];
         }
       }
@@ -112,5 +108,5 @@ function ico(sizes) {
 const out = path.join(__dirname, '..', 'build');
 fs.mkdirSync(out, { recursive: true });
 fs.writeFileSync(path.join(out, 'icon.png'), png(512));
-fs.writeFileSync(path.join(out, 'icon.ico'), ico([16, 32, 48, 64, 128, 256]));
+fs.writeFileSync(path.join(out, 'icon.ico'), ico([16, 24, 32, 48, 64, 128, 256]));
 console.log('Icônes écrites dans build/');

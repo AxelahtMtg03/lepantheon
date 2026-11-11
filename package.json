@@ -1,7 +1,7 @@
 {
   "name": "pantheon",
   "productName": "Pantheon",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Pantheon - alternative Steam interface (not affiliated with Valve or Steam)",
   "private": true,
   "main": "src/main/main.js",

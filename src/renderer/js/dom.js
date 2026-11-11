@@ -34,6 +34,7 @@ const ICONS = {
   settings: { d: 'M4 7h10 M18 7h2 M4 17h2 M10 17h10 M14 5v4 M6 15v4' },
   search: { d: 'M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14z M20 20l-4-4' },
   play: { d: 'M7 4v16l13-8z', fill: true },
+  pause: { d: 'M7 5h3.5v14H7z M13.5 5H17v14h-3.5z', fill: true },
   star: { d: 'M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1.1 5.8L12 16.8l-5.3 2.8 1.1-5.8L3.5 9.7l5.9-.8z' },
   starFill: { d: 'M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1.1 5.8L12 16.8l-5.3 2.8 1.1-5.8L3.5 9.7l5.9-.8z', fill: true },
 };
@@ -59,26 +60,25 @@ export function icon(name, size = 20) {
   return svg;
 }
 
-// Logo « oculus percé » : anneau bleu et temple blanc dont le fronton est percé d'un trou rond.
+// Logo officiel (assets/logo.svg) : anneau bleu et temple blanc (fronton, entablement, 4 colonnes, soubassement).
 export function logoMark(size = 30) {
   const svg = document.createElementNS(SVG_NS, 'svg');
   svg.setAttribute('width', size);
   svg.setAttribute('height', size);
-  svg.setAttribute('viewBox', '0 0 100 100');
+  svg.setAttribute('viewBox', '0 0 120 120');
   svg.setAttribute('aria-hidden', 'true');
   const mk = (tag, attrs) => {
     const el = document.createElementNS(SVG_NS, tag);
     for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
     return el;
   };
-  const temple = mk('g', { transform: 'translate(50 50) scale(.74) translate(-50 -50)', fill: '#F4F6FB' });
-  temple.append(
-    mk('path', { d: 'M50 22 L84 40 L16 40 Z M50 30.6 a3.4 3.4 0 1 0 0.01 0 Z', 'fill-rule': 'evenodd' }),
-    mk('rect', { x: 16, y: 42, width: 68, height: 4 }),
-    ...[22, 36, 50, 64, 78].map((c) => mk('rect', { x: c - 3, y: 48, width: 6, height: 20 })),
-    mk('rect', { x: 14, y: 70, width: 72, height: 4 }),
-    mk('rect', { x: 10, y: 76, width: 80, height: 4 }),
+  const w = 'var(--text)';
+  svg.append(
+    mk('circle', { cx: 60, cy: 60, r: 54, fill: 'none', stroke: 'var(--accent)', 'stroke-width': 6 }),
+    mk('polygon', { points: '28,48 92,48 60,28', fill: w }),
+    mk('rect', { x: 28, y: 51, width: 64, height: 5, fill: w }),
+    ...[32, 48, 64, 80].map((x) => mk('rect', { x, y: 59, width: 8, height: 26, fill: w })),
+    mk('rect', { x: 28, y: 88, width: 64, height: 4, fill: w }),
   );
-  svg.append(mk('circle', { cx: 50, cy: 50, r: 46, fill: 'none', stroke: 'var(--accent)', 'stroke-width': 4.6 }), temple);
   return svg;
 }
