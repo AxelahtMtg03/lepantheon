@@ -108,3 +108,22 @@ test('start() répété sans effet (le splash ne revient jamais quand on revient
   timers.advance(5000);
   assert.deepEqual(log, ['show', 'hide:ready']);
 });
+
+test('minShow : l\'animation va au bout même si tout est prêt avant, sauf clic', async () => {
+  const createSplash = await load();
+  const timers = clock();
+  const log = [];
+  const splash = createSplash({ show: () => log.push('show'), hide: (r) => log.push(`hide:${r}`), timers, showDelay: 0, minShow: 1700 });
+  splash.start();
+  assert.deepEqual(log, ['show']);
+  timers.advance(200);
+  splash.ready();
+  assert.deepEqual(log, ['show']);
+  timers.advance(1500);
+  assert.deepEqual(log, ['show', 'hide:ready']);
+  const b = createSplash({ show: () => {}, hide: (r) => log.push(`b:${r}`), timers, showDelay: 0, minShow: 1700 });
+  b.start();
+  b.ready();
+  b.skip();
+  assert.equal(log.at(-1), 'b:skip');
+});

@@ -127,6 +127,8 @@ async function start() {
   // Écran de démarrage : seulement si le vrai chargement dépasse 400 ms, fermé dès que tout est prêt (3 s max), une seule fois.
   let splashUi = null;
   const splash = createSplash({
+    showDelay: 0, // affiché à chaque lancement, pour que l'animation du logo se voie
+    minShow: 1700, // durée de l'animation du logo ; un clic la passe
     show() {
       splashUi = buildSplash('splash.steam');
       document.body.append(splashUi.root);
