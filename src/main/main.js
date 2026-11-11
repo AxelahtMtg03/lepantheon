@@ -167,6 +167,8 @@ function createWindow() {
     },
   });
   win.removeMenu();
+  const size = DEV && /^(\d{3,4})x(\d{3,4})$/.exec(process.env.PANTHEON_SIZE || '');
+  if (size) win.setContentSize(Number(size[1]), Number(size[2]));
   win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
   win.webContents.on('will-navigate', (e) => e.preventDefault());
   win.webContents.on('will-attach-webview', (e) => e.preventDefault());
@@ -178,6 +180,7 @@ function createWindow() {
   if (shot) {
     win.webContents.once('did-finish-load', () => {
       setTimeout(async () => {
+        if (process.env.PANTHEON_CLEAN) await win.webContents.insertCSS('.demo-badge{display:none!important}');
         if (process.env.PANTHEON_SCROLL) await win.webContents.executeJavaScript('document.getElementById("main").scrollTo(0, 99999)');
         await new Promise((r) => setTimeout(r, 300));
         const img = await win.webContents.capturePage();
