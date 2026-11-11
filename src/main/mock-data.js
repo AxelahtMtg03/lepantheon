@@ -38,14 +38,24 @@ function build() {
   }));
 }
 
-const NAMES = ['Premier pas', 'Cartographe', 'Dernier écho', 'Voix du Val', 'Chasseur d’ombres', 'Maître forgeron', 'Sans une égratignure', 'Collectionneur', 'Au bout du monde', 'Légende vivante', 'Perfectionniste', 'Éclaireur'];
+// Textes de démonstration par langue (jeux, amis et noms propres restent identiques).
+const TEXT = {
+  fr: { names: ['Premier pas', 'Cartographe', 'Dernier écho', 'Voix du Val', 'Chasseur d’ombres', 'Maître forgeron', 'Sans une égratignure', 'Collectionneur', 'Au bout du monde', 'Légende vivante', 'Perfectionniste', 'Éclaireur'], desc: (i) => `Description du succès numéro ${i}.`, demo: 'Un jeu inventé pour la démonstration. Les vraies descriptions viennent de la boutique Steam.', shop: 'Un jeu inventé pour la démonstration de la boutique. Les achats se font toujours dans le vrai Steam.', genres: ['Action-aventure', 'Solo', 'Succès Steam'], shopGenres: ['Aventure', 'Indépendant'], dev: 'Studio Fictif', rel1: '12 mars 2024', rel2: '3 avr. 2025' },
+  en: { names: ['First Steps', 'Cartographer', 'Last Echo', 'Voice of the Vale', 'Shadow Hunter', 'Master Smith', 'Not a Scratch', 'Collector', 'Edge of the World', 'Living Legend', 'Perfectionist', 'Scout'], desc: (i) => `Achievement description number ${i}.`, demo: 'A made-up game for demonstration. Real descriptions come from the Steam store.', shop: 'A made-up game to demonstrate the store. Purchases always happen in the real Steam.', genres: ['Action-adventure', 'Single-player', 'Steam Achievements'], shopGenres: ['Adventure', 'Indie'], dev: 'Fictional Studio', rel1: 'Mar 12, 2024', rel2: 'Apr 3, 2025' },
+  es: { names: ['Primeros pasos', 'Cartógrafo', 'Último eco', 'Voz del Valle', 'Cazador de sombras', 'Maestro herrero', 'Sin un rasguño', 'Coleccionista', 'Al fin del mundo', 'Leyenda viva', 'Perfeccionista', 'Explorador'], desc: (i) => `Descripción del logro número ${i}.`, demo: 'Un juego inventado para la demostración. Las descripciones reales vienen de la tienda de Steam.', shop: 'Un juego inventado para demostrar la tienda. Las compras siempre se hacen en el Steam real.', genres: ['Acción y aventura', 'Un jugador', 'Logros de Steam'], shopGenres: ['Aventura', 'Indie'], dev: 'Estudio Ficticio', rel1: '12 mar 2024', rel2: '3 abr 2025' },
+  ja: { names: ['はじめの一歩', '地図職人', '最後の残響', '谷の声', '影の狩人', '名匠の鍛冶', '無傷', 'コレクター', '世界の果てへ', '生ける伝説', '完璧主義者', '斥候'], desc: (i) => `実績 ${i} の説明文です。`, demo: 'デモ用に作った架空のゲームです。実際の説明は Steam ストアから取得されます。', shop: 'ストアを紹介するための架空のゲームです。購入は常に本物の Steam で行います。', genres: ['アクションアドベンチャー', 'シングルプレイヤー', 'Steam 実績'], shopGenres: ['アドベンチャー', 'インディー'], dev: '架空スタジオ', rel1: '2024年3月12日', rel2: '2025年4月3日' },
+  zh: { names: ['迈出第一步', '制图师', '最后的回响', '山谷之声', '暗影猎手', '锻造大师', '毫发无伤', '收藏家', '世界尽头', '活着的传说', '完美主义者', '侦察兵'], desc: (i) => `第 ${i} 个成就的说明。`, demo: '这是用于演示的虚构游戏。真实的简介来自 Steam 商店。', shop: '这是用于演示商店的虚构游戏。购买始终在真正的 Steam 中完成。', genres: ['动作冒险', '单人', 'Steam 成就'], shopGenres: ['冒险', '独立'], dev: '虚构工作室', rel1: '2024年3月12日', rel2: '2025年4月3日' },
+};
+const textOf = (lang) => TEXT[lang] || TEXT.en;
 const PCTS = [62, 41, 27.4, 18.2, 12.1, 8.4, 5.1, 3.2, 1.8, 0.9];
 
 // Succès inventés mais stables pour un même jeu (mode démo).
-function detail(appid) {
+function detail(appid, lang) {
   const g = build().find((x) => x.appid === Number(appid));
   if (!g) return null;
-  const store = { description: 'Un jeu inventé pour la démonstration. Les vraies descriptions viennent de la boutique Steam.', genres: ['Action-aventure', 'Solo', 'Succès Steam'], developers: ['Studio Fictif'], releaseDate: '12 mars 2024', headerImage: null, screenshots: [] };
+  const L = textOf(lang);
+  const NAMES = L.names;
+  const store = { description: L.demo, genres: L.genres, developers: [L.dev], releaseDate: L.rel1, headerImage: null, screenshots: [] };
   if (!g.achievements) return { game: g, store, achievements: { status: 'none', unlocked: 0, total: 0, list: [] } };
   const { total, unlocked } = g.achievements;
   const now = Math.floor(Date.now() / 1000);
@@ -57,7 +67,7 @@ function detail(appid) {
     list.push({
       id: `ACH_${i}`,
       name: i < NAMES.length ? NAMES[i] : `${NAMES[i % NAMES.length]} ${Math.floor(i / NAMES.length) + 1}`,
-      description: `Description du succès numéro ${i + 1}.`,
+      description: L.desc(i + 1),
       hidden: false,
       iconUrl: null,
       unlocked: done,
@@ -69,10 +79,10 @@ function detail(appid) {
   return { game: g, store, achievements: { status: 'ok', unlocked, total, list } };
 }
 
-function overview() {
+function overview(lang) {
   const games = build();
   const rows = games.filter((g) => g.achievements).map((g) => ({ appid: g.appid, name: g.name, unlocked: g.achievements.unlocked, total: g.achievements.total, installed: g.installed }));
-  const entries = rows.filter((r) => r.unlocked > 0).map((r) => ({ appid: r.appid, name: r.name, items: detail(r.appid).achievements.list }));
+  const entries = rows.filter((r) => r.unlocked > 0).map((r) => ({ appid: r.appid, name: r.name, items: detail(r.appid, lang).achievements.list }));
   return { rows, rarest: rarestUnlocked(entries, 10), pending: 0, scanning: false, played: rows.length, known: rows.length };
 }
 
@@ -95,10 +105,11 @@ function featured() {
 
 const search = (term) => SHOP.filter((g) => g.name.toLowerCase().includes(String(term).trim().toLowerCase())).slice(0, 24);
 
-function storeApp(appid) {
+function storeApp(appid, lang) {
+  const L = textOf(lang);
   const g = SHOP.find((x) => x.appid === Number(appid));
   if (!g) return null;
-  return { game: { appid: g.appid, name: g.name, mock: true }, store: { name: g.name, description: 'Un jeu inventé pour la démonstration de la boutique. Les achats se font toujours dans le vrai Steam.', genres: ['Aventure', 'Indépendant'], developers: ['Studio Fictif'], releaseDate: '3 avr. 2025', price: g.price, screenshots: [] } };
+  return { game: { appid: g.appid, name: g.name, mock: true }, store: { name: g.name, description: L.shop, genres: L.shopGenres, developers: [L.dev], releaseDate: L.rel2, price: g.price, screenshots: [] } };
 }
 
 function friends() {

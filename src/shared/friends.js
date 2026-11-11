@@ -12,7 +12,7 @@ function statusKey(f) {
 
 // En jeu, en ligne, occupé, absent, hors ligne (le plus récemment vu d'abord), puis par pseudo.
 function sortFriends(friends) {
-  return [...friends].sort((a, b) => RANK[statusKey(a)] - RANK[statusKey(b)] || (b.lastLogoff || 0) - (a.lastLogoff || 0) || a.name.localeCompare(b.name, 'fr'));
+  return [...friends].sort((a, b) => RANK[statusKey(a)] - RANK[statusKey(b)] || (b.lastLogoff || 0) - (a.lastLogoff || 0) || a.name.localeCompare(b.name));
 }
 
 const countOnline = (friends) => friends.filter((f) => statusKey(f) !== 'offline').length;

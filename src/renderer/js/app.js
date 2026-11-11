@@ -1,5 +1,5 @@
 import { h, icon, logoMark } from './dom.js';
-import { t } from './i18n.js';
+import { t, initI18n } from './i18n.js';
 import { renderLibrary } from './views/library.js';
 import { renderSettings } from './views/settings.js';
 import { renderGame } from './views/game.js';
@@ -38,7 +38,7 @@ function setBadge(id, n) {
 
 function renderSidebar(current, info, profile) {
   const online = profile.status === 'online';
-  const initial = (profile.name || '?').trim().charAt(0).toUpperCase();
+  const initial = (profile.name || t('profile.player')).trim().charAt(0).toUpperCase();
   const avatar = h('div', { class: 'avatar' }, profile.avatarUrl ? h('img', { src: profile.avatarUrl, alt: '' }) : initial);
   sidebar.replaceChildren(
     h('div', { class: 'brand' }, logoMark(), h('span', { class: 'brand-name' }, t('app.name'))),
@@ -49,7 +49,7 @@ function renderSidebar(current, info, profile) {
     h('div', { class: 'profile' },
       h('div', { class: 'profile-row' }, avatar,
         h('div', { style: { display: 'flex', flexDirection: 'column', gap: '2px' } },
-          h('span', { class: 'profile-name' }, profile.name),
+          h('span', { class: 'profile-name' }, profile.name || t('profile.player')),
           h('span', { class: 'profile-status' }, h('span', { class: `dot${online ? ' on' : ''}` }), t(online ? 'profile.online' : 'profile.offline')))),
       h('button', { class: 'btn small', type: 'button', onclick: () => api.steam.openSteam() }, t('profile.openSteam'))),
   );
@@ -90,10 +90,16 @@ async function route(info, profile) {
 }
 
 async function start() {
-  let info = { mock: false };
-  let profile = { name: '?', status: 'offline' };
+  let info = { mock: false, language: 'en' };
+  let profile = { name: null, status: 'offline' };
   try {
-    [info, profile] = await Promise.all([api.getInfo(), api.getProfile()]);
+    info = await api.getInfo();
+  } catch (err) {
+    console.error(err);
+  }
+  await initI18n(info.language); // la langue doit être chargée avant le premier affichage
+  try {
+    profile = await api.getProfile();
   } catch (err) {
     console.error(err);
   }

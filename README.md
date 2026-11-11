@@ -1,73 +1,90 @@
-# Le Pantheon
+# Pantheon
 
-> Tous tes jeux. Toutes tes légendes.
+> All your games. All your legends. · Tous tes jeux. Toutes tes légendes.
 
-Remplaçant esthétique de l'interface Steam pour Windows (Electron). Steam reste installé et lancé en arrière-plan ; Le Pantheon affiche ta bibliothèque, tes succès, la boutique et tes amis avec un autre design, puis lance les jeux via Steam.
+Alternative interface for Steam on Windows (Electron), built as a student project. Steam stays installed and running in the background; Pantheon shows your library, achievements, store and friends with another design, then launches games through Steam.
 
-**Non affilié à Valve ni à Steam.** Aucun mot de passe Steam n'est demandé, aucune donnée n'est collectée, aucun serveur n'est utilisé.
+**Not affiliated with Valve or Steam.** It never asks for your Steam password, collects no data and uses no server.
 
-## Installation (développement)
+Languages: English, Français, Español, 日本語, 中文（简体）. The interface follows the language of Windows and can be changed in Settings. The installer and the website are available in the same five languages.
+
+## Development
 
 ```bash
 npm install
-node node_modules/electron/install.js   # seulement si Electron n'a pas été téléchargé
+node node_modules/electron/install.js   # only if Electron was not downloaded
 npm start
 ```
 
-| Commande | Effet |
+| Command | Effect |
 |---|---|
-| `npm start` | lance l'appli avec ton vrai Steam |
-| `npm run demo` | mode démo : fausses données, sans Steam (aussi `PANTHEON_MOCK=1`) |
-| `npm test` | tests automatiques |
-| `npm run icons` | régénère l'icône (`build/icon.ico` et `build/icon.png`) |
-| `npm run dist` | construit l'installeur Windows dans `dist/` |
+| `npm start` | run the app with your real Steam |
+| `npm run demo` | demo mode: fake data, no Steam needed (also `PANTHEON_MOCK=1`) |
+| `npm test` | automated tests |
+| `npm run icons` | regenerate the icon (`build/icon.ico` and `build/icon.png`) |
+| `npm run site` | regenerate the website in `site/` from `scripts/site-content.js` |
+| `npm run dist` | build the Windows installer into `dist/` |
 
-## Clé d'API Steam (pour les jeux non installés, succès, amis)
+Developer options (ignored in the installed app): `PANTHEON_LANG=ja` forces a language; `PANTHEON_SCREENSHOT=file.jpg` saves a screenshot and quits (with `PANTHEON_HASH=#/store`, `PANTHEON_SIZE=1440x900`, `PANTHEON_CLEAN=1`).
 
-Chaque utilisateur crée la sienne sur https://steamcommunity.com/dev/apikey (nom de domaine : `localhost`) et la colle dans **Réglages**. Elle est chiffrée avec `safeStorage` (Windows DPAPI), jamais affichée ni journalisée, et n'est envoyée qu'à `api.steampowered.com`. Pour voir les succès et les amis, le profil Steam doit avoir « Détails des jeux » et « Liste de contacts » en **Public**.
+## Steam API key (for games you don't have installed, achievements, friends)
 
-## Installeur (`npm run dist`)
+Each user creates their own at https://steamcommunity.com/dev/apikey (domain name: `localhost`) and pastes it in **Settings**. It is encrypted with `safeStorage` (Windows DPAPI), never displayed or logged, and only sent to `api.steampowered.com`. To see achievements and friends, the Steam profile needs “Game details” and “Friends list” set to **Public**.
 
-Produit `dist/Le-Pantheon-Setup-<version>.exe` (NSIS, installation par utilisateur, dossier modifiable). Les « fuses » Electron sont appliqués à l'exécutable (`scripts/after-pack.js`) : `RunAsNode`, `NODE_OPTIONS` et `--inspect` désactivés, intégrité de l'`asar` vérifiée, chargement uniquement depuis l'`asar`.
+## Installer (`npm run dist`)
 
-L'installeur n'est **pas signé** : Windows SmartScreen affichera « Windows a protégé votre PC » (clique sur *Informations complémentaires* puis *Exécuter quand même*). La signature du code fait partie de la phase 2.
+Produces `dist/Pantheon-Setup-<version>.exe` (NSIS, per-user install, choosable folder, installer UI in the five languages). Electron fuses are applied to the executable (`scripts/after-pack.js`): `RunAsNode`, `NODE_OPTIONS` and `--inspect` disabled, `asar` integrity checked, loading only from the `asar`.
 
-## Sécurité (résumé)
+The installer is **not signed**: Windows SmartScreen will show “Windows protected your PC” (click *More info* then *Run anyway*). Code signing belongs to a later phase.
 
-- `contextIsolation`, `sandbox`, pas de `nodeIntegration`, DevTools désactivés dans la version installée.
-- Interface servie par un protocole interne `app://` ; Content-Security-Policy stricte ; polices embarquées.
-- Réseau uniquement dans le processus principal, vers une liste blanche de domaines ; plafond de 90 000 appels/jour et cache disque.
-- Liens `steam://` limités à `rungameid`, `install`, `uninstall`, `store`, `friends/message`, `open/main` avec identifiant numérique validé.
-- Aucune donnée externe n'est insérée via `innerHTML` (uniquement `textContent`).
-- `npm audit` : 0 vulnérabilité dans ce qui est livré (`npm audit --omit=dev`). Les 6 alertes « modérées » restantes concernent uniquement les outils de build (`minimatch` dans `electron-builder`), pas l'appli ; la correction proposée par `npm audit fix --force` rétrograderait `electron-builder`, donc elle n'est pas appliquée.
+Upgrading from an older version (the app was called “Le Pantheon”) keeps your settings and your encrypted API key: the existing data folder is reused, because the key is tied to it by Windows.
+
+## Website (`site/`)
+
+Static website, no JavaScript, no external resource: one page per language (`/en/`, `/fr/`, `/es/`, `/ja/`, `/zh/`), the root page is English, and `vercel.json` redirects the root to the visitor's language. Screenshots come from the app's demo mode, so they show only fictional games.
+
+Edit the texts in `scripts/site-content.js`, then run `npm run site`.
+
+**Deploy on Vercel:** import the repository, *Framework Preset* `Other`, *Root Directory* `site`, leave the build and output settings empty.
+
+## Security (summary)
+
+- `contextIsolation`, `sandbox`, no `nodeIntegration`, DevTools disabled in the installed app.
+- UI served from an internal `app://` protocol; strict Content-Security-Policy; bundled fonts.
+- Network only in the main process, to an allow-list of domains; 90,000 calls/day cap and disk cache.
+- `steam://` links limited to `rungameid`, `install`, `uninstall`, `store`, `friends/message`, `open/main` with a validated numeric id.
+- No external data is inserted with `innerHTML` (only `textContent`).
+- `npm audit`: 0 vulnerabilities in what ships (`npm audit --omit=dev`). The remaining “moderate” alerts are in build tools only (`minimatch` inside `electron-builder`); `npm audit fix --force` would downgrade `electron-builder`, so it isn't applied.
 
 ## Structure
 
 ```
-src/main/       processus principal : fenêtre, IPC, Steam local, API, cache, réglages, clé chiffrée
-src/preload/    pont minimal vers l'interface (contextBridge)
-src/renderer/   interface (html, css, js, locales fr)
-src/shared/     parseur VDF, SteamID, rareté, validation (testés)
-tests/          tests automatiques
-scripts/        icône, fuses
-design-reference/ maquette d'origine
+src/main/       main process: window, IPC, local Steam, API, cache, settings, encrypted key
+src/preload/    minimal bridge to the UI (contextBridge)
+src/renderer/   interface (html, css, js, locales: en fr es ja zh)
+src/shared/     VDF parser, SteamID, rarity, validation, languages (tested)
+site/           website (generated)
+scripts/        icon, site generator, fuses
+tests/          automated tests (locales and site included)
+design-reference/ original mockup
 ```
 
-L'interface est en français ; pour ajouter l'anglais, copier `src/renderer/locales/fr.js` en `en.js` et le charger dans `src/renderer/js/i18n.js`.
+To add a language to the app: copy `src/renderer/locales/en.js` (same keys; a test checks it), register the code in `src/renderer/js/i18n.js` and `src/shared/languages.js`.
 
-## À vérifier à la main sur ton PC (avec ton vrai Steam)
+## To check by hand on your PC (with your real Steam)
 
-1. **Steam trouvé** : au lancement, la bibliothèque affiche tes jeux installés (sinon : Réglages → Choisir le dossier).
-2. **Jeux installés** : la liste correspond à ce qui est installé dans Steam (tous les disques).
-3. **Lancer un jeu** : survole une jaquette → bouton rond Jouer → le jeu démarre via Steam.
-4. **Succès d'un jeu** : ouvre une fiche → onglet Succès : l'anneau, les raretés et les dates sont cohérents avec Steam.
-5. **Jeux non installés** : après avoir saisi ta clé, ils apparaissent « À installer ».
-6. **Téléchargement** : lance une mise à jour dans Steam → la carte passe en « Téléchargement xx % » et la page Téléchargements la suit.
-7. **Installer / Désinstaller** : les boutons ouvrent la boîte de dialogue de Steam.
-8. **Amis** : si tu as des amis et une liste publique, ils apparaissent ; « Discuter » ouvre le chat dans Steam.
-9. **Boutique** : « Voir dans Steam » ouvre la bonne page.
-10. **Installeur** : installe `dist/Le-Pantheon-Setup-0.1.0.exe`, lance l'appli, active « Lancer au démarrage de Windows », redémarre pour vérifier, puis désinstalle depuis Windows.
+1. **Steam found**: on launch the library shows your installed games (otherwise: Settings → Choose folder).
+2. **Installed games** match what Steam shows (all drives).
+3. **Launch a game**: hover a cover → round Play button → the game starts through Steam.
+4. **Achievements**: open a game page → Achievements tab: ring, rarities and dates match Steam.
+5. **Games you don't have installed** appear as “Not installed” after you enter your key.
+6. **Download**: start an update in Steam → the card shows “Downloading xx %” and the Downloads page follows it.
+7. **Install / Uninstall** buttons open Steam's dialog.
+8. **Friends**: with a public friends list they appear; “Chat” opens the chat in Steam.
+9. **Store**: “View in Steam” opens the right page.
+10. **Language**: change it in Settings; the interface reloads in the chosen language.
+11. **Installer**: install `dist/Pantheon-Setup-0.1.0.exe`, launch, enable “Start with Windows”, restart, then uninstall from Windows.
 
-## Phase 2 (plus tard)
+## Later (not started)
 
-Vente (~10 €) : site statique, plateforme de paiement avec clés de licence, signature de code, mises à jour automatiques signées. À ne démarrer qu'une fois la phase 1 validée.
+Selling the app is not planned. The Steam Subscriber Agreement forbids commercial exploitation of Steam without Valve's written consent; ask Valve before charging anything.

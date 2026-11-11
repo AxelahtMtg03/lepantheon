@@ -1,8 +1,8 @@
 {
   "name": "pantheon",
-  "productName": "Le Pantheon",
+  "productName": "Pantheon",
   "version": "0.1.0",
-  "description": "Le Pantheon - client Steam alternatif (non affilie a Valve ni a Steam)",
+  "description": "Pantheon - alternative Steam interface (not affiliated with Valve or Steam)",
   "private": true,
   "main": "src/main/main.js",
   "scripts": {
@@ -10,7 +10,8 @@
     "demo": "electron . --mock",
     "test": "node --test tests/",
     "icons": "node scripts/make-icon.js",
-    "dist": "electron-builder --win"
+    "dist": "electron-builder --win",
+    "site": "node scripts/build-site.js"
   },
   "devDependencies": {
     "@electron/fuses": "2.1.3",
@@ -21,11 +22,11 @@
     "@fontsource/inter": "5.3.0",
     "@fontsource/space-grotesk": "5.3.0"
   },
-  "author": "Le Pantheon",
+  "author": "Pantheon",
   "build": {
     "appId": "fr.lepantheon.app",
-    "productName": "Le Pantheon",
-    "copyright": "Non affilié à Valve ni à Steam",
+    "productName": "Pantheon",
+    "copyright": "Not affiliated with Valve or Steam",
     "directories": {
       "output": "dist",
       "buildResources": "build"
@@ -47,14 +48,22 @@
         }
       ],
       "icon": "build/icon.ico",
-      "artifactName": "Le-Pantheon-Setup-${version}.exe"
+      "artifactName": "Pantheon-Setup-${version}.exe"
     },
     "nsis": {
       "oneClick": false,
       "perMachine": false,
       "allowToChangeInstallationDirectory": true,
       "deleteAppDataOnUninstall": false,
-      "shortcutName": "Le Pantheon"
+      "shortcutName": "Pantheon",
+      "multiLanguageInstaller": true,
+      "installerLanguages": [
+        "en_US",
+        "fr_FR",
+        "es_ES",
+        "ja_JP",
+        "zh_CN"
+      ]
     }
   }
 }

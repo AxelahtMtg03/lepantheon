@@ -11,6 +11,7 @@ function createAchievementService({ api, now = Date.now }) {
   let queue = [];
   let running = false;
   let steamIdInUse = null;
+  let langInUse = null;
   let stopped = null; // 'private' | 'invalid-key' | 'no-key' | 'rate' : on arrête d'insister
 
   let stoppedAt = 0;
@@ -50,8 +51,9 @@ function createAchievementService({ api, now = Date.now }) {
   }
 
   function enqueue(steamId, appids, deep) {
-    if (steamId !== steamIdInUse) {
+    if (steamId !== steamIdInUse || api.lang() !== langInUse) {
       steamIdInUse = steamId;
+      langInUse = api.lang(); // changement de compte ou de langue : on recharge noms et descriptions
       stopped = null;
       lastScan.clear();
       deepDone.clear();

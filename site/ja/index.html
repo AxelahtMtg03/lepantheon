@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self'; font-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pantheon — すべてのゲーム。すべての伝説。</title>
+<meta name="description" content="学生プロジェクト:実績や 100% コンプリートを目指す人のための、Windows 向け Steam インターフェースのリデザイン。非営利で、Valve および Steam とは提携していません。">
+<meta name="theme-color" content="#0B0D12">
+<meta property="og:title" content="Pantheon — すべてのゲーム。すべての伝説。">
+<meta property="og:description" content="学生プロジェクト:実績や 100% コンプリートを目指す人のための、Windows 向け Steam インターフェースのリデザイン。非営利で、Valve および Steam とは提携していません。">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="../assets/logo.png">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<a class="skip" href="#contenu">本文へスキップ</a>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="../ja/"><img src="../assets/logo.png" alt="" width="32" height="32">Pantheon</a>
+    <nav aria-label="メインナビゲーション"><ul><li><a href="#projet">プロジェクト</a></li><li><a href="#fonctions">機能</a></li><li><a href="#design">デザイン</a></li><li><a href="#technique">技術</a></li><li><a href="#essayer">試してみる</a></li></ul></nav>
+    <details class="langmenu">
+      <summary aria-label="言語">日本語</summary>
+      <ul><li><a href="../en/" hreflang="en" lang="en">English</a></li><li><a href="../fr/" hreflang="fr" lang="fr">Français</a></li><li><a href="../es/" hreflang="es" lang="es">Español</a></li><li><a href="../ja/" hreflang="ja" lang="ja" aria-current="true">日本語</a></li><li><a href="../zh/" hreflang="zh-CN" lang="zh-CN">中文（简体）</a></li></ul>
+    </details>
+  </div>
+</header>
+
+<main id="contenu">
+  <div class="hero">
+    <div class="wrap">
+      <span class="pill"><i aria-hidden="true"></i>学生プロジェクト · Steam インターフェースのリデザイン</span>
+      <h1>すべてのゲーム。すべての <span>伝説。</span></h1>
+      <p class="lead">Pantheon は、Windows 版 Steam のための代替インターフェースです。実績と進行状況を中心に据え、視覚的なノイズのない、暗く開放的なデザインに仕上げました。クライアントはこれまでどおり Steam のままで、Pantheon はその新しい顔にすぎません。</p>
+      <div class="cta">
+        <a class="btn primary" href="#fonctions">プロジェクトを見る</a>
+        <a class="btn" href="#design">デザインを見る</a>
+      </div>
+      <figure class="shot"><img src="../assets/shots/ja/bibliotheque.jpg" width="1800" height="1125" alt="Pantheon のライブラリの画面:「続きをプレイ」バナーと、インストール状況・プレイ時間・実績の進行状況を表示したカバー画像のグリッド。"></figure>
+      <ul class="facts"><li><b>6</b><span>画面をデザインして実装</span></li><li><b>45</b><span>自動テスト</span></li><li><b>0</b><span>収集するデータ</span></li><li><b>100%</b><span>キーボードで操作可能</span></li></ul>
+    </div>
+  </div>
+
+  <section id="projet">
+    <div class="wrap brief">
+      <div>
+        <span class="eyebrow">プロジェクト</span>
+        <h2>コレクターのための Steam クライアント</h2>
+        <p class="sub">Steam は多機能ですが、画面は情報が詰まっていて、実績は何度もクリックしないとたどり着けません。この学生プロジェクトは、ひとつの素朴な問いから始まりました。100% コンプリートを追いかける人のために作られていたら、Steam はどんな姿だろう?</p>
+      </div>
+      <div>
+        <p>ビジュアルアイデンティティ、画面、デザインシステムを設計し、Steam のローカルファイルを読み取って公式 API をあなた自身のアクセスで利用する、本物の Windows アプリ(Electron)として実装しました。</p>
+        <p>Pantheon は Steam の代わりではありません。Steam はバックグラウンドで動き続け、ゲームはこれまでどおり Steam 経由で起動します。</p>
+        <p class="quote mt">青いアクセントはひとつだけ。操作と進行状況のためだけに使い、それ以外はカバー画像に場所を譲ります。<small>デザインの指針</small></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="fonctions" class="flush-top">
+    <div class="wrap">
+      <span class="eyebrow">機能</span>
+      <h2>すべての画面が、進行状況のために</h2>
+      <div class="feature"><div class="text"><span class="eyebrow">ライブラリ</span><h3>カバー画像、余白、ひとつの操作</h3><p>グリッドではカバー画像が主役です。マウスを重ねると中央に丸い「プレイ」ボタンが現れます。最後に遊んだゲームは上部に固定され、ワンクリックで再開できます。</p><ul><li>検索、フィルター(インストール済み・ダウンロード・お気に入り・コンプリート間近)、並べ替え</li><li>各カバーにインストール状況とダウンロードの進行状況を表示</li><li>数百本のゲームでも軽快に動作</li></ul></div><figure class="shot"><img loading="lazy" src="../assets/shots/ja/bibliotheque.jpg" width="1800" height="1125" alt="フィルター、並べ替え、カバー画像のグリッドを備えた Pantheon のライブラリ。"></figure></div>
+      <div class="feature flip"><div class="text"><span class="eyebrow">ゲームページ</span><h3>実績が、ようやく読みやすく</h3><p>進行状況のリング、解除日つきの解除済み実績、そして常に言葉で示されるレア度(コモン・アンコモン・レア・ウルトラレア)。色だけに頼ることはありません。</p><ul><li>フィルター(すべて・解除済み・未解除・レア)とレア度順の並べ替え</li><li>いちばん取りやすい実績と、解除した中で最もレアな実績</li><li>ゲームの公式アートを背景に、インターフェースへなめらかにつなげて表示</li></ul></div><figure class="shot"><img loading="lazy" src="../assets/shots/ja/fiche.jpg" width="1800" height="1125" alt="ゲームページ:タイトル、統計、タブ、進行状況リングとレア度つきの実績リスト。"></figure></div>
+      <div class="feature"><div class="text"><span class="eyebrow">実績ページ</span><h3>コンプリートしたゲームのパンテオン</h3><p>コレクション全体を一望できます。解除した実績の合計、100% 達成したゲームを集めた「神々」セクション、コンプリートまで近いゲーム、そして解除した中で最もレアな実績。</p></div><figure class="shot"><img loading="lazy" src="../assets/shots/ja/succes.jpg" width="1800" height="1125" alt="実績ページ:合計、100% 達成したゲーム、コンプリートまで近いゲーム。"></figure></div>
+      <div class="feature flip"><div class="text"><span class="eyebrow">ストア</span><h3>アプリを離れずに見て回れる</h3><p>特別セール、売上上位、新作、検索を閲覧専用で表示します。購入は常に本物の Steam で行い、「Steam で見る」からワンクリックで移動できます。</p></div><figure class="shot"><img loading="lazy" src="../assets/shots/ja/boutique.jpg" width="1800" height="1125" alt="特別セールと割引価格を表示した Pantheon のストア。"></figure></div>
+      <div class="feature"><div class="text"><span class="eyebrow">フレンドとダウンロード</span><h3>誰が何を遊んでいるか、インストールの進み具合</h3><p>フレンドをステータス順に並べ、遊んでいるゲームも表示します。「チャット」ボタンで Steam の会話を開けます。進行中のダウンロードは、メニューのバッジも含めて進行状況が分かります。</p></div><figure class="shot"><img loading="lazy" src="../assets/shots/ja/amis.jpg" width="1800" height="1125" alt="オンラインとオフラインに分けて表示した、遊んでいるゲーム付きのフレンド一覧。"></figure></div>
+      <p class="note mt">すべてのスクリーンショットは、架空のゲームとフレンドを使っています(アプリのデモモード)。</p>
+    </div>
+  </section>
+
+  <section id="design" class="band">
+    <div class="wrap">
+      <span class="eyebrow">デザイン</span>
+      <h2>暗く、開放的で、アクセントはひとつ</h2>
+      <p class="sub">枠線はごくわずか、角丸はたっぷり、書体は 2 種類。見出しと数字には Space Grotesk、インターフェースには Inter を使っています。青のアクセントはひとつの変数で、1 行で変更できます。</p>
+      <div class="swatches" role="list" aria-label="カラーパレット"><div class="sw" role="listitem"><div class="c1"></div><p><b>背景</b><span>#0B0D12</span></p></div><div class="sw" role="listitem"><div class="c2"></div><p><b>サーフェス</b><span>#12161E</span></p></div><div class="sw" role="listitem"><div class="c3"></div><p><b>浮き上がったサーフェス</b><span>#181D27</span></p></div><div class="sw" role="listitem"><div class="c4"></div><p><b>テキスト</b><span>#E9ECF3</span></p></div><div class="sw" role="listitem"><div class="c5"></div><p><b>アクセント</b><span>#4D8DFF</span></p></div></div>
+      <div class="design-grid">
+        <div class="card"><h3>タイポグラフィ</h3><div class="type-a">Aa 18 / 42</div><p class="type-b">見出しと数字には Space Grotesk、それ以外はすべて Inter。</p></div>
+        <div class="card"><h3>読み取れるレア度</h3><div class="rarities"><div><b class="r4">ウルトラレア</b><span>3% 未満</span></div><div><b class="r3">レア</b><span>3〜10%</span></div><div><b class="r2">アンコモン</b><span>10〜25%</span></div><div><b class="r1">コモン</b><span>25% 以上</span></div></div></div>
+        <div class="card"><h3>最初からアクセシブル</h3><p>すべてキーボードで操作でき、フォーカスがはっきり見え、文字のコントラスト比は 4.5:1 以上、タッチ領域は 44 px、アイコンボタンにはスクリーンリーダー向けの名前を付けています。</p></div>
+        <div class="card"><h3>成長を見据えた設計</h3><p>テキストはすべて翻訳ファイルにまとめてあり(現在 5 言語)、アクセントカラーはひとつの変数で決まります。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="technique">
+    <div class="wrap">
+      <span class="eyebrow">技術</span>
+      <h2>美しく、そして安全に</h2>
+      <p class="sub">ライブラリを読み取るインターフェースには、セキュリティの面でも非の打ちどころのなさが求められます。このプロジェクトは、デザインと同じ水準の厳しさで作られています。</p>
+      <div class="tech"><div class="card"><h3>パスワードは一切不要</h3><p>Steam へのログインはありません。アプリはローカルファイルを読み取り、あなた自身の API キーを使います。キーは Windows の保管庫でパソコン上に暗号化されます。</p></div><div class="card"><h3>堅牢化した Electron</h3><p>コンテキストの分離、サンドボックス、厳格なセキュリティポリシー、許可リストに限定した Steam リンク、数個のドメインに限定した通信。</p></div><div class="card"><h3>データ収集ゼロ</h3><p>アカウントも利用統計もサーバーもありません。すべてお使いのパソコン内に残ります。Steam への通信はキャッシュされ、回数にも上限があります。</p></div><div class="card"><h3>テスト済み</h3><p>45 件の自動テストが、Steam ファイルの読み取り、レア度の計算、リンクの検証、キャッシュ、API クライアント、翻訳をカバーしています。</p></div><div class="card"><h3>デモモード</h3><p>変数ひとつで、Steam なしの架空データですべてが動きます。このページのスクリーンショットもその方法で作成しました。</p></div><div class="card"><h3>高速</h3><p>画像の遅延読み込み、カード単位の更新、画面外の描画の省略により、数百本のゲームでも軽快です。</p></div></div>
+      <div class="tags" aria-label="使用技術"><span>Electron</span><span>JavaScript</span><span>HTML / CSS</span><span>Steam Web API</span><span>safeStorage</span><span>NSIS</span></div>
+    </div>
+  </section>
+
+  <section id="essayer" class="flush-top">
+    <div class="wrap">
+      <div class="try">
+        <span class="eyebrow">試してみる</span>
+        <h2>Windows 向け Pantheon</h2>
+        <p class="sub">Steam をインストールした Windows 10 または 11 が必要です。インストーラーは署名されていないため、Windows が警告を表示することがあります。その場合は「詳細情報」→「実行」を選んでください。</p>
+        <div class="cta"><a class="btn primary" href="#essayer" aria-disabled="true">ダウンロードは近日公開</a></div>
+        <p class="note">無料の非営利学生プロジェクトです。</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Pantheon は、Steam のインターフェースのリデザインを探る、Axel Archambeault による非営利の学生プロジェクトです。スクリーンショットのゲームとフレンドは架空のものです。</p>
+    <p>Valve および Steam とは提携していません。Steam と Steam のロゴは Valve Corporation の商標です。Pantheon は Valve の承認やスポンサーを受けていません。データは一切収集しません。</p>
+  </div>
+</footer>
+</body>
+</html>

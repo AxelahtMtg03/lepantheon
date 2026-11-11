@@ -1,5 +1,5 @@
 import { h } from '../dom.js';
-import { t } from '../i18n.js';
+import { t, LANGUAGES, getLang } from '../i18n.js';
 
 // Réglages (version minimale à l'étape 4 ; l'écran complet est prévu à l'étape 7).
 export async function renderSettings(root, api) {
@@ -55,6 +55,12 @@ export async function renderSettings(root, api) {
     } });
   const appInfo = await api.getInfo();
 
+  const langSelect = h('select', { id: 'f-lang', class: 'text', onchange: async (e) => {
+      const r = await api.setLanguage(e.target.value);
+      if (r.ok) location.reload(); // recharge l'interface dans la nouvelle langue
+    } },
+    Object.entries(LANGUAGES).map(([code, l]) => h('option', { value: code, selected: code === getLang() }, l.name)));
+
   const field = (id, label, input, hint) => h('div', { class: 'field' }, h('label', { for: id }, label), input, hint ? h('p', { class: 'hint' }, hint) : null);
   const steps = h('ol', { class: 'steps' }, ['1', '2', '3', '4'].map((n) => h('li', null, t(`set.key.step${n}`))));
 
@@ -81,6 +87,7 @@ export async function renderSettings(root, api) {
     ),
     h('section', { class: 'panel', 'aria-labelledby': 'h-gen' },
       h('h2', { id: 'h-gen' }, t('set.general.title')),
+      field('f-lang', t('set.lang.label'), langSelect, t('set.lang.hint')),
       h('div', { class: 'check-row' }, startupBox, h('label', { for: 'f-startup' }, t('set.startup.label'))),
       h('p', { class: 'hint' }, t(startup.supported ? 'set.startup.hint' : 'set.startup.unsupported')),
     ),

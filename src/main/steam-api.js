@@ -67,6 +67,8 @@ function createSteamApi({
   getKey,
   cache,
   quotaCache = cache,
+  getLang = () => 'english', // langue des textes renvoyés par Steam
+  getCountry = () => 'us', // pays de la boutique (devise et prix)
   fetchFn = fetch,
   now = Date.now,
   sleep = (ms) => new Promise((r) => setTimeout(r, ms)),
@@ -194,8 +196,8 @@ function createSteamApi({
     async getPlayerAchievements(steamId, appid) {
       needSteamId(steamId);
       needAppId(appid);
-      return cached(`pach:${steamId}:${appid}`, 15 * MIN, async () => {
-        const { status, json } = await request('/ISteamUserStats/GetPlayerAchievements/v1/', { steamid: steamId, appid, l: 'french' }, { passStatuses: [400, 403] });
+      return cached(`pach:${getLang()}:${steamId}:${appid}`, 15 * MIN, async () => {
+        const { status, json } = await request('/ISteamUserStats/GetPlayerAchievements/v1/', { steamid: steamId, appid, l: getLang() }, { passStatuses: [400, 403] });
         const ps = json && json.playerstats;
         if (status === 403) return { status: 'private', list: [] };
         if (!ps || typeof ps !== 'object') {
@@ -221,8 +223,8 @@ function createSteamApi({
     // Noms, descriptions et icônes officiels.
     async getSchema(appid) {
       needAppId(appid);
-      return cached(`schema:${appid}`, 24 * HOUR, async () => {
-        const json = await request('/ISteamUserStats/GetSchemaForGame/v2/', { appid, l: 'french' });
+      return cached(`schema:${getLang()}:${appid}`, 24 * HOUR, async () => {
+        const json = await request('/ISteamUserStats/GetSchemaForGame/v2/', { appid, l: getLang() });
         const raw = json && json.game && json.game.availableGameStats && json.game.availableGameStats.achievements;
         if (!Array.isArray(raw)) return [];
         return raw.filter((a) => a && typeof a.name === 'string').map((a) => ({
@@ -254,8 +256,8 @@ function createSteamApi({
     // Fiche boutique (publique, sans clé). Retourne null si le jeu n'a pas de fiche.
     async getStoreDetails(appid) {
       needAppId(appid);
-      return cached(`store2:${appid}`, 24 * HOUR, async () => {
-        const json = await request('/api/appdetails', { appids: appid, l: 'french', cc: 'fr' }, { host: STORE_HOST, noKey: true });
+      return cached(`store3:${getLang()}:${getCountry()}:${appid}`, 24 * HOUR, async () => {
+        const json = await request('/api/appdetails', { appids: appid, l: getLang(), cc: getCountry() }, { host: STORE_HOST, noKey: true });
         const entry = json && json[String(appid)];
         if (!entry || entry.success !== true || !entry.data || typeof entry.data !== 'object') return null;
         const d = entry.data;
@@ -276,8 +278,8 @@ function createSteamApi({
     },
     // Mises en avant de la boutique (publiques, sans clé).
     async getFeatured() {
-      return cached('featured', 30 * MIN, async () => {
-        const json = await request('/api/featuredcategories', { cc: 'fr', l: 'french' }, { host: STORE_HOST, noKey: true });
+      return cached(`featured:${getLang()}:${getCountry()}`, 30 * MIN, async () => {
+        const json = await request('/api/featuredcategories', { cc: getCountry(), l: getLang() }, { host: STORE_HOST, noKey: true });
         if (!json || typeof json !== 'object') throw new SteamApiError('bad-response');
         const out = [];
         for (const id of FEATURED_IDS) {
@@ -292,8 +294,8 @@ function createSteamApi({
     async searchStore(term) {
       const q = typeof term === 'string' ? term.trim().slice(0, 100) : '';
       if (!q) return [];
-      return cached(`search:${q.toLowerCase()}`, 5 * MIN, async () => {
-        const json = await request('/api/storesearch/', { term: q, l: 'french', cc: 'fr' }, { host: STORE_HOST, noKey: true });
+      return cached(`search:${getLang()}:${getCountry()}:${q.toLowerCase()}`, 5 * MIN, async () => {
+        const json = await request('/api/storesearch/', { term: q, l: getLang(), cc: getCountry() }, { host: STORE_HOST, noKey: true });
         const items = json && Array.isArray(json.items) ? json.items : [];
         return items.filter((i) => !i || !i.type || i.type === 'app').map(storeItem).filter(Boolean).slice(0, 24);
       });
@@ -322,8 +324,9 @@ function createSteamApi({
     },
     peekFriends: (steamId) => peek(`friends:${steamId}`),
     // Lectures du cache sans réseau (affichage immédiat, calculs globaux).
-    peekPlayerAchievements: (steamId, appid) => peek(`pach:${steamId}:${appid}`),
-    peekSchema: (appid) => peek(`schema:${appid}`),
+    peekPlayerAchievements: (steamId, appid) => peek(`pach:${getLang()}:${steamId}:${appid}`),
+    peekSchema: (appid) => peek(`schema:${getLang()}:${appid}`),
+    lang: () => getLang(),
     peekGlobalPercentages: (appid) => peek(`global:${appid}`),
   };
 }

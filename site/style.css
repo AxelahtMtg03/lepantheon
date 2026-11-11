@@ -31,9 +31,10 @@ a{color:inherit}
 .nav .wrap{display:flex;align-items:center;gap:28px;min-height:68px}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-family:var(--display);font-weight:700;font-size:20px}
 .brand img{width:32px;height:32px;border-radius:9px}
-.nav ul{display:flex;gap:6px;list-style:none;padding:0;margin:0 0 0 auto}
-.nav li a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:10px;color:var(--text-2);text-decoration:none;font-size:15px;font-weight:500}
-.nav li a:hover{background:var(--surface);color:var(--text)}
+.nav nav{margin-left:auto}
+.nav nav ul{display:flex;gap:6px;list-style:none;padding:0;margin:0}
+.nav nav li a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:10px;color:var(--text-2);text-decoration:none;font-size:15px;font-weight:500}
+.nav nav li a:hover{background:var(--surface);color:var(--text)}
 
 /* Hero */
 .hero{position:relative;padding:84px 0 40px;text-align:center;overflow:hidden}
@@ -125,7 +126,8 @@ footer strong{color:var(--text-2);font-weight:600}
   .feature{margin-top:64px}
   .facts{grid-template-columns:repeat(2,1fr)}
   .tech{grid-template-columns:1fr}
-  .nav ul{display:none}
+  .nav nav{display:none}
+  .langmenu{margin-left:auto}
   .try{padding:44px 22px}
 }
 
@@ -135,3 +137,21 @@ footer strong{color:var(--text-2);font-weight:600}
 .quote.mt{margin-top:28px}
 .note.mt{margin-top:28px}
 .sw .c1{background:#0B0D12}.sw .c2{background:#12161E}.sw .c3{background:#181D27}.sw .c4{background:#E9ECF3}.sw .c5{background:#4D8DFF}
+
+/* Sélecteur de langue (sans JavaScript : <details>) */
+.langmenu{position:relative;margin-left:8px}
+.langmenu summary{list-style:none;display:flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border-radius:10px;border:1px solid var(--border-strong);color:var(--text-2);font-size:14px;font-weight:500;cursor:pointer}
+.langmenu summary::-webkit-details-marker{display:none}
+.langmenu summary::after{content:"▾";font-size:11px}
+.langmenu[open] summary,.langmenu summary:hover{background:var(--surface)}
+.langmenu ul{position:absolute;right:0;top:calc(100% + 8px);min-width:180px;margin:0;padding:6px;list-style:none;background:var(--surface-hi);border:1px solid var(--border-strong);border-radius:14px;box-shadow:0 20px 50px -20px rgba(0,0,0,.8)}
+.langmenu a{display:flex;align-items:center;min-height:44px;padding:0 12px;border-radius:9px;text-decoration:none;color:var(--text-2);font-size:15px}
+.langmenu a:hover{background:var(--surface);color:var(--text)}
+.langmenu a[aria-current="true"]{color:var(--text);font-weight:600}
+
+/* Japonais et chinois : polices du système (Inter et Space Grotesk ne contiennent que le latin) */
+html[lang="ja"]{--ui:'Inter','Yu Gothic UI','Yu Gothic','Hiragino Sans','Noto Sans JP','Meiryo',sans-serif;--display:'Space Grotesk','Yu Gothic UI','Yu Gothic','Hiragino Sans','Noto Sans JP','Meiryo',sans-serif}
+html[lang="zh-CN"]{--ui:'Inter','Microsoft YaHei UI','Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif;--display:'Space Grotesk','Microsoft YaHei UI','Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif}
+html[lang="ja"] .hero h1,html[lang="zh-CN"] .hero h1{max-width:none;line-height:1.18}
+html[lang="ja"] h2,html[lang="zh-CN"] h2{max-width:none;line-height:1.22}
+html[lang="ja"] .lead,html[lang="ja"] .sub,html[lang="zh-CN"] .lead,html[lang="zh-CN"] .sub{line-height:1.8}

@@ -49,7 +49,7 @@ function createProvider(isMock, deps = {}) {
       if (isMock) return mock.profile();
       const s = await readLocal();
       const steamId = steamIdOf(s);
-      const profile = { name: (s.account && s.account.name) || 'Joueur', status: s.running ? 'online' : 'offline', steamId, avatarUrl: null };
+      const profile = { name: (s.account && s.account.name) || null, status: s.running ? 'online' : 'offline', steamId, avatarUrl: null };
       if (steamId && deps.hasKey()) {
         try {
           const p = await deps.api.getPlayerSummary(steamId);
@@ -63,7 +63,7 @@ function createProvider(isMock, deps = {}) {
     },
     // Fiche d'un jeu : infos boutique + succès. Ne lève pas d'exception : chaque partie a son statut.
     async getGame(appid) {
-      if (isMock) return mock.detail(appid);
+      if (isMock) return mock.detail(appid, deps.lang());
       const lib = await this.getLibrary();
       const game = lib.games.find((g) => g.appid === Number(appid));
       if (!game) return null;
@@ -82,7 +82,7 @@ function createProvider(isMock, deps = {}) {
       return out;
     },
     async getAchievementsOverview() {
-      if (isMock) return { status: 'ok', ...mock.overview() };
+      if (isMock) return { status: 'ok', ...mock.overview(deps.lang()) };
       if (!deps.hasKey()) return { status: 'no-key', rows: [], rarest: [], pending: 0, scanning: false, played: 0, known: 0 };
       const lib = await this.getLibrary();
       const s = await readLocal();
@@ -108,7 +108,7 @@ function createProvider(isMock, deps = {}) {
       }
     },
     async getStoreApp(appid) {
-      if (isMock) return mock.storeApp(appid);
+      if (isMock) return mock.storeApp(appid, deps.lang());
       try {
         const store = await deps.api.getStoreDetails(Number(appid));
         return store ? { game: { appid: Number(appid), name: store.name || `App ${appid}` }, store } : null;

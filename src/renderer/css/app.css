@@ -1,3 +1,6 @@
+/* Japonais et chinois : polices système (Inter et Space Grotesk ne contiennent que le latin). */
+html[lang="ja"]{--font-ui:'Inter','Yu Gothic UI','Meiryo UI','Hiragino Sans',sans-serif;--font-display:'Space Grotesk','Yu Gothic UI','Meiryo UI','Hiragino Sans',sans-serif}
+html[lang="zh"]{--font-ui:'Inter','Microsoft YaHei UI','PingFang SC',sans-serif;--font-display:'Space Grotesk','Microsoft YaHei UI','PingFang SC',sans-serif}
 :root{
   --accent:#4D8DFF; --on-accent:#06122B;
   --bg:#0B0D12; --side:#0D1016; --surface:#12161E; --surface-hi:#181D27;
@@ -116,7 +119,8 @@ a{color:inherit}
 .field{display:flex;flex-direction:column;gap:6px}
 .field label{font-size:13px;font-weight:600;color:var(--text-2)}
 input.text{height:44px;padding:0 14px;border-radius:12px;background:var(--bg);border:1px solid var(--border);font-size:14px;color:var(--text);width:100%}
-input.text:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+select.text{height:44px;padding:0 14px;border-radius:12px;background:var(--bg);border:1px solid var(--border);font-size:14px;color:var(--text);width:100%}
+select.text:focus-visible,input.text:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .form-msg{font-size:13px;min-height:20px;color:var(--text-2)}
 .form-msg[data-ok="false"]{color:var(--rarity-ultra)}
 

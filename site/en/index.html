@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self'; font-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pantheon — All your games. All your legends.</title>
+<meta name="description" content="Student project: a redesign of Steam’s interface for Windows, built for achievement and 100% hunters. Non-commercial, not affiliated with Valve or Steam.">
+<meta name="theme-color" content="#0B0D12">
+<meta property="og:title" content="Pantheon — All your games. All your legends.">
+<meta property="og:description" content="Student project: a redesign of Steam’s interface for Windows, built for achievement and 100% hunters. Non-commercial, not affiliated with Valve or Steam.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="../assets/logo.png">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<a class="skip" href="#contenu">Skip to content</a>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="../en/"><img src="../assets/logo.png" alt="" width="32" height="32">Pantheon</a>
+    <nav aria-label="Main navigation"><ul><li><a href="#projet">The project</a></li><li><a href="#fonctions">Features</a></li><li><a href="#design">Design</a></li><li><a href="#technique">Under the hood</a></li><li><a href="#essayer">Try it</a></li></ul></nav>
+    <details class="langmenu">
+      <summary aria-label="Language">English</summary>
+      <ul><li><a href="../en/" hreflang="en" lang="en" aria-current="true">English</a></li><li><a href="../fr/" hreflang="fr" lang="fr">Français</a></li><li><a href="../es/" hreflang="es" lang="es">Español</a></li><li><a href="../ja/" hreflang="ja" lang="ja">日本語</a></li><li><a href="../zh/" hreflang="zh-CN" lang="zh-CN">中文（简体）</a></li></ul>
+    </details>
+  </div>
+</header>
+
+<main id="contenu">
+  <div class="hero">
+    <div class="wrap">
+      <span class="pill"><i aria-hidden="true"></i>Student project · Steam interface redesign</span>
+      <h1>All your games. All your <span>legends.</span></h1>
+      <p class="lead">Pantheon is an alternative interface for Steam on Windows. It puts your achievements and progress at the center, with a dark, airy design free of visual noise. Steam stays your client: Pantheon is just a new face for it.</p>
+      <div class="cta">
+        <a class="btn primary" href="#fonctions">Discover the project</a>
+        <a class="btn" href="#design">See the design</a>
+      </div>
+      <figure class="shot"><img src="../assets/shots/en/bibliotheque.jpg" width="1800" height="1125" alt="Screenshot of the Pantheon library: a “Continue playing” banner and a grid of covers showing install status, playtime and achievement progress."></figure>
+      <ul class="facts"><li><b>6</b><span>screens designed and coded</span></li><li><b>45</b><span>automated tests</span></li><li><b>0</b><span>data collected</span></li><li><b>100%</b><span>keyboard accessible</span></li></ul>
+    </div>
+  </div>
+
+  <section id="projet">
+    <div class="wrap brief">
+      <div>
+        <span class="eyebrow">The project</span>
+        <h2>A Steam client designed for collectors</h2>
+        <p class="sub">Steam is complete, but its interface is dense, and achievements are buried several clicks deep. This student project started from a simple question: what would Steam look like if it were designed for people who chase 100%?</p>
+      </div>
+      <div>
+        <p>I designed the visual identity, the screens and the design system, then coded them into a real Windows application (Electron) that reads Steam’s local files and uses your own access to the official API.</p>
+        <p>Pantheon doesn’t replace Steam: it keeps running in the background, and games launch through Steam as usual.</p>
+        <p class="quote mt">A single blue accent, reserved for actions and progress. Everything else steps aside for the covers.<small>The guiding principle of the design</small></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="fonctions" class="flush-top">
+    <div class="wrap">
+      <span class="eyebrow">Features</span>
+      <h2>Every screen serves progress</h2>
+      <div class="feature"><div class="text"><span class="eyebrow">Library</span><h3>Covers, space, a single action</h3><p>The grid puts covers front and center. On hover, a round Play button appears in the middle. Your last played game is pinned at the top so you can resume in one click.</p><ul><li>Search, filters (installed, downloads, favorites, almost complete) and sorting</li><li>Install state and download progress on every cover</li><li>Smooth with hundreds of games</li></ul></div><figure class="shot"><img loading="lazy" src="../assets/shots/en/bibliotheque.jpg" width="1800" height="1125" alt="The Pantheon library with its filters, sorting and grid of covers."></figure></div>
+      <div class="feature flip"><div class="text"><span class="eyebrow">Game page</span><h3>Achievements, finally readable</h3><p>A progress ring, unlocked achievements with their date, and a rarity always spelled out in words: Common, Uncommon, Rare, Ultra rare. Never just a color.</p><ul><li>Filters All, Unlocked, Locked, Rare, sort by rarity</li><li>The most accessible achievement and the rarest one you earned</li><li>The game’s official artwork as the backdrop, fading into the interface</li></ul></div><figure class="shot"><img loading="lazy" src="../assets/shots/en/fiche.jpg" width="1800" height="1125" alt="A game page: title, statistics, tabs and the achievements list with progress ring and rarities."></figure></div>
+      <div class="feature"><div class="text"><span class="eyebrow">Achievements page</span><h3>The Pantheon of finished games</h3><p>An overview of your collection: total unlocked, a “Gods” section for games completed at 100%, the games closest to the finish line and the rarest achievements you’ve earned.</p></div><figure class="shot"><img loading="lazy" src="../assets/shots/en/succes.jpg" width="1800" height="1125" alt="The Achievements page: totals, games completed at 100%, games closest to completion."></figure></div>
+      <div class="feature flip"><div class="text"><span class="eyebrow">Store</span><h3>Browse without leaving the app</h3><p>Specials, top sellers, new releases and search, read-only. Purchases are always made in the real Steam, one click away with “View in Steam”.</p></div><figure class="shot"><img loading="lazy" src="../assets/shots/en/boutique.jpg" width="1800" height="1125" alt="The Pantheon store with its specials and discounted prices."></figure></div>
+      <div class="feature"><div class="text"><span class="eyebrow">Friends and downloads</span><h3>Who’s playing what, and how your install is going</h3><p>Your friends sorted by status with the game they’re playing, and a Chat button that opens the conversation in Steam. Ongoing downloads show their progress, all the way to a badge in the menu.</p></div><figure class="shot"><img loading="lazy" src="../assets/shots/en/amis.jpg" width="1800" height="1125" alt="The friends list, grouped between online and offline, with the game being played."></figure></div>
+      <p class="note mt">All screenshots use fictional games and friends (the app’s demo mode).</p>
+    </div>
+  </section>
+
+  <section id="design" class="band">
+    <div class="wrap">
+      <span class="eyebrow">Design</span>
+      <h2>Dark, airy, a single accent</h2>
+      <p class="sub">Very few borders, generous radii and two font families: Space Grotesk for titles and numbers, Inter for the interface. The blue accent is a single variable: it can be changed in one line.</p>
+      <div class="swatches" role="list" aria-label="Color palette"><div class="sw" role="listitem"><div class="c1"></div><p><b>Background</b><span>#0B0D12</span></p></div><div class="sw" role="listitem"><div class="c2"></div><p><b>Surface</b><span>#12161E</span></p></div><div class="sw" role="listitem"><div class="c3"></div><p><b>Raised surface</b><span>#181D27</span></p></div><div class="sw" role="listitem"><div class="c4"></div><p><b>Text</b><span>#E9ECF3</span></p></div><div class="sw" role="listitem"><div class="c5"></div><p><b>Accent</b><span>#4D8DFF</span></p></div></div>
+      <div class="design-grid">
+        <div class="card"><h3>Typography</h3><div class="type-a">Aa 18 / 42</div><p class="type-b">Space Grotesk for titles and numbers, Inter for everything else.</p></div>
+        <div class="card"><h3>Rarity you can read</h3><div class="rarities"><div><b class="r4">Ultra rare</b><span>under 3%</span></div><div><b class="r3">Rare</b><span>3 to 10%</span></div><div><b class="r2">Uncommon</b><span>10 to 25%</span></div><div><b class="r1">Common</b><span>25% and up</span></div></div></div>
+        <div class="card"><h3>Accessible from the start</h3><p>Full keyboard navigation, clearly visible focus states, text contrast of at least 4.5:1, 44 px touch targets and named icon buttons for screen readers.</p></div>
+        <div class="card"><h3>Built to grow</h3><p>All text lives in translation files (five languages today) and the accent color fits in a single variable.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="technique">
+    <div class="wrap">
+      <span class="eyebrow">Under the hood</span>
+      <h2>Beautiful, but also safe</h2>
+      <p class="sub">An interface that reads your library has to be flawless on security. This project was built with the same rigor as the design.</p>
+      <div class="tech"><div class="card"><h3>Never a password</h3><p>No Steam sign-in. The app reads local files and uses your own API key, encrypted on your computer with the Windows vault.</p></div><div class="card"><h3>Hardened Electron</h3><p>Context isolation, sandbox, strict security policy, Steam links limited to an allow-list of actions, network restricted to a few domains.</p></div><div class="card"><h3>Zero collection</h3><p>No account, no usage statistics, no server: everything stays on your PC. Calls to Steam are cached and capped.</p></div><div class="card"><h3>Tested</h3><p>45 automated tests cover the Steam file reader, rarity calculations, link validation, the cache, the API client and the translations.</p></div><div class="card"><h3>Demo mode</h3><p>One variable is enough to run everything on fake data, without Steam. That’s how the screenshots on this page were made.</p></div><div class="card"><h3>Fast</h3><p>Lazy-loaded images, targeted card updates and off-screen rendering keep hundreds of games smooth.</p></div></div>
+      <div class="tags" aria-label="Technologies"><span>Electron</span><span>JavaScript</span><span>HTML / CSS</span><span>Steam Web API</span><span>safeStorage</span><span>NSIS</span></div>
+    </div>
+  </section>
+
+  <section id="essayer" class="flush-top">
+    <div class="wrap">
+      <div class="try">
+        <span class="eyebrow">Try it</span>
+        <h2>Pantheon for Windows</h2>
+        <p class="sub">Windows 10 or 11 with Steam installed. Because the installer isn’t signed, Windows may show a warning: click “More info” then “Run anyway”.</p>
+        <div class="cta"><a class="btn primary" href="#essayer" aria-disabled="true">Download coming soon</a></div>
+        <p class="note">Free, non-commercial student project.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Pantheon is a non-commercial student project by Axel Archambeault, exploring a redesign of Steam’s interface. The games and friends in the screenshots are fictional.</p>
+    <p>Not affiliated with Valve or Steam. Steam and the Steam logo are trademarks of Valve Corporation. Pantheon is neither endorsed nor sponsored by Valve. No data is collected.</p>
+  </div>
+</footer>
+</body>
+</html>

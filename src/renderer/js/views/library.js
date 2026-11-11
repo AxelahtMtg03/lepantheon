@@ -1,7 +1,7 @@
 import { h, icon } from '../dom.js';
 import { t } from '../i18n.js';
 import { artLayers } from '../art.js';
-import { formatPlaytime, formatRelative, achievementPct, isComplete } from '../format.js';
+import { formatPlaytime, formatRelative, achievementPct, isComplete, compareNames } from '../format.js';
 
 const FILTERS = ['all', 'installed', 'downloading', 'favorites', 'almost'];
 const SORTS = ['recent', 'name', 'playtime', 'achievements'];
@@ -21,7 +21,7 @@ const filterFns = {
 };
 const sortFns = {
   recent: (a, b) => cmpDesc(a.lastPlayed, b.lastPlayed),
-  name: (a, b) => a.name.localeCompare(b.name, 'fr'),
+  name: (a, b) => compareNames(a.name, b.name),
   playtime: (a, b) => cmpDesc(a.playtimeMin, b.playtimeMin),
   achievements: (a, b) => cmpDesc(achievementPct(a), achievementPct(b)),
 };

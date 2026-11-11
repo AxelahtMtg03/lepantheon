@@ -17,6 +17,7 @@ contextBridge.exposeInMainWorld(
     getStoreApp: (appid) => call('store:app', appid),
     getFriends: () => call('friends:get'),
     getBadges: () => call('badges:get'),
+    setLanguage: (code) => call('language:set', code),
     getSettings: () => call('settings:get'),
     saveSettings: (values) => call('settings:set', values),
     setApiKey: (key) => call('apikey:set', key),

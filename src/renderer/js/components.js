@@ -18,7 +18,7 @@ export function ring(unlocked, total) {
   };
   const base = { cx: 62, cy: 62, r: R, fill: 'none', 'stroke-width': 10 };
   const label = mk('text', { x: 62, y: 70, 'text-anchor': 'middle', 'font-family': 'Space Grotesk, sans-serif', 'font-weight': 700, 'font-size': 28, fill: 'var(--text)' });
-  label.textContent = `${pct} %`;
+  label.textContent = t('fmt.pct', { n: pct });
   svg.append(
     mk('circle', { ...base, stroke: 'var(--border)' }),
     mk('circle', { ...base, stroke: 'var(--accent)', 'stroke-linecap': 'round', 'stroke-dasharray': `${(CIRC * pct) / 100} ${CIRC}`, transform: 'rotate(-90 62 62)' }),

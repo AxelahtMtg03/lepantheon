@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self'; font-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pantheon — Tous tes jeux. Toutes tes légendes.</title>
+<meta name="description" content="Projet étudiant : une refonte de l’interface de Steam pour Windows, pensée pour les chasseurs de succès et de 100 %. Non commercial, non affilié à Valve ni à Steam.">
+<meta name="theme-color" content="#0B0D12">
+<meta property="og:title" content="Pantheon — Tous tes jeux. Toutes tes légendes.">
+<meta property="og:description" content="Projet étudiant : une refonte de l’interface de Steam pour Windows, pensée pour les chasseurs de succès et de 100 %. Non commercial, non affilié à Valve ni à Steam.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="../assets/logo.png">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="../fr/"><img src="../assets/logo.png" alt="" width="32" height="32">Pantheon</a>
+    <nav aria-label="Navigation principale"><ul><li><a href="#projet">Le projet</a></li><li><a href="#fonctions">Fonctions</a></li><li><a href="#design">Design</a></li><li><a href="#technique">Sous le capot</a></li><li><a href="#essayer">Essayer</a></li></ul></nav>
+    <details class="langmenu">
+      <summary aria-label="Langue">Français</summary>
+      <ul><li><a href="../en/" hreflang="en" lang="en">English</a></li><li><a href="../fr/" hreflang="fr" lang="fr" aria-current="true">Français</a></li><li><a href="../es/" hreflang="es" lang="es">Español</a></li><li><a href="../ja/" hreflang="ja" lang="ja">日本語</a></li><li><a href="../zh/" hreflang="zh-CN" lang="zh-CN">中文（简体）</a></li></ul>
+    </details>
+  </div>
+</header>
+
+<main id="contenu">
+  <div class="hero">
+    <div class="wrap">
+      <span class="pill"><i aria-hidden="true"></i>Projet étudiant · Refonte de l’interface de Steam</span>
+      <h1>Tous tes jeux. Toutes tes <span>légendes.</span></h1>
+      <p class="lead">Pantheon est une interface alternative pour Steam sur Windows. Elle met tes succès et ta progression au centre, avec un design sombre, aéré et sans bruit visuel. Steam reste ton client : Pantheon en est seulement un nouveau visage.</p>
+      <div class="cta">
+        <a class="btn primary" href="#fonctions">Découvrir le projet</a>
+        <a class="btn" href="#design">Voir le design</a>
+      </div>
+      <figure class="shot"><img src="../assets/shots/fr/bibliotheque.jpg" width="1800" height="1125" alt="Capture de la bibliothèque de Pantheon : bandeau « Continuer à jouer » et grille de jaquettes avec leur état d’installation, leur temps de jeu et leur progression de succès."></figure>
+      <ul class="facts"><li><b>6</b><span>écrans conçus et codés</span></li><li><b>45</b><span>tests automatiques</span></li><li><b>0</b><span>donnée collectée</span></li><li><b>100 %</b><span>utilisable au clavier</span></li></ul>
+    </div>
+  </div>
+
+  <section id="projet">
+    <div class="wrap brief">
+      <div>
+        <span class="eyebrow">Le projet</span>
+        <h2>Un client Steam pensé pour les collectionneurs</h2>
+        <p class="sub">Steam est complet, mais son interface est dense, et les succès y sont cachés derrière plusieurs clics. Ce projet étudiant est né d’une question simple : à quoi ressemblerait Steam s’il était dessiné pour ceux qui chassent le 100 % ?</p>
+      </div>
+      <div>
+        <p>J’ai conçu l’identité visuelle, les écrans et le système de design, puis je les ai codés en une vraie application Windows (Electron) qui lit les fichiers locaux de Steam et utilise ton propre accès à l’API officielle.</p>
+        <p>Pantheon ne remplace pas Steam : il reste lancé en arrière-plan, et les jeux démarrent par Steam comme d’habitude.</p>
+        <p class="quote mt">Un seul accent bleu, réservé aux actions et à la progression. Tout le reste s’efface devant les jaquettes.<small>Le principe directeur du design</small></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="fonctions" class="flush-top">
+    <div class="wrap">
+      <span class="eyebrow">Fonctions</span>
+      <h2>Chaque écran sert la progression</h2>
+      <div class="feature"><div class="text"><span class="eyebrow">Bibliothèque</span><h3>Des jaquettes, de l’air, une seule action</h3><p>La grille met les jaquettes en vedette. Au survol, un bouton rond Jouer apparaît au centre. Le dernier jeu joué est remonté en haut pour reprendre en un clic.</p><ul><li>Recherche, filtres (installés, téléchargements, favoris, presque terminés) et tris</li><li>État d’installation et progression des téléchargements sur chaque jaquette</li><li>Fluide avec plusieurs centaines de jeux</li></ul></div><figure class="shot"><img loading="lazy" src="../assets/shots/fr/bibliotheque.jpg" width="1800" height="1125" alt="La bibliothèque de Pantheon avec ses filtres, son tri et sa grille de jaquettes."></figure></div>
+      <div class="feature flip"><div class="text"><span class="eyebrow">Fiche d’un jeu</span><h3>Les succès, enfin lisibles</h3><p>Un anneau de progression, les succès débloqués avec leur date, et une rareté toujours écrite en toutes lettres : Commun, Peu commun, Rare, Ultra rare. Jamais seulement une couleur.</p><ul><li>Filtres Tous, Débloqués, Verrouillés, Rares, tri par rareté</li><li>Le succès le plus accessible et le plus rare obtenu</li><li>Image officielle du jeu en fond, fondue vers l’interface</li></ul></div><figure class="shot"><img loading="lazy" src="../assets/shots/fr/fiche.jpg" width="1800" height="1125" alt="La fiche d’un jeu : titre, statistiques, onglets et liste des succès avec anneau de progression et raretés."></figure></div>
+      <div class="feature"><div class="text"><span class="eyebrow">Page Succès</span><h3>Le Panthéon des jeux terminés</h3><p>Une vue d’ensemble de ta collection : total débloqué, section « Les dieux » pour les jeux terminés à 100 %, jeux les plus proches du but et succès les plus rares obtenus.</p></div><figure class="shot"><img loading="lazy" src="../assets/shots/fr/succes.jpg" width="1800" height="1125" alt="La page Succès : totaux, jeux terminés à 100 %, jeux les plus proches de la complétion."></figure></div>
+      <div class="feature flip"><div class="text"><span class="eyebrow">Boutique</span><h3>Parcourir sans quitter l’appli</h3><p>Promotions, meilleures ventes, nouveautés et recherche, en lecture seule. Les achats se font toujours dans le vrai Steam, d’un clic sur « Voir dans Steam ».</p></div><figure class="shot"><img loading="lazy" src="../assets/shots/fr/boutique.jpg" width="1800" height="1125" alt="La boutique de Pantheon avec ses promotions et prix réduits."></figure></div>
+      <div class="feature"><div class="text"><span class="eyebrow">Amis et téléchargements</span><h3>Qui joue à quoi, et où en est ton installation</h3><p>Tes amis triés par statut avec leur jeu en cours, et un bouton Discuter qui ouvre le chat dans Steam. Les téléchargements en cours s’affichent avec leur progression, jusque dans une pastille du menu.</p></div><figure class="shot"><img loading="lazy" src="../assets/shots/fr/amis.jpg" width="1800" height="1125" alt="La liste d’amis, regroupée entre connectés et hors ligne, avec le jeu en cours."></figure></div>
+      <p class="note mt">Toutes les captures utilisent des jeux et des amis fictifs (mode démo de l’application).</p>
+    </div>
+  </section>
+
+  <section id="design" class="band">
+    <div class="wrap">
+      <span class="eyebrow">Design</span>
+      <h2>Sombre, aéré, un seul accent</h2>
+      <p class="sub">Très peu de bordures, des rayons généreux et deux familles de polices : Space Grotesk pour les titres et les chiffres, Inter pour l’interface. L’accent bleu est une variable unique : on peut le changer en une ligne.</p>
+      <div class="swatches" role="list" aria-label="Palette de couleurs"><div class="sw" role="listitem"><div class="c1"></div><p><b>Fond</b><span>#0B0D12</span></p></div><div class="sw" role="listitem"><div class="c2"></div><p><b>Surface</b><span>#12161E</span></p></div><div class="sw" role="listitem"><div class="c3"></div><p><b>Surface haute</b><span>#181D27</span></p></div><div class="sw" role="listitem"><div class="c4"></div><p><b>Texte</b><span>#E9ECF3</span></p></div><div class="sw" role="listitem"><div class="c5"></div><p><b>Accent</b><span>#4D8DFF</span></p></div></div>
+      <div class="design-grid">
+        <div class="card"><h3>Typographie</h3><div class="type-a">Aa 18 / 42</div><p class="type-b">Space Grotesk pour les titres et les chiffres, Inter pour tout le reste.</p></div>
+        <div class="card"><h3>Une rareté qui se lit</h3><div class="rarities"><div><b class="r4">Ultra rare</b><span>moins de 3 %</span></div><div><b class="r3">Rare</b><span>3 à 10 %</span></div><div><b class="r2">Peu commun</b><span>10 à 25 %</span></div><div><b class="r1">Commun</b><span>25 % et plus</span></div></div></div>
+        <div class="card"><h3>Accessible dès le départ</h3><p>Navigation complète au clavier, états de focus bien visibles, contraste du texte d’au moins 4,5:1, cibles tactiles de 44 px et boutons d’icône nommés pour les lecteurs d’écran.</p></div>
+        <div class="card"><h3>Pensé pour grandir</h3><p>Les textes sont isolés dans des fichiers de traduction (cinq langues aujourd’hui) et la couleur d’accent tient en une variable.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="technique">
+    <div class="wrap">
+      <span class="eyebrow">Sous le capot</span>
+      <h2>Beau, mais aussi sûr</h2>
+      <p class="sub">Une interface qui lit ta bibliothèque doit être irréprochable côté sécurité. Ce projet a été construit avec la même exigence que le design.</p>
+      <div class="tech"><div class="card"><h3>Jamais de mot de passe</h3><p>Aucune connexion Steam. L’appli lit les fichiers locaux et utilise ta propre clé d’API, chiffrée sur ton ordinateur avec le coffre de Windows.</p></div><div class="card"><h3>Electron durci</h3><p>Isolation du contexte, sandbox, politique de sécurité stricte, liens vers Steam limités à une liste blanche d’actions, réseau restreint à quelques domaines.</p></div><div class="card"><h3>Zéro collecte</h3><p>Pas de compte, pas de statistiques d’usage, pas de serveur : tout reste sur ton PC. Les appels à Steam sont mis en cache et plafonnés.</p></div><div class="card"><h3>Testé</h3><p>45 tests automatiques couvrent le lecteur des fichiers Steam, les calculs de rareté, la validation des liens, le cache, le client d’API et les traductions.</p></div><div class="card"><h3>Mode démo</h3><p>Une variable suffit pour tout faire tourner avec de fausses données, sans Steam. C’est ainsi que les captures de cette page ont été réalisées.</p></div><div class="card"><h3>Performant</h3><p>Chargement paresseux des images, mise à jour ciblée des cartes et rendu différé hors écran pour garder des centaines de jeux fluides.</p></div></div>
+      <div class="tags" aria-label="Technologies"><span>Electron</span><span>JavaScript</span><span>HTML / CSS</span><span>Steam Web API</span><span>safeStorage</span><span>NSIS</span></div>
+    </div>
+  </section>
+
+  <section id="essayer" class="flush-top">
+    <div class="wrap">
+      <div class="try">
+        <span class="eyebrow">Essayer</span>
+        <h2>Pantheon pour Windows</h2>
+        <p class="sub">Windows 10 ou 11 et Steam installé. L’installeur n’étant pas signé, Windows peut afficher un avertissement : clique sur « Informations complémentaires » puis « Exécuter quand même ».</p>
+        <div class="cta"><a class="btn primary" href="#essayer" aria-disabled="true">Téléchargement bientôt disponible</a></div>
+        <p class="note">Projet étudiant gratuit et non commercial.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Pantheon est un projet étudiant non commercial, réalisé par Axel Archambeault, pour explorer la refonte de l’interface de Steam. Les jeux et amis des captures sont fictifs.</p>
+    <p>Non affilié à Valve ni à Steam. Steam et le logo Steam sont des marques de Valve Corporation. Pantheon n’est ni approuvé ni sponsorisé par Valve. Aucune donnée n’est collectée.</p>
+  </div>
+</footer>
+</body>
+</html>

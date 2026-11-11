@@ -2,7 +2,7 @@ import { h, icon } from '../dom.js';
 import { t } from '../i18n.js';
 import { artLayers } from '../art.js';
 import { ring, achievementCard, rarityLabel } from '../components.js';
-import { formatHoursShort, formatRelative, formatSize, formatPct, isComplete } from '../format.js';
+import { formatHoursShort, formatRelative, formatSize, formatPct, isComplete, compareNames } from '../format.js';
 
 const TABS = ['overview', 'achievements', 'screenshots', 'news'];
 const FILTERS = ['all', 'unlocked', 'locked', 'rare'];
@@ -12,7 +12,7 @@ const byPercent = (a, b) => (a.percent ?? 101) - (b.percent ?? 101);
 const sorters = {
   rarity: byPercent,
   date: (a, b) => (b.unlockTime ?? -1) - (a.unlockTime ?? -1) || byPercent(a, b),
-  name: (a, b) => a.name.localeCompare(b.name, 'fr'),
+  name: (a, b) => compareNames(a.name, b.name),
 };
 const filters = {
   all: () => true,

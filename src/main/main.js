@@ -11,11 +11,27 @@ const { createSteamApi } = require('./steam-api');
 const { createProvider } = require('./provider');
 const { createAchievementService } = require('./achievements');
 const { isSteamId64 } = require('../shared/validation');
+const { LANGUAGES, resolveLanguage, normalizeCountry } = require('../shared/languages');
 
 const MOCK = process.env.PANTHEON_MOCK === '1' || process.argv.includes('--mock');
 const DEV = !app.isPackaged;
 const RENDERER_DIR = path.join(__dirname, '..', 'renderer');
 const ORIGIN = 'app://local/';
+// Langue de l'interface : choix de l'utilisateur, sinon langue de Windows, sinon anglais.
+function language() {
+  return resolveLanguage((DEV && process.env.PANTHEON_LANG) || store.getSetting('language') || app.getLocale());
+}
+const country = () => normalizeCountry(app.getLocaleCountryCode());
+
+// Anciennes versions (l'appli s'appelait « Le Pantheon ») : on garde leur dossier de données. La clé d'API chiffrée y est
+// liée par Windows et par Chromium : la copier ailleurs la rendrait illisible. Les nouvelles installations utilisent « Pantheon ».
+function useLegacyDataFolder() {
+  const legacy = path.join(app.getPath('appData'), 'Le Pantheon');
+  const hasData = ['apikey.bin', 'settings.json'].some((f) => require('node:fs').existsSync(path.join(legacy, f)));
+  if (hasData) app.setPath('userData', legacy);
+}
+useLegacyDataFolder();
+
 let provider;
 let steamApi;
 let cache;
@@ -51,7 +67,12 @@ function handle(channel, fn) {
 }
 
 function registerIpc() {
-  handle('app:info', () => ({ version: app.getVersion(), mock: MOCK, platform: process.platform }));
+  handle('app:info', () => ({ version: app.getVersion(), mock: MOCK, platform: process.platform, language: language() }));
+  handle('language:set', (code) => {
+    if (typeof code !== 'string' || !Object.hasOwn(LANGUAGES, code)) return { ok: false, error: 'bad-language' };
+    store.setSetting('language', code);
+    return { ok: true };
+  });
   handle('library:get', () => provider.getLibrary());
   handle('profile:get', () => provider.getProfile());
   handle('game:get', (appid) => {
@@ -130,7 +151,7 @@ function registerIpc() {
   // Sélecteur de dossier natif : l'interface ne voit jamais le disque, elle reçoit seulement le chemin choisi.
   handle('steam:pickFolder', async () => {
     const win = BrowserWindow.getFocusedWindow() || BrowserWindow.getAllWindows()[0];
-    const r = await dialog.showOpenDialog(win, { title: 'Dossier de Steam', properties: ['openDirectory'] });
+    const r = await dialog.showOpenDialog(win, { title: LANGUAGES[language()].folderTitle, properties: ['openDirectory'] });
     if (r.canceled || !r.filePaths[0]) return { ok: false, error: 'canceled' };
     const found = await findSteamPath(r.filePaths[0]);
     // findSteamPath retombe sur le dossier détecté si le choix est invalide : on exige que ce soit bien le dossier choisi.
@@ -153,7 +174,7 @@ function createWindow() {
     minHeight: 600,
     show: false,
     backgroundColor: '#0B0D12',
-    title: 'Le Pantheon',
+    title: 'Pantheon',
     titleBarStyle: 'hidden',
     titleBarOverlay: { color: '#0B0D12', symbolColor: '#E9ECF3', height: 40 },
     webPreferences: {
@@ -184,7 +205,7 @@ function createWindow() {
         if (process.env.PANTHEON_SCROLL) await win.webContents.executeJavaScript('document.getElementById("main").scrollTo(0, 99999)');
         await new Promise((r) => setTimeout(r, 300));
         const img = await win.webContents.capturePage();
-        require('node:fs').writeFileSync(shot, img.toPNG());
+        require('node:fs').writeFileSync(shot, /\.jpe?g$/i.test(shot) ? img.toJPEG(90) : img.toPNG());
         app.quit();
       }, Number(process.env.PANTHEON_DELAY) || 1500);
     });
@@ -196,8 +217,8 @@ app.whenReady().then(async () => {
   session.defaultSession.setPermissionRequestHandler((_wc, _perm, cb) => cb(false));
   const userData = app.getPath('userData');
   cache = createCache(path.join(userData, 'cache'));
-  steamApi = createSteamApi({ getKey: secrets.getKey, cache, quotaCache: createCache(path.join(userData, 'state')) });
-  provider = createProvider(MOCK, { api: steamApi, hasKey: secrets.hasKey, achievements: createAchievementService({ api: steamApi }) });
+  steamApi = createSteamApi({ getKey: secrets.getKey, cache, quotaCache: createCache(path.join(userData, 'state')), getLang: () => LANGUAGES[language()].steam, getCountry: country });
+  provider = createProvider(MOCK, { api: steamApi, hasKey: secrets.hasKey, lang: language, achievements: createAchievementService({ api: steamApi }) });
   registerAppProtocol();
   registerIpc();
   createWindow();
