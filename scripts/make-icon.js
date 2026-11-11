@@ -1,5 +1,5 @@
 'use strict';
-// Génère build/icon.png (512 px) et build/icon.ico (PNG 256 px) : anneau bleu sur fond sombre, comme le logo de l'appli.
+// Génère build/icon.png (512 px) et build/icon.ico (PNG 256 px) : noyau et électrons en orbite, bleu sur fond sombre, comme le logo de l'appli.
 // Aucune dépendance : PNG écrit à la main avec zlib. Usage : node scripts/make-icon.js
 const fs = require('node:fs');
 const path = require('node:path');
@@ -13,13 +13,33 @@ function render(size) {
   const px = Buffer.alloc(size * size * 4);
   const c = size / 2;
   const radius = size * 0.22; // coins arrondis
-  const ringR = size * 0.34;
-  const ringW = size * 0.075;
-  const dotR = size * 0.15;
+  const A = size * 0.385; // demi grand axe des orbites
+  const B = size * 0.135; // demi petit axe
+  const lineW = Math.max(size * 0.024, 1.1);
+  const nucleusR = size * 0.1;
+  const electronR = Math.max(size * 0.042, 1.3);
+  const angles = [0, Math.PI / 3, (2 * Math.PI) / 3]; // trois orbites inclinées
+  const phases = [0.9, 3.3, 5.2]; // position de chaque électron sur son orbite
+  const electrons = angles.map((a, i) => {
+    const ex = A * Math.cos(phases[i]);
+    const ey = B * Math.sin(phases[i]);
+    return [c + ex * Math.cos(a) - ey * Math.sin(a), c + ex * Math.sin(a) + ey * Math.cos(a)];
+  });
   const roundedSquare = (x, y) => {
     const dx = Math.max(Math.abs(x - c) - (c - radius), 0);
     const dy = Math.max(Math.abs(y - c) - (c - radius), 0);
     return dx * dx + dy * dy <= radius * radius;
+  };
+  const onOrbit = (x, y) => {
+    for (const a of angles) {
+      const dx = x - c, dy = y - c;
+      const u = dx * Math.cos(a) + dy * Math.sin(a);
+      const v = -dx * Math.sin(a) + dy * Math.cos(a);
+      const f = (u * u) / (A * A) + (v * v) / (B * B) - 1;
+      const gx = (2 * u) / (A * A), gy = (2 * v) / (B * B);
+      if (Math.abs(f) / Math.hypot(gx, gy) <= lineW / 2) return true;
+    }
+    return false;
   };
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
@@ -29,8 +49,8 @@ function render(size) {
           const fx = x + (sx + 0.5) / SS;
           const fy = y + (sy + 0.5) / SS;
           if (!roundedSquare(fx, fy)) continue;
-          const d = Math.hypot(fx - c, fy - c);
-          const col = Math.abs(d - ringR) <= ringW / 2 || d <= dotR ? ACCENT : BG;
+          const lit = Math.hypot(fx - c, fy - c) <= nucleusR || onOrbit(fx, fy) || electrons.some(([ex, ey]) => Math.hypot(fx - ex, fy - ey) <= electronR);
+          const col = lit ? ACCENT : BG;
           a++; r += col[0]; g += col[1]; b += col[2];
         }
       }
