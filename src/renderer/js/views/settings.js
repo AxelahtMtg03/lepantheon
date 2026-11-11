@@ -38,6 +38,23 @@ export async function renderSettings(root, api) {
     say(r.ok ? 'set.saved' : `set.err.${r.error}`, r.ok);
   };
 
+  const browse = async () => {
+    const r = await api.pickSteamFolder();
+    if (r.ok) {
+      pathInput.value = r.path;
+      await saveAccount();
+    } else if (r.error === 'not-steam') say('set.acc.notSteam', false);
+  };
+
+  const startup = await api.getStartup();
+  const startupBox = h('input', { type: 'checkbox', id: 'f-startup', checked: startup.enabled, disabled: !startup.supported,
+    onchange: async (e) => {
+      const r = await api.setStartup(e.target.checked);
+      if (!r.ok) e.target.checked = false;
+      say(r.ok ? (e.target.checked ? 'set.startup.on' : 'set.startup.off') : 'set.startup.err', r.ok);
+    } });
+  const appInfo = await api.getInfo();
+
   const field = (id, label, input, hint) => h('div', { class: 'field' }, h('label', { for: id }, label), input, hint ? h('p', { class: 'hint' }, hint) : null);
   const steps = h('ol', { class: 'steps' }, ['1', '2', '3', '4'].map((n) => h('li', null, t(`set.key.step${n}`))));
 
@@ -58,13 +75,26 @@ export async function renderSettings(root, api) {
     h('section', { class: 'panel', 'aria-labelledby': 'h-acc' },
       h('h2', { id: 'h-acc' }, t('set.acc.title')),
       field('f-path', t('set.acc.path'), pathInput, t('set.acc.pathHint')),
+      h('div', { class: 'actions' }, h('button', { class: 'btn', type: 'button', onclick: browse }, t('set.acc.browse'))),
       field('f-id', t('set.acc.id'), idInput, t('set.acc.idHint')),
       h('div', { class: 'actions' }, h('button', { class: 'btn primary', type: 'button', onclick: saveAccount }, t('set.save'))),
+    ),
+    h('section', { class: 'panel', 'aria-labelledby': 'h-gen' },
+      h('h2', { id: 'h-gen' }, t('set.general.title')),
+      h('div', { class: 'check-row' }, startupBox, h('label', { for: 'f-startup' }, t('set.startup.label'))),
+      h('p', { class: 'hint' }, t(startup.supported ? 'set.startup.hint' : 'set.startup.unsupported')),
     ),
     h('section', { class: 'panel', 'aria-labelledby': 'h-cache' },
       h('h2', { id: 'h-cache' }, t('set.cache.title')),
       h('p', { class: 'hint' }, t('set.cache.text')),
       h('div', { class: 'actions' }, h('button', { class: 'btn', type: 'button', onclick: async () => { await api.clearCache(); say('set.cache.done'); } }, t('set.cache.clear'))),
+    ),
+    h('section', { class: 'panel', 'aria-labelledby': 'h-about' },
+      h('h2', { id: 'h-about' }, t('set.about.title')),
+      h('p', { class: 'lead' }, t('set.about.tagline')),
+      h('p', { class: 'hint' }, t('set.about.version', { v: appInfo.version })),
+      h('p', { class: 'disclaimer' }, t('set.about.disclaimer')),
+      h('ul', { class: 'plain hint' }, ['privacy', 'key', 'images'].map((k) => h('li', null, t(`set.about.${k}`)))),
     ),
     msg,
   );

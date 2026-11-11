@@ -1,7 +1,8 @@
 'use strict';
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
-const { app, BrowserWindow, ipcMain, protocol, net, shell, session } = require('electron');
+const { app, BrowserWindow, ipcMain, protocol, net, shell, session, dialog } = require('electron');
+const { findSteamPath } = require('./steam-local');
 const { buildSteamUrl, isAllowedExternalUrl, isAppId } = require('../shared/validation');
 const store = require('./store');
 const secrets = require('./secrets');
@@ -88,7 +89,9 @@ function registerIpc() {
     const steamId = typeof v.steamId === 'string' ? v.steamId.trim() : '';
     if (steamId && !isSteamId64(steamId)) return { ok: false, error: 'bad-steamid' };
     store.setSetting('steamId', steamId);
-    store.setSetting('steamPath', typeof v.steamPath === 'string' ? v.steamPath : '');
+    const steamPath = typeof v.steamPath === 'string' ? v.steamPath.trim() : '';
+    if (steamPath && (steamPath.includes('\0') || !path.isAbsolute(steamPath))) return { ok: false, error: 'bad-path' };
+    store.setSetting('steamPath', steamPath);
     return { ok: true };
   });
   // La clé est vérifiée par un vrai appel ; elle n'est jamais renvoyée à l'interface.
@@ -116,6 +119,23 @@ function registerIpc() {
   handle('apikey:clear', () => {
     secrets.clearKey();
     return { ok: true };
+  });
+  // Démarrage avec Windows (sans effet en développement : on n'enregistre pas electron.exe).
+  handle('startup:get', () => ({ supported: !DEV && process.platform === 'win32', enabled: !DEV && app.getLoginItemSettings().openAtLogin }));
+  handle('startup:set', (enabled) => {
+    if (DEV || process.platform !== 'win32') return { ok: false, error: 'unsupported' };
+    app.setLoginItemSettings({ openAtLogin: enabled === true });
+    return { ok: true };
+  });
+  // Sélecteur de dossier natif : l'interface ne voit jamais le disque, elle reçoit seulement le chemin choisi.
+  handle('steam:pickFolder', async () => {
+    const win = BrowserWindow.getFocusedWindow() || BrowserWindow.getAllWindows()[0];
+    const r = await dialog.showOpenDialog(win, { title: 'Dossier de Steam', properties: ['openDirectory'] });
+    if (r.canceled || !r.filePaths[0]) return { ok: false, error: 'canceled' };
+    const found = await findSteamPath(r.filePaths[0]);
+    // findSteamPath retombe sur le dossier détecté si le choix est invalide : on exige que ce soit bien le dossier choisi.
+    if (!found || path.resolve(found).toLowerCase() !== path.resolve(r.filePaths[0]).toLowerCase()) return { ok: false, error: 'not-steam' };
+    return { ok: true, path: found };
   });
   handle('cache:clear', () => ({ ok: true, removed: cache.clear() }));
   handle('external:open', async (url) => {
@@ -158,6 +178,8 @@ function createWindow() {
   if (shot) {
     win.webContents.once('did-finish-load', () => {
       setTimeout(async () => {
+        if (process.env.PANTHEON_SCROLL) await win.webContents.executeJavaScript('document.getElementById("main").scrollTo(0, 99999)');
+        await new Promise((r) => setTimeout(r, 300));
         const img = await win.webContents.capturePage();
         require('node:fs').writeFileSync(shot, img.toPNG());
         app.quit();
