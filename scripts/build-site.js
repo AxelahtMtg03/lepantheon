@@ -125,7 +125,7 @@ function render(code, prefix, isRoot) {
         <span class="eyebrow">${esc(c.tryEyebrow)}</span>
         <h2>${esc(c.tryH2)}</h2>
         <p class="sub">${esc(c.trySub)}</p>
-        <div class="cta"><a class="btn primary" href="#essayer" aria-disabled="true">${esc(c.tryBtn)}</a></div>
+        <div class="cta"><a class="btn primary" href="https://github.com/AxelahtMtg03/lepantheon/releases/latest" target="_blank" rel="noopener noreferrer">${esc(c.tryBtn)}</a></div>
         <p class="note">${esc(c.tryNote)}</p>
       </div>
     </div>
