@@ -55,6 +55,21 @@ export async function renderSettings(root, api) {
     } });
   const appInfo = await api.getInfo();
 
+  // Mises à jour : état en direct, vérification manuelle, vérification automatique activable.
+  const upd = await api.getUpdate();
+  const updStatus = h('p', { class: 'hint', role: 'status', 'aria-live': 'polite' });
+  const checkBtn = h('button', { class: 'btn', type: 'button', onclick: () => api.checkUpdate() }, t('upd.check'));
+  const restartBtn = h('button', { class: 'btn primary hidden', type: 'button', onclick: () => api.installUpdate() }, t('upd.restart'));
+  const autoBox = h('input', { type: 'checkbox', id: 'f-upd-auto', checked: upd.auto, onchange: (e) => api.setAutoUpdate(e.target.checked) });
+  function paintUpdate(s) {
+    const busy = ['checking', 'available', 'downloading'].includes(s.status);
+    updStatus.textContent = s.status === 'idle' ? '' : t(`upd.status.${s.status}`, { v: s.next, pct: s.percent });
+    checkBtn.disabled = busy || s.status === 'ready' || s.status === 'dev';
+    restartBtn.classList.toggle('hidden', s.status !== 'ready');
+  }
+  paintUpdate(upd);
+  const stopListening = api.onUpdate((s) => paintUpdate({ ...upd, ...s }));
+
   const langSelect = h('select', { id: 'f-lang', class: 'text', onchange: async (e) => {
       const r = await api.setLanguage(e.target.value);
       if (r.ok) location.reload(); // recharge l'interface dans la nouvelle langue
@@ -91,6 +106,14 @@ export async function renderSettings(root, api) {
       h('div', { class: 'check-row' }, startupBox, h('label', { for: 'f-startup' }, t('set.startup.label'))),
       h('p', { class: 'hint' }, t(startup.supported ? 'set.startup.hint' : 'set.startup.unsupported')),
     ),
+    h('section', { class: 'panel', 'aria-labelledby': 'h-upd' },
+      h('h2', { id: 'h-upd' }, t('upd.title')),
+      h('p', { class: 'hint' }, t('upd.version', { v: upd.current })),
+      h('div', { class: 'check-row' }, autoBox, h('label', { for: 'f-upd-auto' }, t('upd.auto'))),
+      h('p', { class: 'hint' }, t('upd.autoHint')),
+      h('div', { class: 'actions' }, checkBtn, restartBtn),
+      updStatus,
+    ),
     h('section', { class: 'panel', 'aria-labelledby': 'h-cache' },
       h('h2', { id: 'h-cache' }, t('set.cache.title')),
       h('p', { class: 'hint' }, t('set.cache.text')),
@@ -105,4 +128,5 @@ export async function renderSettings(root, api) {
     ),
     msg,
   );
+  return { dispose: stopListening };
 }

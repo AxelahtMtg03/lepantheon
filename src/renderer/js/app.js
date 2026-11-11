@@ -19,6 +19,7 @@ const NAV = [
 const sidebar = document.getElementById('sidebar');
 const main = document.getElementById('main');
 let badges = {};
+let updateState = { status: 'idle' };
 
 function navLink(item, current) {
   const a = h('a', { class: 'nav-link', href: `#/${item.id}` }, icon(item.icon), h('span', { class: 'label' }, t(`nav.${item.id}`)));
@@ -36,6 +37,15 @@ function setBadge(id, n) {
   el.classList.toggle('hidden', !n);
 }
 
+// Bandeau « mise à jour prête » : visible seulement quand le téléchargement est terminé.
+function paintUpdateBanner() {
+  const el = document.getElementById('updbanner');
+  if (!el) return;
+  const ready = updateState.status === 'ready';
+  el.classList.toggle('hidden', !ready);
+  if (ready) el.querySelector('span').textContent = t('upd.banner', { v: updateState.next });
+}
+
 function renderSidebar(current, info, profile) {
   const online = profile.status === 'online';
   const initial = (profile.name || t('profile.player')).trim().charAt(0).toUpperCase();
@@ -46,6 +56,7 @@ function renderSidebar(current, info, profile) {
     h('nav', { 'aria-label': t('nav.label'), style: { display: 'flex', flexDirection: 'column', gap: '6px' } }, NAV.map((n) => navLink(n, current))),
     h('div', { class: 'spacer' }),
     navLink({ id: 'settings', icon: 'settings' }, current),
+    h('div', { class: 'updbanner hidden', id: 'updbanner', role: 'status' }, h('span'), h('button', { class: 'btn small primary', type: 'button', onclick: () => api.installUpdate() }, t('upd.bannerBtn'))),
     h('div', { class: 'profile' },
       h('div', { class: 'profile-row' }, avatar,
         h('div', { style: { display: 'flex', flexDirection: 'column', gap: '2px' } },
@@ -53,6 +64,7 @@ function renderSidebar(current, info, profile) {
           h('span', { class: 'profile-status' }, h('span', { class: `dot${online ? ' on' : ''}` }), t(online ? 'profile.online' : 'profile.offline')))),
       h('button', { class: 'btn small', type: 'button', onclick: () => api.steam.openSteam() }, t('profile.openSteam'))),
   );
+  paintUpdateBanner();
 }
 
 function soon(titleKey) {
@@ -78,7 +90,7 @@ async function route(info, profile) {
     else if (current === 'downloads') v = await renderDownloads(main, api);
     else if (current === 'achievements') v = await renderAchievements(main, api);
     else if (current === 'library') v = await renderLibrary(main, api);
-    else if (current === 'settings') await renderSettings(main, api);
+    else if (current === 'settings') v = await renderSettings(main, api);
     else main.replaceChildren(...soon(`nav.${current}`));
     if (seq !== routeSeq) v?.dispose?.(); // l'utilisateur a déjà changé de page
     else view = v;
@@ -124,6 +136,16 @@ async function start() {
       // pastille inchangée
     }
   };
+  try {
+    updateState = await api.getUpdate();
+    paintUpdateBanner();
+    api.onUpdate((s) => {
+      updateState = { ...updateState, ...s };
+      paintUpdateBanner();
+    });
+  } catch {
+    // pas de bandeau
+  }
   refreshDownloads();
   refreshFriends();
   setInterval(refreshDownloads, 8000);

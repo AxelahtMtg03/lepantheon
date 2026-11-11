@@ -226,5 +226,20 @@ export default {
   "time.hoursShort": "{n} 時間",
   "fmt.pct": "{n}%",
   "unit.gb": "GB",
-  "unit.mb": "MB"
+  "unit.mb": "MB",
+  "upd.title": "アップデート",
+  "upd.version": "現在のバージョン: {v}",
+  "upd.check": "アップデートを確認",
+  "upd.auto": "アップデートを自動で確認する",
+  "upd.autoHint": "Pantheon は新しいバージョンを探すために GitHub に接続します。それ以外は何も送信しません。",
+  "upd.status.checking": "確認中…",
+  "upd.status.none": "最新バージョンです。",
+  "upd.status.available": "バージョン {v} が見つかりました。ダウンロード中…",
+  "upd.status.downloading": "バージョン {v} をダウンロード中… {pct}%",
+  "upd.status.ready": "バージョン {v} の準備ができました。再起動して更新してください。",
+  "upd.status.error": "アップデートを確認できませんでした。後でもう一度お試しください。",
+  "upd.status.dev": "アップデートは、インストール済みのアプリでのみ利用できます。",
+  "upd.restart": "再起動して更新",
+  "upd.banner": "アップデート {v} の準備完了",
+  "upd.bannerBtn": "再起動"
 };

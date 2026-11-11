@@ -18,6 +18,16 @@ contextBridge.exposeInMainWorld(
     getFriends: () => call('friends:get'),
     getBadges: () => call('badges:get'),
     setLanguage: (code) => call('language:set', code),
+    getUpdate: () => call('update:get'),
+    checkUpdate: () => call('update:check'),
+    installUpdate: () => call('update:install'),
+    setAutoUpdate: (on) => call('update:setAuto', on === true),
+    // Abonnement aux changements d'état ; retourne la fonction qui se désabonne. L'objet « event » d'Electron n'est jamais transmis.
+    onUpdate: (callback) => {
+      const handler = (_event, state) => callback(state);
+      ipcRenderer.on('update:state', handler);
+      return () => ipcRenderer.removeListener('update:state', handler);
+    },
     getSettings: () => call('settings:get'),
     saveSettings: (values) => call('settings:set', values),
     setApiKey: (key) => call('apikey:set', key),

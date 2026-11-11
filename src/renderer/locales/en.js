@@ -226,5 +226,20 @@ export default {
   "time.hoursShort": "{n} h",
   "fmt.pct": "{n}%",
   "unit.gb": "GB",
-  "unit.mb": "MB"
+  "unit.mb": "MB",
+  "upd.title": "Updates",
+  "upd.version": "Current version: {v}",
+  "upd.check": "Check for updates",
+  "upd.auto": "Check for updates automatically",
+  "upd.autoHint": "Pantheon contacts GitHub to look for a new version. Nothing else is sent.",
+  "upd.status.checking": "Checking…",
+  "upd.status.none": "You have the latest version.",
+  "upd.status.available": "Version {v} found, downloading…",
+  "upd.status.downloading": "Downloading version {v}… {pct}%",
+  "upd.status.ready": "Version {v} is ready. Restart to update.",
+  "upd.status.error": "Couldn’t check for updates. Try again later.",
+  "upd.status.dev": "Updates are only available in the installed application.",
+  "upd.restart": "Restart and update",
+  "upd.banner": "Update {v} ready",
+  "upd.bannerBtn": "Restart"
 };

@@ -226,5 +226,20 @@ export default {
   "time.hoursShort": "{n} 小时",
   "fmt.pct": "{n}%",
   "unit.gb": "GB",
-  "unit.mb": "MB"
+  "unit.mb": "MB",
+  "upd.title": "更新",
+  "upd.version": "当前版本:{v}",
+  "upd.check": "检查更新",
+  "upd.auto": "自动检查更新",
+  "upd.autoHint": "Pantheon 会连接 GitHub 查找新版本,不会发送其他任何内容。",
+  "upd.status.checking": "正在检查…",
+  "upd.status.none": "你已使用最新版本。",
+  "upd.status.available": "发现版本 {v},正在下载…",
+  "upd.status.downloading": "正在下载版本 {v}… {pct}%",
+  "upd.status.ready": "版本 {v} 已就绪。重启即可更新。",
+  "upd.status.error": "无法检查更新,请稍后再试。",
+  "upd.status.dev": "更新仅在已安装的应用中可用。",
+  "upd.restart": "重启并更新",
+  "upd.banner": "更新 {v} 已就绪",
+  "upd.bannerBtn": "重启"
 };

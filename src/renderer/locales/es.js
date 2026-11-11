@@ -226,5 +226,20 @@ export default {
   "time.hoursShort": "{n} h",
   "fmt.pct": "{n} %",
   "unit.gb": "GB",
-  "unit.mb": "MB"
+  "unit.mb": "MB",
+  "upd.title": "Actualizaciones",
+  "upd.version": "Versión actual: {v}",
+  "upd.check": "Buscar actualizaciones",
+  "upd.auto": "Buscar actualizaciones automáticamente",
+  "upd.autoHint": "Pantheon se conecta a GitHub para buscar una nueva versión. No se envía nada más.",
+  "upd.status.checking": "Buscando…",
+  "upd.status.none": "Tienes la última versión.",
+  "upd.status.available": "Versión {v} encontrada, descargando…",
+  "upd.status.downloading": "Descargando la versión {v}… {pct} %",
+  "upd.status.ready": "La versión {v} está lista. Reinicia para actualizar.",
+  "upd.status.error": "No se pudo buscar actualizaciones. Inténtalo más tarde.",
+  "upd.status.dev": "Las actualizaciones solo están disponibles en la aplicación instalada.",
+  "upd.restart": "Reiniciar y actualizar",
+  "upd.banner": "Actualización {v} lista",
+  "upd.bannerBtn": "Reiniciar"
 };

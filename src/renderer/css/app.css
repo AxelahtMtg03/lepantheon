@@ -235,3 +235,8 @@ a.cover{display:block;text-decoration:none}
 .dl-pct{font-family:var(--font-display);font-weight:700;min-width:48px;text-align:right}
 .progress.grow{flex:1;min-width:80px}
 .close-row .page-sub{flex:0 0 150px;text-align:right}
+
+.updbanner{display:flex;flex-direction:column;gap:10px;padding:12px 14px;border-radius:14px;background:var(--surface-hi);border:1px solid var(--accent);margin-top:8px}
+.updbanner span{font-size:13px;font-weight:600;color:var(--text)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn:disabled:hover{background:transparent}

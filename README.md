@@ -23,7 +23,7 @@ npm start
 | `npm test` | automated tests |
 | `npm run icons` | regenerate the icon (`build/icon.ico` and `build/icon.png`) |
 | `npm run site` | regenerate the website in `site/` from `scripts/site-content.js` |
-| `npm run dist` | build the Windows installer into `dist/` |
+| `npm run dist` | build the Windows installer (and `latest.yml` for updates) into `dist/` |
 
 Developer options (ignored in the installed app): `PANTHEON_LANG=ja` forces a language; `PANTHEON_SCREENSHOT=file.jpg` saves a screenshot and quits (with `PANTHEON_HASH=#/store`, `PANTHEON_SIZE=1440x900`, `PANTHEON_CLEAN=1`).
 
@@ -39,6 +39,24 @@ The installer is **not signed**: Windows SmartScreen will show “Windows protec
 
 Upgrading from an older version (the app was called “Le Pantheon”) keeps your settings and your encrypted API key: the existing data folder is reused, because the key is tied to it by Windows.
 
+## Automatic updates
+
+The installed app checks GitHub Releases for a newer version 15 seconds after start and then every 6 hours (`electron-updater`). A new version downloads in the background; Settings → Updates and a banner in the sidebar offer “Restart and update”, otherwise it installs when the app is closed. It can be turned off in Settings (the only server contacted is `github.com`, nothing else is sent). Updates are disabled in development and demo mode.
+
+The installer is not code-signed, so integrity relies on the SHA-512 listed in `latest.yml` and on access to this repository's releases.
+
+**Publish a new version**
+
+1. Raise `version` in `package.json` (e.g. `0.1.2`), commit and push.
+2. `npm run dist`
+3. Create the release and upload the three update files (the updater needs all of them):
+
+```bash
+gh release create v0.1.2 dist/Pantheon-Setup-0.1.2.exe dist/Pantheon-Setup-0.1.2.exe.blockmap dist/latest.yml --title "Pantheon 0.1.2" --notes "What changed"
+```
+
+Installed apps older than 0.1.1 have no updater: they need one manual install of 0.1.1 or later.
+
 ## Website (`site/`)
 
 Static website, no JavaScript, no external resource: one page per language (`/en/`, `/fr/`, `/es/`, `/ja/`, `/zh/`), the root page is English, and `vercel.json` redirects the root to the visitor's language. Screenshots come from the app's demo mode, so they show only fictional games.
@@ -51,7 +69,7 @@ Edit the texts in `scripts/site-content.js`, then run `npm run site`.
 
 - `contextIsolation`, `sandbox`, no `nodeIntegration`, DevTools disabled in the installed app.
 - UI served from an internal `app://` protocol; strict Content-Security-Policy; bundled fonts.
-- Network only in the main process, to an allow-list of domains; 90,000 calls/day cap and disk cache.
+- Network only in the main process, to an allow-list of domains; 90,000 calls/day cap and disk cache. The updater only talks to `github.com` and can be disabled.
 - `steam://` links limited to `rungameid`, `install`, `uninstall`, `store`, `friends/message`, `open/main` with a validated numeric id.
 - No external data is inserted with `innerHTML` (only `textContent`).
 - `npm audit`: 0 vulnerabilities in what ships (`npm audit --omit=dev`). The remaining “moderate” alerts are in build tools only (`minimatch` inside `electron-builder`); `npm audit fix --force` would downgrade `electron-builder`, so it isn't applied.

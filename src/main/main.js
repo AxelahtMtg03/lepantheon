@@ -10,6 +10,7 @@ const { createCache } = require('./cache');
 const { createSteamApi } = require('./steam-api');
 const { createProvider } = require('./provider');
 const { createAchievementService } = require('./achievements');
+const { createUpdater } = require('./updater');
 const { isSteamId64 } = require('../shared/validation');
 const { LANGUAGES, resolveLanguage, normalizeCountry } = require('../shared/languages');
 
@@ -35,6 +36,7 @@ useLegacyDataFolder();
 let provider;
 let steamApi;
 let cache;
+let updater;
 
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { standard: true, secure: true, supportFetchAPI: true } },
@@ -158,6 +160,16 @@ function registerIpc() {
     if (!found || path.resolve(found).toLowerCase() !== path.resolve(r.filePaths[0]).toLowerCase()) return { ok: false, error: 'not-steam' };
     return { ok: true, path: found };
   });
+  // Mises à jour : état, vérification manuelle, installation d'une mise à jour déjà téléchargée, activation de la vérification automatique.
+  const updateAuto = () => store.getSetting('updates') !== 'off';
+  handle('update:get', () => ({ ...updater.getState(), current: app.getVersion(), auto: updateAuto() }));
+  handle('update:check', () => updater.check());
+  handle('update:install', () => updater.install());
+  handle('update:setAuto', (on) => {
+    store.setSetting('updates', on === true ? 'on' : 'off');
+    if (on === true) updater.schedule();
+    return { ok: true };
+  });
   handle('cache:clear', () => ({ ok: true, removed: cache.clear() }));
   handle('external:open', async (url) => {
     if (!isAllowedExternalUrl(url)) return { ok: false, error: 'blocked' };
@@ -219,8 +231,18 @@ app.whenReady().then(async () => {
   cache = createCache(path.join(userData, 'cache'));
   steamApi = createSteamApi({ getKey: secrets.getKey, cache, quotaCache: createCache(path.join(userData, 'state')), getLang: () => LANGUAGES[language()].steam, getCountry: country });
   provider = createProvider(MOCK, { api: steamApi, hasKey: secrets.hasKey, lang: language, achievements: createAchievementService({ api: steamApi }) });
+  // Les mises à jour ne fonctionnent que dans l'application installée (pas en développement ni en mode démo).
+  const canUpdate = app.isPackaged && !MOCK && process.platform === 'win32';
+  updater = createUpdater({
+    autoUpdater: canUpdate ? require('electron-updater').autoUpdater : null,
+    supported: canUpdate,
+    isAuto: () => store.getSetting('updates') !== 'off',
+    send: (state) => BrowserWindow.getAllWindows().forEach((w) => !w.isDestroyed() && w.webContents.send('update:state', state)),
+    log: (msg) => console.error(msg),
+  });
   registerAppProtocol();
   registerIpc();
+  updater.schedule();
   createWindow();
   app.on('activate', () => BrowserWindow.getAllWindows().length === 0 && createWindow());
 });

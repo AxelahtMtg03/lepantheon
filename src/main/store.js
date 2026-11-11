@@ -34,7 +34,7 @@ function save() {
 }
 
 // Réglages texte modifiables (chemin Steam, SteamID64) ; l'écran de réglages arrive à l'étape 7.
-const TEXT_SETTINGS = { steamPath: 260, steamId: 17, language: 5 };
+const TEXT_SETTINGS = { steamPath: 260, steamId: 17, language: 5, updates: 3 }; // updates : « on » ou « off »
 
 function getSetting(key) {
   const v = Object.hasOwn(TEXT_SETTINGS, key) ? load()[key] : undefined;
