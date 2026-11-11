@@ -65,19 +65,10 @@ export function logoMark(size = 26) {
   svg.setAttribute('height', size);
   svg.setAttribute('viewBox', '0 0 26 26');
   svg.setAttribute('aria-hidden', 'true');
-  const mk = (tag, attrs) => {
-    const el = document.createElementNS(SVG_NS, tag);
-    for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
-    return el;
-  };
-  // Noyau + trois orbites inclinées, chacune avec son électron.
-  [0, 60, 120].forEach((deg, i) => {
-    const g = mk('g', { transform: `rotate(${deg} 13 13)` });
-    g.append(mk('ellipse', { cx: 13, cy: 13, rx: 11.5, ry: 4.3, fill: 'none', stroke: 'var(--accent)', 'stroke-width': 1.1 }));
-    const t = [0.9, 3.3, 5.2][i];
-    g.append(mk('circle', { cx: 13 + 11.5 * Math.cos(t), cy: 13 + 4.3 * Math.sin(t), r: 1.6, fill: 'var(--accent)' }));
-    svg.append(g);
-  });
-  svg.append(mk('circle', { cx: 13, cy: 13, r: 3, fill: 'var(--accent)' }));
+  const ring = document.createElementNS(SVG_NS, 'circle');
+  for (const [k, v] of Object.entries({ cx: 13, cy: 13, r: 11, fill: 'none', stroke: 'var(--accent)', 'stroke-width': 2 })) ring.setAttribute(k, v);
+  const dot = document.createElementNS(SVG_NS, 'circle');
+  for (const [k, v] of Object.entries({ cx: 13, cy: 13, r: 5, fill: 'var(--accent)' })) dot.setAttribute(k, v);
+  svg.append(ring, dot);
   return svg;
 }
