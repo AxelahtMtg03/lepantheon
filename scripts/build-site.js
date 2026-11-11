@@ -21,12 +21,10 @@ function render(code, prefix, isRoot) {
     const fig = `<figure class="shot"><img loading="lazy" src="${shot(SHOTS[i])}" width="1800" height="1125" alt="${esc(f.alt)}"></figure>`;
     return `<div class="feature${flip ? ' flip' : ''}">${text}${fig}</div>`;
   };
-  const types = ['r4', 'r3', 'r2', 'r1'];
-  const sw = c.swatches.map(([n, hex], i) => `<div class="sw" role="listitem"><div class="c${i + 1}"></div><p><b>${esc(n)}</b><span>${hex}</span></p></div>`).join('');
-  const rar = c.rar.map(([n, r], i) => `<div><b class="${types[i]}">${esc(n)}</b><span>${esc(r)}</span></div>`).join('');
+  const steps = c.steps.map(([t, p]) => `<li><h3>${esc(t)}</h3><p>${esc(p)}</p></li>`).join('');
+  const keySteps = c.keySteps.map((t) => `<li>${esc(t)}</li>`).join('');
   const tech = c.tech.map(([t, p]) => `<div class="card"><h3>${esc(t)}</h3><p>${esc(p)}</p></div>`).join('');
-  const facts = c.facts.map(([b, s]) => `<li><b>${esc(b)}</b><span>${esc(s)}</span></li>`).join('');
-  const nav = ['projet', 'fonctions', 'design', 'technique', 'essayer'].map((id, i) => `<li><a href="#${id}">${esc(c.nav[i])}</a></li>`).join('');
+  const nav = ['projet', 'fonctions', 'demarrer', 'technique', 'essayer'].map((id, i) => `<li><a href="#${id}">${esc(c.nav[i])}</a></li>`).join('');
 
   return `<!doctype html>
 <html lang="${c.htmlLang}">
@@ -65,10 +63,9 @@ function render(code, prefix, isRoot) {
       <p class="lead">${esc(c.lead)}</p>
       <div class="cta">
         <a class="btn primary" href="#fonctions">${esc(c.cta1)}</a>
-        <a class="btn" href="#design">${esc(c.cta2)}</a>
+        <a class="btn" href="#essayer">${esc(c.nav[4])}</a>
       </div>
       <figure class="shot"><img src="${shot('bibliotheque')}" width="1800" height="1125" alt="${esc(c.heroAlt)}"></figure>
-      <ul class="facts">${facts}</ul>
     </div>
   </div>
 
@@ -96,17 +93,18 @@ function render(code, prefix, isRoot) {
     </div>
   </section>
 
-  <section id="design" class="band">
+  <section id="demarrer" class="band">
     <div class="wrap">
-      <span class="eyebrow">${esc(c.designEyebrow)}</span>
-      <h2>${esc(c.designH2)}</h2>
-      <p class="sub">${esc(c.designSub)}</p>
-      <div class="swatches" role="list" aria-label="${esc(c.swatchesAria)}">${sw}</div>
-      <div class="design-grid">
-        <div class="card"><h3>${esc(c.typeTitle)}</h3><div class="type-a">Aa 18 / 42</div><p class="type-b">${esc(c.typeText)}</p></div>
-        <div class="card"><h3>${esc(c.rarTitle)}</h3><div class="rarities">${rar}</div></div>
-        <div class="card"><h3>${esc(c.a11yTitle)}</h3><p>${esc(c.a11yText)}</p></div>
-        <div class="card"><h3>${esc(c.growTitle)}</h3><p>${esc(c.growText)}</p></div>
+      <span class="eyebrow">${esc(c.startEyebrow)}</span>
+      <h2>${esc(c.startH2)}</h2>
+      <p class="sub">${esc(c.startSub)}</p>
+      <ol class="steps4">${steps}</ol>
+      <div class="keybox">
+        <h3>${esc(c.keyH3)}</h3>
+        <ol class="keysteps">${keySteps}</ol>
+        <div class="cta left"><a class="btn primary" href="https://steamcommunity.com/dev/apikey" target="_blank" rel="noopener noreferrer">${esc(c.keyOpen)}</a></div>
+        <p class="keynote">${esc(c.keyPrivacy)}</p>
+        <p class="keynote">${esc(c.keyNote)}</p>
       </div>
     </div>
   </section>
@@ -136,8 +134,14 @@ function render(code, prefix, isRoot) {
 
 <footer>
   <div class="wrap">
-    <p>${esc(c.footer1)}</p>
-    <p>${esc(c.footer2)}</p>
+    <div>
+      <p>${esc(c.footer1)}</p>
+      <p>${esc(c.footer2)}</p>
+    </div>
+    <ul class="social" aria-label="${esc(c.linksLabel)}">
+      <li><a href="https://github.com/AxelahtMtg03" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 16 16" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a></li>
+      <li><a href="https://www.instagram.com/axel.aht.mtg/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>Instagram</a></li>
+    </ul>
   </div>
 </footer>
 </body>

@@ -1,259 +1,583 @@
 'use strict';
-// Textes du site de présentation, dans les cinq langues. Le gabarit est dans build-site.js.
+// Textes du site de présentation, dans les cinq langues. Le gabarit est dans build-site.js ; régénérer avec « npm run site ».
 // Structure identique pour chaque langue (vérifiée par tests/site.test.js).
 module.exports = {
   en: {
-    name: 'English', htmlLang: 'en',
+    name: 'English',
+    htmlLang: 'en',
     title: 'Pantheon — All your games. All your legends.',
     description: 'Student project: a redesign of Steam’s interface for Windows, built for achievement and 100% hunters. Non-commercial, not affiliated with Valve or Steam.',
-    skip: 'Skip to content', navLabel: 'Main navigation', langLabel: 'Language',
-    nav: ['The project', 'Features', 'Design', 'Under the hood', 'Try it'],
+    skip: 'Skip to content',
+    navLabel: 'Main navigation',
+    langLabel: 'Language',
+    nav: [ 'The project', 'Features', 'Getting started', 'Under the hood', 'Try it' ],
     pill: 'Student project · Steam interface redesign',
-    h1a: 'All your games. All your', h1b: 'legends.',
+    h1a: 'All your games. All your',
+    h1b: 'legends.',
     lead: 'Pantheon is an alternative interface for Steam on Windows. It puts your achievements and progress at the center, with a dark, airy design free of visual noise. Steam stays your client: Pantheon is just a new face for it.',
-    cta1: 'Discover the project', cta2: 'See the design',
+    cta1: 'Discover the project',
     heroAlt: 'Screenshot of the Pantheon library: a “Continue playing” banner and a grid of covers showing install status, playtime and achievement progress.',
-    facts: [['6', 'screens designed and coded'], ['45', 'automated tests'], ['0', 'data collected'], ['100%', 'keyboard accessible']],
-    projEyebrow: 'The project', projH2: 'A Steam client designed for collectors',
+    projEyebrow: 'The project',
+    projH2: 'A Steam client designed for collectors',
     projSub: 'Steam is complete, but its interface is dense, and achievements are buried several clicks deep. This student project started from a simple question: what would Steam look like if it were designed for people who chase 100%?',
     projP1: 'I designed the visual identity, the screens and the design system, then coded them into a real Windows application (Electron) that reads Steam’s local files and uses your own access to the official API.',
     projP2: 'Pantheon doesn’t replace Steam: it keeps running in the background, and games launch through Steam as usual.',
-    quote: 'A single blue accent, reserved for actions and progress. Everything else steps aside for the covers.', quoteSmall: 'The guiding principle of the design',
-    featEyebrow: 'Features', featH2: 'Every screen serves progress',
+    quote: 'A single blue accent, reserved for actions and progress. Everything else steps aside for the covers.',
+    quoteSmall: 'The guiding principle of the design',
+    featEyebrow: 'Features',
+    featH2: 'Every screen serves progress',
     features: [
-      { eyebrow: 'Library', h3: 'Covers, space, a single action', p: 'The grid puts covers front and center. On hover, a round Play button appears in the middle. Your last played game is pinned at the top so you can resume in one click.', bullets: ['Search, filters (installed, downloads, favorites, almost complete) and sorting', 'Install state and download progress on every cover', 'Smooth with hundreds of games'], alt: 'The Pantheon library with its filters, sorting and grid of covers.' },
-      { eyebrow: 'Game page', h3: 'Achievements, finally readable', p: 'A progress ring, unlocked achievements with their date, and a rarity always spelled out in words: Common, Uncommon, Rare, Ultra rare. Never just a color.', bullets: ['Filters All, Unlocked, Locked, Rare, sort by rarity', 'The most accessible achievement and the rarest one you earned', 'The game’s official artwork as the backdrop, fading into the interface'], alt: 'A game page: title, statistics, tabs and the achievements list with progress ring and rarities.' },
-      { eyebrow: 'Achievements page', h3: 'The Pantheon of finished games', p: 'An overview of your collection: total unlocked, a “Gods” section for games completed at 100%, the games closest to the finish line and the rarest achievements you’ve earned.', bullets: [], alt: 'The Achievements page: totals, games completed at 100%, games closest to completion.' },
-      { eyebrow: 'Store', h3: 'Browse without leaving the app', p: 'Specials, top sellers, new releases and search, read-only. Purchases are always made in the real Steam, one click away with “View in Steam”.', bullets: [], alt: 'The Pantheon store with its specials and discounted prices.' },
-      { eyebrow: 'Friends and downloads', h3: 'Who’s playing what, and how your install is going', p: 'Your friends sorted by status with the game they’re playing, and a Chat button that opens the conversation in Steam. Ongoing downloads show their progress, all the way to a badge in the menu.', bullets: [], alt: 'The friends list, grouped between online and offline, with the game being played.' },
+      {
+        eyebrow: 'Library',
+        h3: 'Covers, space, a single action',
+        p: 'The grid puts covers front and center. On hover, a round Play button appears in the middle. Your last played game is pinned at the top so you can resume in one click.',
+        bullets: [
+          'Search, filters (installed, downloads, favorites, almost complete) and sorting',
+          'Install state and download progress on every cover',
+          'Smooth with hundreds of games'
+        ],
+        alt: 'The Pantheon library with its filters, sorting and grid of covers.'
+      },
+      {
+        eyebrow: 'Game page',
+        h3: 'Achievements, finally readable',
+        p: 'A progress ring, unlocked achievements with their date, and a rarity always spelled out in words: Common, Uncommon, Rare, Ultra rare. Never just a color.',
+        bullets: [
+          'Filters All, Unlocked, Locked, Rare, sort by rarity',
+          'The most accessible achievement and the rarest one you earned',
+          'The game’s official artwork as the backdrop, fading into the interface'
+        ],
+        alt: 'A game page: title, statistics, tabs and the achievements list with progress ring and rarities.'
+      },
+      {
+        eyebrow: 'Achievements page',
+        h3: 'The Pantheon of finished games',
+        p: 'An overview of your collection: total unlocked, a “Gods” section for games completed at 100%, the games closest to the finish line and the rarest achievements you’ve earned.',
+        bullets: [],
+        alt: 'The Achievements page: totals, games completed at 100%, games closest to completion.'
+      },
+      {
+        eyebrow: 'Store',
+        h3: 'Browse without leaving the app',
+        p: 'Specials, top sellers, new releases and search, read-only. Purchases are always made in the real Steam, one click away with “View in Steam”.',
+        bullets: [],
+        alt: 'The Pantheon store with its specials and discounted prices.'
+      },
+      {
+        eyebrow: 'Friends and downloads',
+        h3: 'Who’s playing what, and how your install is going',
+        p: 'Your friends sorted by status with the game they’re playing, and a Chat button that opens the conversation in Steam. Ongoing downloads show their progress, all the way to a badge in the menu.',
+        bullets: [],
+        alt: 'The friends list, grouped between online and offline, with the game being played.'
+      }
     ],
-    demoNote: 'All screenshots use fictional games and friends (the app’s demo mode).',
-    designEyebrow: 'Design', designH2: 'Dark, airy, a single accent',
-    designSub: 'Very few borders, generous radii and two font families: Space Grotesk for titles and numbers, Inter for the interface. The blue accent is a single variable: it can be changed in one line.',
-    swatchesAria: 'Color palette', swatches: [['Background', '#0B0D12'], ['Surface', '#12161E'], ['Raised surface', '#181D27'], ['Text', '#E9ECF3'], ['Accent', '#4D8DFF']],
-    typeTitle: 'Typography', typeText: 'Space Grotesk for titles and numbers, Inter for everything else.',
-    rarTitle: 'Rarity you can read', rar: [['Ultra rare', 'under 3%'], ['Rare', '3 to 10%'], ['Uncommon', '10 to 25%'], ['Common', '25% and up']],
-    a11yTitle: 'Accessible from the start', a11yText: 'Full keyboard navigation, clearly visible focus states, text contrast of at least 4.5:1, 44 px touch targets and named icon buttons for screen readers.',
-    growTitle: 'Built to grow', growText: 'All text lives in translation files (five languages today) and the accent color fits in a single variable.',
-    techEyebrow: 'Under the hood', techH2: 'Beautiful, but also safe',
+    demoNote: 'Screenshots show the author’s own Steam library. The friends screen uses fictional friends.',
+    techEyebrow: 'Under the hood',
+    techH2: 'Beautiful, but also safe',
     techSub: 'An interface that reads your library has to be flawless on security. This project was built with the same rigor as the design.',
     tech: [
-      ['Never a password', 'No Steam sign-in. The app reads local files and uses your own API key, encrypted on your computer with the Windows vault.'],
-      ['Hardened Electron', 'Context isolation, sandbox, strict security policy, Steam links limited to an allow-list of actions, network restricted to a few domains.'],
-      ['Zero collection', 'No account, no usage statistics, no server: everything stays on your PC. Calls to Steam are cached and capped.'],
-      ['Tested', '45 automated tests cover the Steam file reader, rarity calculations, link validation, the cache, the API client and the translations.'],
-      ['Demo mode', 'One variable is enough to run everything on fake data, without Steam. That’s how the screenshots on this page were made.'],
-      ['Fast', 'Lazy-loaded images, targeted card updates and off-screen rendering keep hundreds of games smooth.'],
+      [
+        'Never a password',
+        'No Steam sign-in. The app reads local files and uses your own API key, encrypted on your computer with the Windows vault.'
+      ],
+      [
+        'Hardened Electron',
+        'Context isolation, sandbox, strict security policy, Steam links limited to an allow-list of actions, network restricted to a few domains.'
+      ],
+      [ 'Zero collection', 'No account, no usage statistics, no server: everything stays on your PC. Calls to Steam are cached and capped.' ],
+      [
+        'Tested',
+        '48 automated tests cover the Steam file reader, rarity calculations, link validation, the cache, the API client and the translations.'
+      ],
+      [ 'Demo mode', 'One variable is enough to run everything on fake data, without Steam, which is handy for testing and demos.' ],
+      [ 'Fast', 'Lazy-loaded images, targeted card updates and off-screen rendering keep hundreds of games smooth.' ]
     ],
     techAria: 'Technologies',
-    tryEyebrow: 'Try it', tryH2: 'Pantheon for Windows',
+    tryEyebrow: 'Try it',
+    tryH2: 'Pantheon for Windows',
     trySub: 'Windows 10 or 11 with Steam installed. Because the installer isn’t signed, Windows may show a warning: click “More info” then “Run anyway”.',
-    tryBtn: 'Download coming soon', tryNote: 'Free, non-commercial student project.',
-    footer1: 'Pantheon is a non-commercial student project by Axel Archambeault, exploring a redesign of Steam’s interface. The games and friends in the screenshots are fictional.',
+    tryBtn: 'Download coming soon',
+    tryNote: 'Free, non-commercial student project.',
+    footer1: 'Pantheon is a non-commercial student project by Axel Archambeault, exploring a redesign of Steam’s interface. Game covers and names belong to their respective owners.',
     footer2: 'Not affiliated with Valve or Steam. Steam and the Steam logo are trademarks of Valve Corporation. Pantheon is neither endorsed nor sponsored by Valve. No data is collected.',
+    startEyebrow: 'Getting started',
+    startH2: 'Up and running in a few minutes',
+    startSub: 'Pantheon works right away with the games you have installed. A free Steam API key unlocks the rest: games you own but haven’t installed, your achievements and your friends.',
+    steps: [
+      [ 'Have Steam installed', 'Install Steam and sign in as usual. Pantheon reads Steam’s local files and never asks for your password.' ],
+      [ 'Install Pantheon', 'Run the installer. Because it isn’t signed, Windows may warn you: click “More info” then “Run anyway”.' ],
+      [ 'Open it', 'Your installed games appear straight away, with your playtime.' ],
+      [ 'Add your key (optional)', 'Follow the guide below to see all your games, achievements and friends.' ]
+    ],
+    keyH3: 'Get your free Steam API key',
+    keySteps: [
+      'Sign in to Steam in your web browser, then open the key page with the button below.',
+      'In “Domain Name”, simply type: localhost',
+      'Accept the terms and click “Register”.',
+      'Copy the 32-character key that appears.',
+      'In Pantheon, open Settings → Steam API key, paste it and click “Save the key”.'
+    ],
+    keyOpen: 'Open the Steam key page',
+    keyPrivacy: 'To see your achievements and friends, set “Game details” and “Friends list” to Public in Steam (Profile → Edit Profile → Privacy Settings), and untick “Always keep my total playtime private”.',
+    keyNote: 'The key is personal: never share it. Pantheon keeps it encrypted on your computer and sends it only to Steam.',
+    linksLabel: 'Follow the project'
   },
-
   fr: {
-    name: 'Français', htmlLang: 'fr',
+    name: 'Français',
+    htmlLang: 'fr',
     title: 'Pantheon — Tous tes jeux. Toutes tes légendes.',
     description: 'Projet étudiant : une refonte de l’interface de Steam pour Windows, pensée pour les chasseurs de succès et de 100 %. Non commercial, non affilié à Valve ni à Steam.',
-    skip: 'Aller au contenu', navLabel: 'Navigation principale', langLabel: 'Langue',
-    nav: ['Le projet', 'Fonctions', 'Design', 'Sous le capot', 'Essayer'],
+    skip: 'Aller au contenu',
+    navLabel: 'Navigation principale',
+    langLabel: 'Langue',
+    nav: [ 'Le projet', 'Fonctions', 'Premiers pas', 'Sous le capot', 'Essayer' ],
     pill: 'Projet étudiant · Refonte de l’interface de Steam',
-    h1a: 'Tous tes jeux. Toutes tes', h1b: 'légendes.',
+    h1a: 'Tous tes jeux. Toutes tes',
+    h1b: 'légendes.',
     lead: 'Pantheon est une interface alternative pour Steam sur Windows. Elle met tes succès et ta progression au centre, avec un design sombre, aéré et sans bruit visuel. Steam reste ton client : Pantheon en est seulement un nouveau visage.',
-    cta1: 'Découvrir le projet', cta2: 'Voir le design',
+    cta1: 'Découvrir le projet',
     heroAlt: 'Capture de la bibliothèque de Pantheon : bandeau « Continuer à jouer » et grille de jaquettes avec leur état d’installation, leur temps de jeu et leur progression de succès.',
-    facts: [['6', 'écrans conçus et codés'], ['45', 'tests automatiques'], ['0', 'donnée collectée'], ['100 %', 'utilisable au clavier']],
-    projEyebrow: 'Le projet', projH2: 'Un client Steam pensé pour les collectionneurs',
+    projEyebrow: 'Le projet',
+    projH2: 'Un client Steam pensé pour les collectionneurs',
     projSub: 'Steam est complet, mais son interface est dense, et les succès y sont cachés derrière plusieurs clics. Ce projet étudiant est né d’une question simple : à quoi ressemblerait Steam s’il était dessiné pour ceux qui chassent le 100 % ?',
     projP1: 'J’ai conçu l’identité visuelle, les écrans et le système de design, puis je les ai codés en une vraie application Windows (Electron) qui lit les fichiers locaux de Steam et utilise ton propre accès à l’API officielle.',
     projP2: 'Pantheon ne remplace pas Steam : il reste lancé en arrière-plan, et les jeux démarrent par Steam comme d’habitude.',
-    quote: 'Un seul accent bleu, réservé aux actions et à la progression. Tout le reste s’efface devant les jaquettes.', quoteSmall: 'Le principe directeur du design',
-    featEyebrow: 'Fonctions', featH2: 'Chaque écran sert la progression',
+    quote: 'Un seul accent bleu, réservé aux actions et à la progression. Tout le reste s’efface devant les jaquettes.',
+    quoteSmall: 'Le principe directeur du design',
+    featEyebrow: 'Fonctions',
+    featH2: 'Chaque écran sert la progression',
     features: [
-      { eyebrow: 'Bibliothèque', h3: 'Des jaquettes, de l’air, une seule action', p: 'La grille met les jaquettes en vedette. Au survol, un bouton rond Jouer apparaît au centre. Le dernier jeu joué est remonté en haut pour reprendre en un clic.', bullets: ['Recherche, filtres (installés, téléchargements, favoris, presque terminés) et tris', 'État d’installation et progression des téléchargements sur chaque jaquette', 'Fluide avec plusieurs centaines de jeux'], alt: 'La bibliothèque de Pantheon avec ses filtres, son tri et sa grille de jaquettes.' },
-      { eyebrow: 'Fiche d’un jeu', h3: 'Les succès, enfin lisibles', p: 'Un anneau de progression, les succès débloqués avec leur date, et une rareté toujours écrite en toutes lettres : Commun, Peu commun, Rare, Ultra rare. Jamais seulement une couleur.', bullets: ['Filtres Tous, Débloqués, Verrouillés, Rares, tri par rareté', 'Le succès le plus accessible et le plus rare obtenu', 'Image officielle du jeu en fond, fondue vers l’interface'], alt: 'La fiche d’un jeu : titre, statistiques, onglets et liste des succès avec anneau de progression et raretés.' },
-      { eyebrow: 'Page Succès', h3: 'Le Panthéon des jeux terminés', p: 'Une vue d’ensemble de ta collection : total débloqué, section « Les dieux » pour les jeux terminés à 100 %, jeux les plus proches du but et succès les plus rares obtenus.', bullets: [], alt: 'La page Succès : totaux, jeux terminés à 100 %, jeux les plus proches de la complétion.' },
-      { eyebrow: 'Boutique', h3: 'Parcourir sans quitter l’appli', p: 'Promotions, meilleures ventes, nouveautés et recherche, en lecture seule. Les achats se font toujours dans le vrai Steam, d’un clic sur « Voir dans Steam ».', bullets: [], alt: 'La boutique de Pantheon avec ses promotions et prix réduits.' },
-      { eyebrow: 'Amis et téléchargements', h3: 'Qui joue à quoi, et où en est ton installation', p: 'Tes amis triés par statut avec leur jeu en cours, et un bouton Discuter qui ouvre le chat dans Steam. Les téléchargements en cours s’affichent avec leur progression, jusque dans une pastille du menu.', bullets: [], alt: 'La liste d’amis, regroupée entre connectés et hors ligne, avec le jeu en cours.' },
+      {
+        eyebrow: 'Bibliothèque',
+        h3: 'Des jaquettes, de l’air, une seule action',
+        p: 'La grille met les jaquettes en vedette. Au survol, un bouton rond Jouer apparaît au centre. Le dernier jeu joué est remonté en haut pour reprendre en un clic.',
+        bullets: [
+          'Recherche, filtres (installés, téléchargements, favoris, presque terminés) et tris',
+          'État d’installation et progression des téléchargements sur chaque jaquette',
+          'Fluide avec plusieurs centaines de jeux'
+        ],
+        alt: 'La bibliothèque de Pantheon avec ses filtres, son tri et sa grille de jaquettes.'
+      },
+      {
+        eyebrow: 'Fiche d’un jeu',
+        h3: 'Les succès, enfin lisibles',
+        p: 'Un anneau de progression, les succès débloqués avec leur date, et une rareté toujours écrite en toutes lettres : Commun, Peu commun, Rare, Ultra rare. Jamais seulement une couleur.',
+        bullets: [
+          'Filtres Tous, Débloqués, Verrouillés, Rares, tri par rareté',
+          'Le succès le plus accessible et le plus rare obtenu',
+          'Image officielle du jeu en fond, fondue vers l’interface'
+        ],
+        alt: 'La fiche d’un jeu : titre, statistiques, onglets et liste des succès avec anneau de progression et raretés.'
+      },
+      {
+        eyebrow: 'Page Succès',
+        h3: 'Le Panthéon des jeux terminés',
+        p: 'Une vue d’ensemble de ta collection : total débloqué, section « Les dieux » pour les jeux terminés à 100 %, jeux les plus proches du but et succès les plus rares obtenus.',
+        bullets: [],
+        alt: 'La page Succès : totaux, jeux terminés à 100 %, jeux les plus proches de la complétion.'
+      },
+      {
+        eyebrow: 'Boutique',
+        h3: 'Parcourir sans quitter l’appli',
+        p: 'Promotions, meilleures ventes, nouveautés et recherche, en lecture seule. Les achats se font toujours dans le vrai Steam, d’un clic sur « Voir dans Steam ».',
+        bullets: [],
+        alt: 'La boutique de Pantheon avec ses promotions et prix réduits.'
+      },
+      {
+        eyebrow: 'Amis et téléchargements',
+        h3: 'Qui joue à quoi, et où en est ton installation',
+        p: 'Tes amis triés par statut avec leur jeu en cours, et un bouton Discuter qui ouvre le chat dans Steam. Les téléchargements en cours s’affichent avec leur progression, jusque dans une pastille du menu.',
+        bullets: [],
+        alt: 'La liste d’amis, regroupée entre connectés et hors ligne, avec le jeu en cours.'
+      }
     ],
-    demoNote: 'Toutes les captures utilisent des jeux et des amis fictifs (mode démo de l’application).',
-    designEyebrow: 'Design', designH2: 'Sombre, aéré, un seul accent',
-    designSub: 'Très peu de bordures, des rayons généreux et deux familles de polices : Space Grotesk pour les titres et les chiffres, Inter pour l’interface. L’accent bleu est une variable unique : on peut le changer en une ligne.',
-    swatchesAria: 'Palette de couleurs', swatches: [['Fond', '#0B0D12'], ['Surface', '#12161E'], ['Surface haute', '#181D27'], ['Texte', '#E9ECF3'], ['Accent', '#4D8DFF']],
-    typeTitle: 'Typographie', typeText: 'Space Grotesk pour les titres et les chiffres, Inter pour tout le reste.',
-    rarTitle: 'Une rareté qui se lit', rar: [['Ultra rare', 'moins de 3 %'], ['Rare', '3 à 10 %'], ['Peu commun', '10 à 25 %'], ['Commun', '25 % et plus']],
-    a11yTitle: 'Accessible dès le départ', a11yText: 'Navigation complète au clavier, états de focus bien visibles, contraste du texte d’au moins 4,5:1, cibles tactiles de 44 px et boutons d’icône nommés pour les lecteurs d’écran.',
-    growTitle: 'Pensé pour grandir', growText: 'Les textes sont isolés dans des fichiers de traduction (cinq langues aujourd’hui) et la couleur d’accent tient en une variable.',
-    techEyebrow: 'Sous le capot', techH2: 'Beau, mais aussi sûr',
+    demoNote: 'Les captures montrent la bibliothèque Steam de l’auteur. L’écran des amis utilise des amis fictifs.',
+    techEyebrow: 'Sous le capot',
+    techH2: 'Beau, mais aussi sûr',
     techSub: 'Une interface qui lit ta bibliothèque doit être irréprochable côté sécurité. Ce projet a été construit avec la même exigence que le design.',
     tech: [
-      ['Jamais de mot de passe', 'Aucune connexion Steam. L’appli lit les fichiers locaux et utilise ta propre clé d’API, chiffrée sur ton ordinateur avec le coffre de Windows.'],
-      ['Electron durci', 'Isolation du contexte, sandbox, politique de sécurité stricte, liens vers Steam limités à une liste blanche d’actions, réseau restreint à quelques domaines.'],
-      ['Zéro collecte', 'Pas de compte, pas de statistiques d’usage, pas de serveur : tout reste sur ton PC. Les appels à Steam sont mis en cache et plafonnés.'],
-      ['Testé', '45 tests automatiques couvrent le lecteur des fichiers Steam, les calculs de rareté, la validation des liens, le cache, le client d’API et les traductions.'],
-      ['Mode démo', 'Une variable suffit pour tout faire tourner avec de fausses données, sans Steam. C’est ainsi que les captures de cette page ont été réalisées.'],
-      ['Performant', 'Chargement paresseux des images, mise à jour ciblée des cartes et rendu différé hors écran pour garder des centaines de jeux fluides.'],
+      [
+        'Jamais de mot de passe',
+        'Aucune connexion Steam. L’appli lit les fichiers locaux et utilise ta propre clé d’API, chiffrée sur ton ordinateur avec le coffre de Windows.'
+      ],
+      [
+        'Electron durci',
+        'Isolation du contexte, sandbox, politique de sécurité stricte, liens vers Steam limités à une liste blanche d’actions, réseau restreint à quelques domaines.'
+      ],
+      [
+        'Zéro collecte',
+        'Pas de compte, pas de statistiques d’usage, pas de serveur : tout reste sur ton PC. Les appels à Steam sont mis en cache et plafonnés.'
+      ],
+      [
+        'Testé',
+        '48 tests automatiques couvrent le lecteur des fichiers Steam, les calculs de rareté, la validation des liens, le cache, le client d’API et les traductions.'
+      ],
+      [ 'Mode démo', 'Une variable suffit pour tout faire tourner avec de fausses données, sans Steam : pratique pour tester et faire des démos.' ],
+      [
+        'Performant',
+        'Chargement paresseux des images, mise à jour ciblée des cartes et rendu différé hors écran pour garder des centaines de jeux fluides.'
+      ]
     ],
     techAria: 'Technologies',
-    tryEyebrow: 'Essayer', tryH2: 'Pantheon pour Windows',
+    tryEyebrow: 'Essayer',
+    tryH2: 'Pantheon pour Windows',
     trySub: 'Windows 10 ou 11 et Steam installé. L’installeur n’étant pas signé, Windows peut afficher un avertissement : clique sur « Informations complémentaires » puis « Exécuter quand même ».',
-    tryBtn: 'Téléchargement bientôt disponible', tryNote: 'Projet étudiant gratuit et non commercial.',
-    footer1: 'Pantheon est un projet étudiant non commercial, réalisé par Axel Archambeault, pour explorer la refonte de l’interface de Steam. Les jeux et amis des captures sont fictifs.',
+    tryBtn: 'Téléchargement bientôt disponible',
+    tryNote: 'Projet étudiant gratuit et non commercial.',
+    footer1: 'Pantheon est un projet étudiant non commercial, réalisé par Axel Archambeault, pour explorer la refonte de l’interface de Steam. Les jaquettes et les noms des jeux appartiennent à leurs propriétaires respectifs.',
     footer2: 'Non affilié à Valve ni à Steam. Steam et le logo Steam sont des marques de Valve Corporation. Pantheon n’est ni approuvé ni sponsorisé par Valve. Aucune donnée n’est collectée.',
+    startEyebrow: 'Premiers pas',
+    startH2: 'Prêt en quelques minutes',
+    startSub: 'Pantheon fonctionne tout de suite avec les jeux installés. Une clé d’API Steam gratuite débloque le reste : les jeux que tu possèdes sans les avoir installés, tes succès et tes amis.',
+    steps: [
+      [
+        'Avoir Steam installé',
+        'Installe Steam et connecte-toi comme d’habitude. Pantheon lit les fichiers locaux de Steam et ne demande jamais ton mot de passe.'
+      ],
+      [
+        'Installer Pantheon',
+        'Lance l’installeur. Comme il n’est pas signé, Windows peut afficher un avertissement : clique sur « Informations complémentaires » puis « Exécuter quand même ».'
+      ],
+      [ 'L’ouvrir', 'Tes jeux installés apparaissent tout de suite, avec ton temps de jeu.' ],
+      [ 'Ajouter ta clé (facultatif)', 'Suis le guide ci-dessous pour voir tous tes jeux, tes succès et tes amis.' ]
+    ],
+    keyH3: 'Obtenir ta clé d’API Steam gratuite',
+    keySteps: [
+      'Connecte-toi à Steam dans ton navigateur, puis ouvre la page des clés avec le bouton ci-dessous.',
+      'Dans « Nom de domaine », écris simplement : localhost',
+      'Accepte les conditions et clique sur « Enregistrer ».',
+      'Copie la clé de 32 caractères affichée.',
+      'Dans Pantheon, ouvre Réglages → Clé d’API Steam, colle-la et clique sur « Enregistrer la clé ».'
+    ],
+    keyOpen: 'Ouvrir la page des clés Steam',
+    keyPrivacy: 'Pour voir tes succès et tes amis, mets « Détails des jeux » et « Liste de contacts » sur Public dans Steam (Profil → Modifier le profil → Paramètres de confidentialité) et décoche « Toujours garder privé le temps de jeu total ».',
+    keyNote: 'La clé est personnelle : ne la partage jamais. Pantheon la garde chiffrée sur ton ordinateur et ne l’envoie qu’à Steam.',
+    linksLabel: 'Suivre le projet'
   },
-
   es: {
-    name: 'Español', htmlLang: 'es',
+    name: 'Español',
+    htmlLang: 'es',
     title: 'Pantheon — Todos tus juegos. Todas tus leyendas.',
     description: 'Proyecto de estudiante: un rediseño de la interfaz de Steam para Windows, pensado para quienes persiguen logros y el 100 %. Sin ánimo comercial y sin relación con Valve ni Steam.',
-    skip: 'Ir al contenido', navLabel: 'Navegación principal', langLabel: 'Idioma',
-    nav: ['El proyecto', 'Funciones', 'Diseño', 'Bajo el capó', 'Probarlo'],
+    skip: 'Ir al contenido',
+    navLabel: 'Navegación principal',
+    langLabel: 'Idioma',
+    nav: [ 'El proyecto', 'Funciones', 'Primeros pasos', 'Bajo el capó', 'Probarlo' ],
     pill: 'Proyecto de estudiante · Rediseño de la interfaz de Steam',
-    h1a: 'Todos tus juegos. Todas tus', h1b: 'leyendas.',
+    h1a: 'Todos tus juegos. Todas tus',
+    h1b: 'leyendas.',
     lead: 'Pantheon es una interfaz alternativa para Steam en Windows. Pone tus logros y tu progreso en el centro, con un diseño oscuro, ligero y sin ruido visual. Steam sigue siendo tu cliente: Pantheon es solo una nueva cara para él.',
-    cta1: 'Descubrir el proyecto', cta2: 'Ver el diseño',
+    cta1: 'Descubrir el proyecto',
     heroAlt: 'Captura de la biblioteca de Pantheon: un banner «Seguir jugando» y una cuadrícula de carátulas con su estado de instalación, tiempo de juego y progreso de logros.',
-    facts: [['6', 'pantallas diseñadas y programadas'], ['45', 'pruebas automáticas'], ['0', 'datos recopilados'], ['100 %', 'accesible con teclado']],
-    projEyebrow: 'El proyecto', projH2: 'Un cliente de Steam pensado para coleccionistas',
+    projEyebrow: 'El proyecto',
+    projH2: 'Un cliente de Steam pensado para coleccionistas',
     projSub: 'Steam es completo, pero su interfaz es densa y los logros quedan escondidos tras varios clics. Este proyecto de estudiante nació de una pregunta sencilla: ¿cómo sería Steam si estuviera diseñado para quienes persiguen el 100 %?',
     projP1: 'Diseñé la identidad visual, las pantallas y el sistema de diseño, y luego los programé en una aplicación real de Windows (Electron) que lee los archivos locales de Steam y usa tu propio acceso a la API oficial.',
     projP2: 'Pantheon no sustituye a Steam: sigue funcionando en segundo plano y los juegos se inician a través de Steam como siempre.',
-    quote: 'Un único acento azul, reservado a las acciones y al progreso. Todo lo demás se aparta ante las carátulas.', quoteSmall: 'El principio rector del diseño',
-    featEyebrow: 'Funciones', featH2: 'Cada pantalla sirve al progreso',
+    quote: 'Un único acento azul, reservado a las acciones y al progreso. Todo lo demás se aparta ante las carátulas.',
+    quoteSmall: 'El principio rector del diseño',
+    featEyebrow: 'Funciones',
+    featH2: 'Cada pantalla sirve al progreso',
     features: [
-      { eyebrow: 'Biblioteca', h3: 'Carátulas, aire y una sola acción', p: 'La cuadrícula pone las carátulas en primer plano. Al pasar el ratón aparece un botón redondo de Jugar en el centro. El último juego jugado se fija arriba para retomarlo con un clic.', bullets: ['Búsqueda, filtros (instalados, descargas, favoritos, casi completados) y orden', 'Estado de instalación y progreso de descarga en cada carátula', 'Fluida con cientos de juegos'], alt: 'La biblioteca de Pantheon con sus filtros, su orden y su cuadrícula de carátulas.' },
-      { eyebrow: 'Ficha del juego', h3: 'Los logros, por fin legibles', p: 'Un anillo de progreso, los logros desbloqueados con su fecha y una rareza siempre escrita con palabras: Común, Poco común, Raro, Ultra raro. Nunca solo un color.', bullets: ['Filtros Todos, Desbloqueados, Bloqueados, Raros y orden por rareza', 'El logro más accesible y el más raro conseguido', 'La imagen oficial del juego de fondo, que se funde con la interfaz'], alt: 'La ficha de un juego: título, estadísticas, pestañas y lista de logros con anillo de progreso y rarezas.' },
-      { eyebrow: 'Página de logros', h3: 'El Panteón de los juegos terminados', p: 'Una vista de conjunto de tu colección: total desbloqueado, una sección «Los dioses» para los juegos completados al 100 %, los juegos más cerca de la meta y los logros más raros que has conseguido.', bullets: [], alt: 'La página de logros: totales, juegos completados al 100 % y juegos más cerca de completarse.' },
-      { eyebrow: 'Tienda', h3: 'Explora sin salir de la aplicación', p: 'Ofertas, más vendidos, novedades y búsqueda, en solo lectura. Las compras se hacen siempre en el Steam real, a un clic con «Ver en Steam».', bullets: [], alt: 'La tienda de Pantheon con sus ofertas y precios rebajados.' },
-      { eyebrow: 'Amigos y descargas', h3: 'Quién juega a qué y cómo va tu instalación', p: 'Tus amigos ordenados por estado con el juego que están jugando, y un botón Chatear que abre la conversación en Steam. Las descargas en curso muestran su progreso, incluso en una insignia del menú.', bullets: [], alt: 'La lista de amigos, agrupada entre conectados y desconectados, con el juego en curso.' },
+      {
+        eyebrow: 'Biblioteca',
+        h3: 'Carátulas, aire y una sola acción',
+        p: 'La cuadrícula pone las carátulas en primer plano. Al pasar el ratón aparece un botón redondo de Jugar en el centro. El último juego jugado se fija arriba para retomarlo con un clic.',
+        bullets: [
+          'Búsqueda, filtros (instalados, descargas, favoritos, casi completados) y orden',
+          'Estado de instalación y progreso de descarga en cada carátula',
+          'Fluida con cientos de juegos'
+        ],
+        alt: 'La biblioteca de Pantheon con sus filtros, su orden y su cuadrícula de carátulas.'
+      },
+      {
+        eyebrow: 'Ficha del juego',
+        h3: 'Los logros, por fin legibles',
+        p: 'Un anillo de progreso, los logros desbloqueados con su fecha y una rareza siempre escrita con palabras: Común, Poco común, Raro, Ultra raro. Nunca solo un color.',
+        bullets: [
+          'Filtros Todos, Desbloqueados, Bloqueados, Raros y orden por rareza',
+          'El logro más accesible y el más raro conseguido',
+          'La imagen oficial del juego de fondo, que se funde con la interfaz'
+        ],
+        alt: 'La ficha de un juego: título, estadísticas, pestañas y lista de logros con anillo de progreso y rarezas.'
+      },
+      {
+        eyebrow: 'Página de logros',
+        h3: 'El Panteón de los juegos terminados',
+        p: 'Una vista de conjunto de tu colección: total desbloqueado, una sección «Los dioses» para los juegos completados al 100 %, los juegos más cerca de la meta y los logros más raros que has conseguido.',
+        bullets: [],
+        alt: 'La página de logros: totales, juegos completados al 100 % y juegos más cerca de completarse.'
+      },
+      {
+        eyebrow: 'Tienda',
+        h3: 'Explora sin salir de la aplicación',
+        p: 'Ofertas, más vendidos, novedades y búsqueda, en solo lectura. Las compras se hacen siempre en el Steam real, a un clic con «Ver en Steam».',
+        bullets: [],
+        alt: 'La tienda de Pantheon con sus ofertas y precios rebajados.'
+      },
+      {
+        eyebrow: 'Amigos y descargas',
+        h3: 'Quién juega a qué y cómo va tu instalación',
+        p: 'Tus amigos ordenados por estado con el juego que están jugando, y un botón Chatear que abre la conversación en Steam. Las descargas en curso muestran su progreso, incluso en una insignia del menú.',
+        bullets: [],
+        alt: 'La lista de amigos, agrupada entre conectados y desconectados, con el juego en curso.'
+      }
     ],
-    demoNote: 'Todas las capturas usan juegos y amigos ficticios (el modo demo de la aplicación).',
-    designEyebrow: 'Diseño', designH2: 'Oscuro, ligero, un solo acento',
-    designSub: 'Muy pocos bordes, esquinas generosas y dos familias tipográficas: Space Grotesk para títulos y cifras, Inter para la interfaz. El acento azul es una única variable: se cambia en una línea.',
-    swatchesAria: 'Paleta de colores', swatches: [['Fondo', '#0B0D12'], ['Superficie', '#12161E'], ['Superficie elevada', '#181D27'], ['Texto', '#E9ECF3'], ['Acento', '#4D8DFF']],
-    typeTitle: 'Tipografía', typeText: 'Space Grotesk para títulos y cifras, Inter para todo lo demás.',
-    rarTitle: 'Una rareza que se lee', rar: [['Ultra raro', 'menos del 3 %'], ['Raro', 'del 3 al 10 %'], ['Poco común', 'del 10 al 25 %'], ['Común', '25 % o más']],
-    a11yTitle: 'Accesible desde el principio', a11yText: 'Navegación completa con teclado, estados de foco bien visibles, contraste de texto de al menos 4,5:1, zonas táctiles de 44 px y botones de icono con nombre para lectores de pantalla.',
-    growTitle: 'Pensado para crecer', growText: 'Todos los textos están en archivos de traducción (cinco idiomas hoy) y el color de acento cabe en una variable.',
-    techEyebrow: 'Bajo el capó', techH2: 'Bonito, pero también seguro',
+    demoNote: 'Las capturas muestran la biblioteca de Steam del autor. La pantalla de amigos usa amigos ficticios.',
+    techEyebrow: 'Bajo el capó',
+    techH2: 'Bonito, pero también seguro',
     techSub: 'Una interfaz que lee tu biblioteca debe ser impecable en seguridad. Este proyecto se construyó con la misma exigencia que el diseño.',
     tech: [
-      ['Nunca una contraseña', 'Sin inicio de sesión en Steam. La aplicación lee archivos locales y usa tu propia clave de API, cifrada en tu equipo con la bóveda de Windows.'],
-      ['Electron reforzado', 'Aislamiento de contexto, sandbox, política de seguridad estricta, enlaces a Steam limitados a una lista de acciones permitidas y red restringida a unos pocos dominios.'],
-      ['Cero recopilación', 'Sin cuenta, sin estadísticas de uso, sin servidor: todo se queda en tu PC. Las llamadas a Steam se guardan en caché y están limitadas.'],
-      ['Probado', '45 pruebas automáticas cubren el lector de archivos de Steam, el cálculo de rareza, la validación de enlaces, la caché, el cliente de la API y las traducciones.'],
-      ['Modo demo', 'Basta una variable para ejecutarlo todo con datos falsos, sin Steam. Así se hicieron las capturas de esta página.'],
-      ['Rápido', 'Imágenes con carga diferida, actualización selectiva de tarjetas y renderizado fuera de pantalla mantienen fluidos cientos de juegos.'],
+      [
+        'Nunca una contraseña',
+        'Sin inicio de sesión en Steam. La aplicación lee archivos locales y usa tu propia clave de API, cifrada en tu equipo con la bóveda de Windows.'
+      ],
+      [
+        'Electron reforzado',
+        'Aislamiento de contexto, sandbox, política de seguridad estricta, enlaces a Steam limitados a una lista de acciones permitidas y red restringida a unos pocos dominios.'
+      ],
+      [
+        'Cero recopilación',
+        'Sin cuenta, sin estadísticas de uso, sin servidor: todo se queda en tu PC. Las llamadas a Steam se guardan en caché y están limitadas.'
+      ],
+      [
+        'Probado',
+        '48 pruebas automáticas cubren el lector de archivos de Steam, el cálculo de rareza, la validación de enlaces, la caché, el cliente de la API y las traducciones.'
+      ],
+      [ 'Modo demo', 'Basta una variable para ejecutarlo todo con datos falsos, sin Steam, útil para pruebas y demostraciones.' ],
+      [
+        'Rápido',
+        'Imágenes con carga diferida, actualización selectiva de tarjetas y renderizado fuera de pantalla mantienen fluidos cientos de juegos.'
+      ]
     ],
     techAria: 'Tecnologías',
-    tryEyebrow: 'Probarlo', tryH2: 'Pantheon para Windows',
+    tryEyebrow: 'Probarlo',
+    tryH2: 'Pantheon para Windows',
     trySub: 'Windows 10 u 11 con Steam instalado. Como el instalador no está firmado, Windows puede mostrar una advertencia: haz clic en «Más información» y luego en «Ejecutar de todas formas».',
-    tryBtn: 'Descarga disponible próximamente', tryNote: 'Proyecto de estudiante gratuito y sin ánimo comercial.',
-    footer1: 'Pantheon es un proyecto de estudiante sin ánimo comercial, creado por Axel Archambeault para explorar un rediseño de la interfaz de Steam. Los juegos y amigos de las capturas son ficticios.',
+    tryBtn: 'Descarga disponible próximamente',
+    tryNote: 'Proyecto de estudiante gratuito y sin ánimo comercial.',
+    footer1: 'Pantheon es un proyecto de estudiante sin ánimo comercial, creado por Axel Archambeault para explorar un rediseño de la interfaz de Steam. Las carátulas y los nombres de los juegos pertenecen a sus respectivos propietarios.',
     footer2: 'Sin relación con Valve ni Steam. Steam y el logotipo de Steam son marcas de Valve Corporation. Pantheon no está respaldado ni patrocinado por Valve. No se recopila ningún dato.',
+    startEyebrow: 'Primeros pasos',
+    startH2: 'Listo en pocos minutos',
+    startSub: 'Pantheon funciona al instante con los juegos instalados. Una clave de API de Steam gratuita desbloquea el resto: los juegos que posees sin instalar, tus logros y tus amigos.',
+    steps: [
+      [
+        'Ten Steam instalado',
+        'Instala Steam e inicia sesión como siempre. Pantheon lee los archivos locales de Steam y nunca te pide la contraseña.'
+      ],
+      [
+        'Instala Pantheon',
+        'Ejecuta el instalador. Como no está firmado, Windows puede mostrar una advertencia: haz clic en «Más información» y luego en «Ejecutar de todas formas».'
+      ],
+      [ 'Ábrelo', 'Tus juegos instalados aparecen al instante, con tu tiempo de juego.' ],
+      [ 'Añade tu clave (opcional)', 'Sigue la guía de abajo para ver todos tus juegos, logros y amigos.' ]
+    ],
+    keyH3: 'Consigue tu clave de API de Steam gratuita',
+    keySteps: [
+      'Inicia sesión en Steam desde tu navegador y abre la página de claves con el botón de abajo.',
+      'En «Nombre de dominio», escribe simplemente: localhost',
+      'Acepta las condiciones y haz clic en «Registrar».',
+      'Copia la clave de 32 caracteres que aparece.',
+      'En Pantheon, abre Ajustes → Clave de API de Steam, pégala y haz clic en «Guardar la clave».'
+    ],
+    keyOpen: 'Abrir la página de claves de Steam',
+    keyPrivacy: 'Para ver tus logros y amigos, pon «Detalles de los juegos» y «Lista de amigos» en Público en Steam (Perfil → Editar perfil → Configuración de privacidad) y desmarca «Mantener siempre privado el tiempo de juego total».',
+    keyNote: 'La clave es personal: no la compartas nunca. Pantheon la guarda cifrada en tu equipo y solo la envía a Steam.',
+    linksLabel: 'Seguir el proyecto'
   },
-
   ja: {
-    name: '日本語', htmlLang: 'ja',
+    name: '日本語',
+    htmlLang: 'ja',
     title: 'Pantheon — すべてのゲーム。すべての伝説。',
     description: '学生プロジェクト:実績や 100% コンプリートを目指す人のための、Windows 向け Steam インターフェースのリデザイン。非営利で、Valve および Steam とは提携していません。',
-    skip: '本文へスキップ', navLabel: 'メインナビゲーション', langLabel: '言語',
-    nav: ['プロジェクト', '機能', 'デザイン', '技術', '試してみる'],
+    skip: '本文へスキップ',
+    navLabel: 'メインナビゲーション',
+    langLabel: '言語',
+    nav: [ 'プロジェクト', '機能', 'はじめに', '技術', '試してみる' ],
     pill: '学生プロジェクト · Steam インターフェースのリデザイン',
-    h1a: 'すべてのゲーム。すべての', h1b: '伝説。',
+    h1a: 'すべてのゲーム。すべての',
+    h1b: '伝説。',
     lead: 'Pantheon は、Windows 版 Steam のための代替インターフェースです。実績と進行状況を中心に据え、視覚的なノイズのない、暗く開放的なデザインに仕上げました。クライアントはこれまでどおり Steam のままで、Pantheon はその新しい顔にすぎません。',
-    cta1: 'プロジェクトを見る', cta2: 'デザインを見る',
+    cta1: 'プロジェクトを見る',
     heroAlt: 'Pantheon のライブラリの画面:「続きをプレイ」バナーと、インストール状況・プレイ時間・実績の進行状況を表示したカバー画像のグリッド。',
-    facts: [['6', '画面をデザインして実装'], ['45', '自動テスト'], ['0', '収集するデータ'], ['100%', 'キーボードで操作可能']],
-    projEyebrow: 'プロジェクト', projH2: 'コレクターのための Steam クライアント',
+    projEyebrow: 'プロジェクト',
+    projH2: 'コレクターのための Steam クライアント',
     projSub: 'Steam は多機能ですが、画面は情報が詰まっていて、実績は何度もクリックしないとたどり着けません。この学生プロジェクトは、ひとつの素朴な問いから始まりました。100% コンプリートを追いかける人のために作られていたら、Steam はどんな姿だろう?',
     projP1: 'ビジュアルアイデンティティ、画面、デザインシステムを設計し、Steam のローカルファイルを読み取って公式 API をあなた自身のアクセスで利用する、本物の Windows アプリ(Electron)として実装しました。',
     projP2: 'Pantheon は Steam の代わりではありません。Steam はバックグラウンドで動き続け、ゲームはこれまでどおり Steam 経由で起動します。',
-    quote: '青いアクセントはひとつだけ。操作と進行状況のためだけに使い、それ以外はカバー画像に場所を譲ります。', quoteSmall: 'デザインの指針',
-    featEyebrow: '機能', featH2: 'すべての画面が、進行状況のために',
+    quote: '青いアクセントはひとつだけ。操作と進行状況のためだけに使い、それ以外はカバー画像に場所を譲ります。',
+    quoteSmall: 'デザインの指針',
+    featEyebrow: '機能',
+    featH2: 'すべての画面が、進行状況のために',
     features: [
-      { eyebrow: 'ライブラリ', h3: 'カバー画像、余白、ひとつの操作', p: 'グリッドではカバー画像が主役です。マウスを重ねると中央に丸い「プレイ」ボタンが現れます。最後に遊んだゲームは上部に固定され、ワンクリックで再開できます。', bullets: ['検索、フィルター(インストール済み・ダウンロード・お気に入り・コンプリート間近)、並べ替え', '各カバーにインストール状況とダウンロードの進行状況を表示', '数百本のゲームでも軽快に動作'], alt: 'フィルター、並べ替え、カバー画像のグリッドを備えた Pantheon のライブラリ。' },
-      { eyebrow: 'ゲームページ', h3: '実績が、ようやく読みやすく', p: '進行状況のリング、解除日つきの解除済み実績、そして常に言葉で示されるレア度(コモン・アンコモン・レア・ウルトラレア)。色だけに頼ることはありません。', bullets: ['フィルター(すべて・解除済み・未解除・レア)とレア度順の並べ替え', 'いちばん取りやすい実績と、解除した中で最もレアな実績', 'ゲームの公式アートを背景に、インターフェースへなめらかにつなげて表示'], alt: 'ゲームページ:タイトル、統計、タブ、進行状況リングとレア度つきの実績リスト。' },
-      { eyebrow: '実績ページ', h3: 'コンプリートしたゲームのパンテオン', p: 'コレクション全体を一望できます。解除した実績の合計、100% 達成したゲームを集めた「神々」セクション、コンプリートまで近いゲーム、そして解除した中で最もレアな実績。', bullets: [], alt: '実績ページ:合計、100% 達成したゲーム、コンプリートまで近いゲーム。' },
-      { eyebrow: 'ストア', h3: 'アプリを離れずに見て回れる', p: '特別セール、売上上位、新作、検索を閲覧専用で表示します。購入は常に本物の Steam で行い、「Steam で見る」からワンクリックで移動できます。', bullets: [], alt: '特別セールと割引価格を表示した Pantheon のストア。' },
-      { eyebrow: 'フレンドとダウンロード', h3: '誰が何を遊んでいるか、インストールの進み具合', p: 'フレンドをステータス順に並べ、遊んでいるゲームも表示します。「チャット」ボタンで Steam の会話を開けます。進行中のダウンロードは、メニューのバッジも含めて進行状況が分かります。', bullets: [], alt: 'オンラインとオフラインに分けて表示した、遊んでいるゲーム付きのフレンド一覧。' },
+      {
+        eyebrow: 'ライブラリ',
+        h3: 'カバー画像、余白、ひとつの操作',
+        p: 'グリッドではカバー画像が主役です。マウスを重ねると中央に丸い「プレイ」ボタンが現れます。最後に遊んだゲームは上部に固定され、ワンクリックで再開できます。',
+        bullets: [ '検索、フィルター(インストール済み・ダウンロード・お気に入り・コンプリート間近)、並べ替え', '各カバーにインストール状況とダウンロードの進行状況を表示', '数百本のゲームでも軽快に動作' ],
+        alt: 'フィルター、並べ替え、カバー画像のグリッドを備えた Pantheon のライブラリ。'
+      },
+      {
+        eyebrow: 'ゲームページ',
+        h3: '実績が、ようやく読みやすく',
+        p: '進行状況のリング、解除日つきの解除済み実績、そして常に言葉で示されるレア度(コモン・アンコモン・レア・ウルトラレア)。色だけに頼ることはありません。',
+        bullets: [ 'フィルター(すべて・解除済み・未解除・レア)とレア度順の並べ替え', 'いちばん取りやすい実績と、解除した中で最もレアな実績', 'ゲームの公式アートを背景に、インターフェースへなめらかにつなげて表示' ],
+        alt: 'ゲームページ:タイトル、統計、タブ、進行状況リングとレア度つきの実績リスト。'
+      },
+      {
+        eyebrow: '実績ページ',
+        h3: 'コンプリートしたゲームのパンテオン',
+        p: 'コレクション全体を一望できます。解除した実績の合計、100% 達成したゲームを集めた「神々」セクション、コンプリートまで近いゲーム、そして解除した中で最もレアな実績。',
+        bullets: [],
+        alt: '実績ページ:合計、100% 達成したゲーム、コンプリートまで近いゲーム。'
+      },
+      {
+        eyebrow: 'ストア',
+        h3: 'アプリを離れずに見て回れる',
+        p: '特別セール、売上上位、新作、検索を閲覧専用で表示します。購入は常に本物の Steam で行い、「Steam で見る」からワンクリックで移動できます。',
+        bullets: [],
+        alt: '特別セールと割引価格を表示した Pantheon のストア。'
+      },
+      {
+        eyebrow: 'フレンドとダウンロード',
+        h3: '誰が何を遊んでいるか、インストールの進み具合',
+        p: 'フレンドをステータス順に並べ、遊んでいるゲームも表示します。「チャット」ボタンで Steam の会話を開けます。進行中のダウンロードは、メニューのバッジも含めて進行状況が分かります。',
+        bullets: [],
+        alt: 'オンラインとオフラインに分けて表示した、遊んでいるゲーム付きのフレンド一覧。'
+      }
     ],
-    demoNote: 'すべてのスクリーンショットは、架空のゲームとフレンドを使っています(アプリのデモモード)。',
-    designEyebrow: 'デザイン', designH2: '暗く、開放的で、アクセントはひとつ',
-    designSub: '枠線はごくわずか、角丸はたっぷり、書体は 2 種類。見出しと数字には Space Grotesk、インターフェースには Inter を使っています。青のアクセントはひとつの変数で、1 行で変更できます。',
-    swatchesAria: 'カラーパレット', swatches: [['背景', '#0B0D12'], ['サーフェス', '#12161E'], ['浮き上がったサーフェス', '#181D27'], ['テキスト', '#E9ECF3'], ['アクセント', '#4D8DFF']],
-    typeTitle: 'タイポグラフィ', typeText: '見出しと数字には Space Grotesk、それ以外はすべて Inter。',
-    rarTitle: '読み取れるレア度', rar: [['ウルトラレア', '3% 未満'], ['レア', '3〜10%'], ['アンコモン', '10〜25%'], ['コモン', '25% 以上']],
-    a11yTitle: '最初からアクセシブル', a11yText: 'すべてキーボードで操作でき、フォーカスがはっきり見え、文字のコントラスト比は 4.5:1 以上、タッチ領域は 44 px、アイコンボタンにはスクリーンリーダー向けの名前を付けています。',
-    growTitle: '成長を見据えた設計', growText: 'テキストはすべて翻訳ファイルにまとめてあり(現在 5 言語)、アクセントカラーはひとつの変数で決まります。',
-    techEyebrow: '技術', techH2: '美しく、そして安全に',
+    demoNote: 'スクリーンショットは作者自身の Steam ライブラリです。フレンド画面のみ架空のフレンドを使っています。',
+    techEyebrow: '技術',
+    techH2: '美しく、そして安全に',
     techSub: 'ライブラリを読み取るインターフェースには、セキュリティの面でも非の打ちどころのなさが求められます。このプロジェクトは、デザインと同じ水準の厳しさで作られています。',
     tech: [
-      ['パスワードは一切不要', 'Steam へのログインはありません。アプリはローカルファイルを読み取り、あなた自身の API キーを使います。キーは Windows の保管庫でパソコン上に暗号化されます。'],
-      ['堅牢化した Electron', 'コンテキストの分離、サンドボックス、厳格なセキュリティポリシー、許可リストに限定した Steam リンク、数個のドメインに限定した通信。'],
-      ['データ収集ゼロ', 'アカウントも利用統計もサーバーもありません。すべてお使いのパソコン内に残ります。Steam への通信はキャッシュされ、回数にも上限があります。'],
-      ['テスト済み', '45 件の自動テストが、Steam ファイルの読み取り、レア度の計算、リンクの検証、キャッシュ、API クライアント、翻訳をカバーしています。'],
-      ['デモモード', '変数ひとつで、Steam なしの架空データですべてが動きます。このページのスクリーンショットもその方法で作成しました。'],
-      ['高速', '画像の遅延読み込み、カード単位の更新、画面外の描画の省略により、数百本のゲームでも軽快です。'],
+      [ 'パスワードは一切不要', 'Steam へのログインはありません。アプリはローカルファイルを読み取り、あなた自身の API キーを使います。キーは Windows の保管庫でパソコン上に暗号化されます。' ],
+      [ '堅牢化した Electron', 'コンテキストの分離、サンドボックス、厳格なセキュリティポリシー、許可リストに限定した Steam リンク、数個のドメインに限定した通信。' ],
+      [ 'データ収集ゼロ', 'アカウントも利用統計もサーバーもありません。すべてお使いのパソコン内に残ります。Steam への通信はキャッシュされ、回数にも上限があります。' ],
+      [ 'テスト済み', '48 件の自動テストが、Steam ファイルの読み取り、レア度の計算、リンクの検証、キャッシュ、API クライアント、翻訳をカバーしています。' ],
+      [ 'デモモード', '変数ひとつで、Steam なしの架空データですべてが動きます。テストやデモに便利です。' ],
+      [ '高速', '画像の遅延読み込み、カード単位の更新、画面外の描画の省略により、数百本のゲームでも軽快です。' ]
     ],
     techAria: '使用技術',
-    tryEyebrow: '試してみる', tryH2: 'Windows 向け Pantheon',
+    tryEyebrow: '試してみる',
+    tryH2: 'Windows 向け Pantheon',
     trySub: 'Steam をインストールした Windows 10 または 11 が必要です。インストーラーは署名されていないため、Windows が警告を表示することがあります。その場合は「詳細情報」→「実行」を選んでください。',
-    tryBtn: 'ダウンロードは近日公開', tryNote: '無料の非営利学生プロジェクトです。',
-    footer1: 'Pantheon は、Steam のインターフェースのリデザインを探る、Axel Archambeault による非営利の学生プロジェクトです。スクリーンショットのゲームとフレンドは架空のものです。',
+    tryBtn: 'ダウンロードは近日公開',
+    tryNote: '無料の非営利学生プロジェクトです。',
+    footer1: 'Pantheon は、Steam のインターフェースのリデザインを探る、Axel Archambeault による非営利の学生プロジェクトです。ゲームのカバー画像と名称は、それぞれの権利者に帰属します。',
     footer2: 'Valve および Steam とは提携していません。Steam と Steam のロゴは Valve Corporation の商標です。Pantheon は Valve の承認やスポンサーを受けていません。データは一切収集しません。',
+    startEyebrow: 'はじめに',
+    startH2: '数分で使い始められます',
+    startSub: 'Pantheon は、インストール済みのゲームならすぐに使えます。無料の Steam API キーを設定すると、未インストールの所有ゲーム、実績、フレンドも表示できます。',
+    steps: [
+      [ 'Steam をインストール', 'Steam をインストールし、いつもどおりサインインします。Pantheon は Steam のローカルファイルを読み取るだけで、パスワードは一切求めません。' ],
+      [ 'Pantheon をインストール', 'インストーラーを実行します。署名されていないため Windows が警告を表示することがあります。その場合は「詳細情報」→「実行」を選んでください。' ],
+      [ '起動する', 'インストール済みのゲームと、あなたのプレイ時間がすぐに表示されます。' ],
+      [ 'キーを追加(任意)', '下のガイドに従うと、すべてのゲーム、実績、フレンドを表示できます。' ]
+    ],
+    keyH3: '無料の Steam API キーを取得する',
+    keySteps: [
+      'ブラウザーで Steam にサインインし、下のボタンからキーのページを開きます。',
+      '「ドメイン名」に、そのまま「localhost」と入力します。',
+      '利用規約に同意して「登録」をクリックします。',
+      '表示された 32 文字のキーをコピーします。',
+      'Pantheon で「設定」→「Steam API キー」を開き、キーを貼り付けて「キーを保存」をクリックします。'
+    ],
+    keyOpen: 'Steam のキーのページを開く',
+    keyPrivacy: '実績とフレンドを表示するには、Steam の「プライバシー設定」(プロフィール → プロフィールを編集)で「ゲームの詳細」と「フレンドリスト」を公開にし、「ゲームの合計プレイ時間を常に非公開にする」のチェックを外してください。',
+    keyNote: 'キーは個人用です。決して共有しないでください。Pantheon はキーをパソコン上で暗号化して保管し、Steam にのみ送信します。',
+    linksLabel: 'プロジェクトをフォロー'
   },
-
   zh: {
-    name: '中文（简体）', htmlLang: 'zh-CN',
+    name: '中文（简体）',
+    htmlLang: 'zh-CN',
     title: 'Pantheon — 你所有的游戏,你所有的传奇。',
     description: '学生项目:为追逐成就和 100% 完成度的玩家重新设计的 Windows 版 Steam 界面。非商业项目,与 Valve 和 Steam 无任何关联。',
-    skip: '跳到正文', navLabel: '主导航', langLabel: '语言',
-    nav: ['项目', '功能', '设计', '技术', '立即体验'],
+    skip: '跳到正文',
+    navLabel: '主导航',
+    langLabel: '语言',
+    nav: [ '项目', '功能', '快速上手', '技术', '立即体验' ],
     pill: '学生项目 · Steam 界面重新设计',
-    h1a: '你所有的游戏。你所有的', h1b: '传奇。',
+    h1a: '你所有的游戏。你所有的',
+    h1b: '传奇。',
     lead: 'Pantheon 是 Windows 上 Steam 的另一种界面。它把你的成就和进度放在核心位置,采用深色、通透、没有视觉噪音的设计。你的客户端依然是 Steam:Pantheon 只是它的一副新面孔。',
-    cta1: '了解项目', cta2: '查看设计',
+    cta1: '了解项目',
     heroAlt: 'Pantheon 游戏库截图:“继续游玩”横幅,以及显示安装状态、游戏时长和成就进度的封面网格。',
-    facts: [['6', '个界面完成设计与开发'], ['45', '项自动化测试'], ['0', '收集的数据'], ['100%', '支持键盘操作']],
-    projEyebrow: '项目', projH2: '为收藏家设计的 Steam 客户端',
+    projEyebrow: '项目',
+    projH2: '为收藏家设计的 Steam 客户端',
     projSub: 'Steam 功能齐全,但界面信息密集,成就要点好几次才能找到。这个学生项目源于一个简单的问题:如果 Steam 是为追求 100% 的人设计的,它会是什么样子?',
     projP1: '我设计了视觉形象、界面和设计系统,然后把它们做成一个真正的 Windows 应用(Electron):它读取 Steam 的本地文件,并使用你自己的官方 API 访问权限。',
     projP2: 'Pantheon 并不取代 Steam:Steam 仍在后台运行,游戏依旧通过 Steam 启动。',
-    quote: '只有一种蓝色强调色,专用于操作和进度。其余一切都为封面让路。', quoteSmall: '设计的指导原则',
-    featEyebrow: '功能', featH2: '每个界面都服务于进度',
+    quote: '只有一种蓝色强调色,专用于操作和进度。其余一切都为封面让路。',
+    quoteSmall: '设计的指导原则',
+    featEyebrow: '功能',
+    featH2: '每个界面都服务于进度',
     features: [
-      { eyebrow: '游戏库', h3: '封面、留白、唯一的操作', p: '网格把封面放在最显眼的位置。鼠标悬停时,中央会出现圆形的“开始游戏”按钮。最近玩过的游戏固定在顶部,一键即可继续。', bullets: ['搜索、筛选(已安装、下载、收藏、即将全成就)和排序', '每张封面上显示安装状态和下载进度', '数百款游戏依然流畅'], alt: '带有筛选、排序和封面网格的 Pantheon 游戏库。' },
-      { eyebrow: '游戏页面', h3: '成就,终于清晰易读', p: '进度环、带日期的已解锁成就,以及始终用文字写明的稀有度:普通、少见、稀有、极稀有。绝不只靠颜色区分。', bullets: ['筛选:全部、已解锁、未解锁、稀有,并可按稀有度排序', '最容易获得的成就,以及已获得的最稀有成就', '以游戏官方美术作为背景,并渐隐融入界面'], alt: '游戏页面:标题、统计、标签页,以及带进度环和稀有度的成就列表。' },
-      { eyebrow: '成就页面', h3: '已完成游戏的万神殿', p: '你收藏的全局视图:已解锁总数、收纳 100% 完成游戏的“众神”区、最接近完成的游戏,以及你获得的最稀有成就。', bullets: [], alt: '成就页面:总数、100% 完成的游戏、最接近完成的游戏。' },
+      {
+        eyebrow: '游戏库',
+        h3: '封面、留白、唯一的操作',
+        p: '网格把封面放在最显眼的位置。鼠标悬停时,中央会出现圆形的“开始游戏”按钮。最近玩过的游戏固定在顶部,一键即可继续。',
+        bullets: [ '搜索、筛选(已安装、下载、收藏、即将全成就)和排序', '每张封面上显示安装状态和下载进度', '数百款游戏依然流畅' ],
+        alt: '带有筛选、排序和封面网格的 Pantheon 游戏库。'
+      },
+      {
+        eyebrow: '游戏页面',
+        h3: '成就,终于清晰易读',
+        p: '进度环、带日期的已解锁成就,以及始终用文字写明的稀有度:普通、少见、稀有、极稀有。绝不只靠颜色区分。',
+        bullets: [ '筛选:全部、已解锁、未解锁、稀有,并可按稀有度排序', '最容易获得的成就,以及已获得的最稀有成就', '以游戏官方美术作为背景,并渐隐融入界面' ],
+        alt: '游戏页面:标题、统计、标签页,以及带进度环和稀有度的成就列表。'
+      },
+      {
+        eyebrow: '成就页面',
+        h3: '已完成游戏的万神殿',
+        p: '你收藏的全局视图:已解锁总数、收纳 100% 完成游戏的“众神”区、最接近完成的游戏,以及你获得的最稀有成就。',
+        bullets: [],
+        alt: '成就页面:总数、100% 完成的游戏、最接近完成的游戏。'
+      },
       { eyebrow: '商店', h3: '无需离开应用即可浏览', p: '特惠、热销榜、新品和搜索,均为只读。购买始终在真正的 Steam 中完成,点击“在 Steam 中查看”即可跳转。', bullets: [], alt: '展示特惠和折扣价格的 Pantheon 商店。' },
-      { eyebrow: '好友与下载', h3: '谁在玩什么,以及安装进行得如何', p: '好友按状态排序,并显示他们正在玩的游戏;“聊天”按钮会在 Steam 中打开对话。进行中的下载会显示进度,甚至体现在菜单的角标上。', bullets: [], alt: '分为在线和离线的好友列表,显示正在玩的游戏。' },
+      {
+        eyebrow: '好友与下载',
+        h3: '谁在玩什么,以及安装进行得如何',
+        p: '好友按状态排序,并显示他们正在玩的游戏;“聊天”按钮会在 Steam 中打开对话。进行中的下载会显示进度,甚至体现在菜单的角标上。',
+        bullets: [],
+        alt: '分为在线和离线的好友列表,显示正在玩的游戏。'
+      }
     ],
-    demoNote: '所有截图都使用虚构的游戏和好友(应用的演示模式)。',
-    designEyebrow: '设计', designH2: '深色、通透、只有一种强调色',
-    designSub: '极少的边框、宽裕的圆角和两套字体:标题和数字用 Space Grotesk,界面用 Inter。蓝色强调色只是一个变量,改一行就能换掉。',
-    swatchesAria: '配色方案', swatches: [['背景', '#0B0D12'], ['表面', '#12161E'], ['抬升表面', '#181D27'], ['文字', '#E9ECF3'], ['强调色', '#4D8DFF']],
-    typeTitle: '字体', typeText: '标题和数字用 Space Grotesk,其余一律用 Inter。',
-    rarTitle: '看得懂的稀有度', rar: [['极稀有', '低于 3%'], ['稀有', '3% 至 10%'], ['少见', '10% 至 25%'], ['普通', '25% 及以上']],
-    a11yTitle: '从一开始就无障碍', a11yText: '全程可用键盘操作,焦点状态清晰可见,文字对比度至少 4.5:1,触控目标为 44 px,图标按钮都有名称,方便读屏软件使用。',
-    growTitle: '为成长而设计', growText: '所有文字都放在翻译文件中(目前五种语言),强调色只用一个变量。',
-    techEyebrow: '技术', techH2: '既美观,也安全',
+    demoNote: '截图展示的是作者自己的 Steam 游戏库。好友界面使用的是虚构好友。',
+    techEyebrow: '技术',
+    techH2: '既美观,也安全',
     techSub: '读取你游戏库的界面,在安全性上必须无可挑剔。这个项目以与设计同样严格的标准构建。',
     tech: [
-      ['绝不索取密码', '无需登录 Steam。应用读取本地文件,并使用你自己的 API 密钥,密钥通过 Windows 保险库加密保存在你的电脑上。'],
-      ['加固的 Electron', '上下文隔离、沙盒、严格的安全策略,Steam 链接仅限于白名单中的操作,网络仅限少数几个域名。'],
-      ['零收集', '没有账号,没有使用统计,没有服务器:一切都留在你的电脑上。对 Steam 的请求会被缓存并设有上限。'],
-      ['经过测试', '45 项自动化测试覆盖 Steam 文件读取、稀有度计算、链接校验、缓存、API 客户端和翻译。'],
-      ['演示模式', '只需一个变量,就能在没有 Steam 的情况下用虚拟数据运行一切。本页的截图就是这样制作的。'],
-      ['快速', '图片懒加载、按卡片局部更新、屏幕外延迟渲染,让数百款游戏依然流畅。'],
+      [ '绝不索取密码', '无需登录 Steam。应用读取本地文件,并使用你自己的 API 密钥,密钥通过 Windows 保险库加密保存在你的电脑上。' ],
+      [ '加固的 Electron', '上下文隔离、沙盒、严格的安全策略,Steam 链接仅限于白名单中的操作,网络仅限少数几个域名。' ],
+      [ '零收集', '没有账号,没有使用统计,没有服务器:一切都留在你的电脑上。对 Steam 的请求会被缓存并设有上限。' ],
+      [ '经过测试', '48 项自动化测试覆盖 Steam 文件读取、稀有度计算、链接校验、缓存、API 客户端和翻译。' ],
+      [ '演示模式', '只需一个变量,就能在没有 Steam 的情况下用虚拟数据运行一切,方便测试和演示。' ],
+      [ '快速', '图片懒加载、按卡片局部更新、屏幕外延迟渲染,让数百款游戏依然流畅。' ]
     ],
     techAria: '技术栈',
-    tryEyebrow: '立即体验', tryH2: 'Windows 版 Pantheon',
+    tryEyebrow: '立即体验',
+    tryH2: 'Windows 版 Pantheon',
     trySub: '需要 Windows 10 或 11,并已安装 Steam。由于安装程序没有签名,Windows 可能会显示警告:请点击“更多信息”,再点击“仍要运行”。',
-    tryBtn: '下载即将开放', tryNote: '免费的非商业学生项目。',
-    footer1: 'Pantheon 是 Axel Archambeault 的非商业学生项目,用于探索 Steam 界面的重新设计。截图中的游戏和好友均为虚构。',
+    tryBtn: '下载即将开放',
+    tryNote: '免费的非商业学生项目。',
+    footer1: 'Pantheon 是 Axel Archambeault 的非商业学生项目,用于探索 Steam 界面的重新设计。游戏封面和名称归各自的所有者所有。',
     footer2: '与 Valve 和 Steam 无任何关联。Steam 及 Steam 标志是 Valve Corporation 的商标。Pantheon 未获 Valve 认可或赞助。不收集任何数据。',
-  },
+    startEyebrow: '快速上手',
+    startH2: '几分钟即可开始',
+    startSub: 'Pantheon 对已安装的游戏开箱即用。设置一个免费的 Steam API 密钥后,还能显示你拥有但尚未安装的游戏、你的成就和好友。',
+    steps: [
+      [ '安装好 Steam', '安装 Steam 并像往常一样登录。Pantheon 只读取 Steam 的本地文件,从不索取你的密码。' ],
+      [ '安装 Pantheon', '运行安装程序。由于未签名,Windows 可能会弹出警告:请点击“更多信息”,再点击“仍要运行”。' ],
+      [ '打开它', '你已安装的游戏会立刻出现,并显示游戏时长。' ],
+      [ '添加密钥(可选)', '按照下方指南操作,即可看到所有游戏、成就和好友。' ]
+    ],
+    keyH3: '获取免费的 Steam API 密钥',
+    keySteps: [ '在浏览器中登录 Steam,然后点击下方按钮打开密钥页面。', '在“域名”中直接输入:localhost', '接受条款并点击“注册”。', '复制显示的 32 位密钥。', '在 Pantheon 中打开“设置”→“Steam API 密钥”,粘贴后点击“保存密钥”。' ],
+    keyOpen: '打开 Steam 密钥页面',
+    keyPrivacy: '要查看成就和好友,请在 Steam 的隐私设置(个人资料 → 编辑个人资料)中把“游戏详情”和“好友列表”设为公开,并取消勾选“始终将我的总游戏时间设为私密”。',
+    keyNote: '密钥是个人专用的,切勿分享。Pantheon 将它加密保存在你的电脑上,只会发送给 Steam。',
+    linksLabel: '关注项目'
+  }
 };

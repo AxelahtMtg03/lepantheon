@@ -19,7 +19,7 @@
 <header class="nav">
   <div class="wrap">
     <a class="brand" href="./"><img src="assets/logo.png" alt="" width="32" height="32">Pantheon</a>
-    <nav aria-label="Main navigation"><ul><li><a href="#projet">The project</a></li><li><a href="#fonctions">Features</a></li><li><a href="#design">Design</a></li><li><a href="#technique">Under the hood</a></li><li><a href="#essayer">Try it</a></li></ul></nav>
+    <nav aria-label="Main navigation"><ul><li><a href="#projet">The project</a></li><li><a href="#fonctions">Features</a></li><li><a href="#demarrer">Getting started</a></li><li><a href="#technique">Under the hood</a></li><li><a href="#essayer">Try it</a></li></ul></nav>
     <details class="langmenu">
       <summary aria-label="Language">English</summary>
       <ul><li><a href="en/" hreflang="en" lang="en" aria-current="true">English</a></li><li><a href="fr/" hreflang="fr" lang="fr">Français</a></li><li><a href="es/" hreflang="es" lang="es">Español</a></li><li><a href="ja/" hreflang="ja" lang="ja">日本語</a></li><li><a href="zh/" hreflang="zh-CN" lang="zh-CN">中文（简体）</a></li></ul>
@@ -35,10 +35,9 @@
       <p class="lead">Pantheon is an alternative interface for Steam on Windows. It puts your achievements and progress at the center, with a dark, airy design free of visual noise. Steam stays your client: Pantheon is just a new face for it.</p>
       <div class="cta">
         <a class="btn primary" href="#fonctions">Discover the project</a>
-        <a class="btn" href="#design">See the design</a>
+        <a class="btn" href="#essayer">Try it</a>
       </div>
       <figure class="shot"><img src="assets/shots/en/bibliotheque.jpg" width="1800" height="1125" alt="Screenshot of the Pantheon library: a “Continue playing” banner and a grid of covers showing install status, playtime and achievement progress."></figure>
-      <ul class="facts"><li><b>6</b><span>screens designed and coded</span></li><li><b>45</b><span>automated tests</span></li><li><b>0</b><span>data collected</span></li><li><b>100%</b><span>keyboard accessible</span></li></ul>
     </div>
   </div>
 
@@ -66,21 +65,22 @@
       <div class="feature"><div class="text"><span class="eyebrow">Achievements page</span><h3>The Pantheon of finished games</h3><p>An overview of your collection: total unlocked, a “Gods” section for games completed at 100%, the games closest to the finish line and the rarest achievements you’ve earned.</p></div><figure class="shot"><img loading="lazy" src="assets/shots/en/succes.jpg" width="1800" height="1125" alt="The Achievements page: totals, games completed at 100%, games closest to completion."></figure></div>
       <div class="feature flip"><div class="text"><span class="eyebrow">Store</span><h3>Browse without leaving the app</h3><p>Specials, top sellers, new releases and search, read-only. Purchases are always made in the real Steam, one click away with “View in Steam”.</p></div><figure class="shot"><img loading="lazy" src="assets/shots/en/boutique.jpg" width="1800" height="1125" alt="The Pantheon store with its specials and discounted prices."></figure></div>
       <div class="feature"><div class="text"><span class="eyebrow">Friends and downloads</span><h3>Who’s playing what, and how your install is going</h3><p>Your friends sorted by status with the game they’re playing, and a Chat button that opens the conversation in Steam. Ongoing downloads show their progress, all the way to a badge in the menu.</p></div><figure class="shot"><img loading="lazy" src="assets/shots/en/amis.jpg" width="1800" height="1125" alt="The friends list, grouped between online and offline, with the game being played."></figure></div>
-      <p class="note mt">All screenshots use fictional games and friends (the app’s demo mode).</p>
+      <p class="note mt">Screenshots show the author’s own Steam library. The friends screen uses fictional friends.</p>
     </div>
   </section>
 
-  <section id="design" class="band">
+  <section id="demarrer" class="band">
     <div class="wrap">
-      <span class="eyebrow">Design</span>
-      <h2>Dark, airy, a single accent</h2>
-      <p class="sub">Very few borders, generous radii and two font families: Space Grotesk for titles and numbers, Inter for the interface. The blue accent is a single variable: it can be changed in one line.</p>
-      <div class="swatches" role="list" aria-label="Color palette"><div class="sw" role="listitem"><div class="c1"></div><p><b>Background</b><span>#0B0D12</span></p></div><div class="sw" role="listitem"><div class="c2"></div><p><b>Surface</b><span>#12161E</span></p></div><div class="sw" role="listitem"><div class="c3"></div><p><b>Raised surface</b><span>#181D27</span></p></div><div class="sw" role="listitem"><div class="c4"></div><p><b>Text</b><span>#E9ECF3</span></p></div><div class="sw" role="listitem"><div class="c5"></div><p><b>Accent</b><span>#4D8DFF</span></p></div></div>
-      <div class="design-grid">
-        <div class="card"><h3>Typography</h3><div class="type-a">Aa 18 / 42</div><p class="type-b">Space Grotesk for titles and numbers, Inter for everything else.</p></div>
-        <div class="card"><h3>Rarity you can read</h3><div class="rarities"><div><b class="r4">Ultra rare</b><span>under 3%</span></div><div><b class="r3">Rare</b><span>3 to 10%</span></div><div><b class="r2">Uncommon</b><span>10 to 25%</span></div><div><b class="r1">Common</b><span>25% and up</span></div></div></div>
-        <div class="card"><h3>Accessible from the start</h3><p>Full keyboard navigation, clearly visible focus states, text contrast of at least 4.5:1, 44 px touch targets and named icon buttons for screen readers.</p></div>
-        <div class="card"><h3>Built to grow</h3><p>All text lives in translation files (five languages today) and the accent color fits in a single variable.</p></div>
+      <span class="eyebrow">Getting started</span>
+      <h2>Up and running in a few minutes</h2>
+      <p class="sub">Pantheon works right away with the games you have installed. A free Steam API key unlocks the rest: games you own but haven’t installed, your achievements and your friends.</p>
+      <ol class="steps4"><li><h3>Have Steam installed</h3><p>Install Steam and sign in as usual. Pantheon reads Steam’s local files and never asks for your password.</p></li><li><h3>Install Pantheon</h3><p>Run the installer. Because it isn’t signed, Windows may warn you: click “More info” then “Run anyway”.</p></li><li><h3>Open it</h3><p>Your installed games appear straight away, with your playtime.</p></li><li><h3>Add your key (optional)</h3><p>Follow the guide below to see all your games, achievements and friends.</p></li></ol>
+      <div class="keybox">
+        <h3>Get your free Steam API key</h3>
+        <ol class="keysteps"><li>Sign in to Steam in your web browser, then open the key page with the button below.</li><li>In “Domain Name”, simply type: localhost</li><li>Accept the terms and click “Register”.</li><li>Copy the 32-character key that appears.</li><li>In Pantheon, open Settings → Steam API key, paste it and click “Save the key”.</li></ol>
+        <div class="cta left"><a class="btn primary" href="https://steamcommunity.com/dev/apikey" target="_blank" rel="noopener noreferrer">Open the Steam key page</a></div>
+        <p class="keynote">To see your achievements and friends, set “Game details” and “Friends list” to Public in Steam (Profile → Edit Profile → Privacy Settings), and untick “Always keep my total playtime private”.</p>
+        <p class="keynote">The key is personal: never share it. Pantheon keeps it encrypted on your computer and sends it only to Steam.</p>
       </div>
     </div>
   </section>
@@ -90,7 +90,7 @@
       <span class="eyebrow">Under the hood</span>
       <h2>Beautiful, but also safe</h2>
       <p class="sub">An interface that reads your library has to be flawless on security. This project was built with the same rigor as the design.</p>
-      <div class="tech"><div class="card"><h3>Never a password</h3><p>No Steam sign-in. The app reads local files and uses your own API key, encrypted on your computer with the Windows vault.</p></div><div class="card"><h3>Hardened Electron</h3><p>Context isolation, sandbox, strict security policy, Steam links limited to an allow-list of actions, network restricted to a few domains.</p></div><div class="card"><h3>Zero collection</h3><p>No account, no usage statistics, no server: everything stays on your PC. Calls to Steam are cached and capped.</p></div><div class="card"><h3>Tested</h3><p>45 automated tests cover the Steam file reader, rarity calculations, link validation, the cache, the API client and the translations.</p></div><div class="card"><h3>Demo mode</h3><p>One variable is enough to run everything on fake data, without Steam. That’s how the screenshots on this page were made.</p></div><div class="card"><h3>Fast</h3><p>Lazy-loaded images, targeted card updates and off-screen rendering keep hundreds of games smooth.</p></div></div>
+      <div class="tech"><div class="card"><h3>Never a password</h3><p>No Steam sign-in. The app reads local files and uses your own API key, encrypted on your computer with the Windows vault.</p></div><div class="card"><h3>Hardened Electron</h3><p>Context isolation, sandbox, strict security policy, Steam links limited to an allow-list of actions, network restricted to a few domains.</p></div><div class="card"><h3>Zero collection</h3><p>No account, no usage statistics, no server: everything stays on your PC. Calls to Steam are cached and capped.</p></div><div class="card"><h3>Tested</h3><p>48 automated tests cover the Steam file reader, rarity calculations, link validation, the cache, the API client and the translations.</p></div><div class="card"><h3>Demo mode</h3><p>One variable is enough to run everything on fake data, without Steam, which is handy for testing and demos.</p></div><div class="card"><h3>Fast</h3><p>Lazy-loaded images, targeted card updates and off-screen rendering keep hundreds of games smooth.</p></div></div>
       <div class="tags" aria-label="Technologies"><span>Electron</span><span>JavaScript</span><span>HTML / CSS</span><span>Steam Web API</span><span>safeStorage</span><span>NSIS</span></div>
     </div>
   </section>
@@ -110,8 +110,14 @@
 
 <footer>
   <div class="wrap">
-    <p>Pantheon is a non-commercial student project by Axel Archambeault, exploring a redesign of Steam’s interface. The games and friends in the screenshots are fictional.</p>
-    <p>Not affiliated with Valve or Steam. Steam and the Steam logo are trademarks of Valve Corporation. Pantheon is neither endorsed nor sponsored by Valve. No data is collected.</p>
+    <div>
+      <p>Pantheon is a non-commercial student project by Axel Archambeault, exploring a redesign of Steam’s interface. Game covers and names belong to their respective owners.</p>
+      <p>Not affiliated with Valve or Steam. Steam and the Steam logo are trademarks of Valve Corporation. Pantheon is neither endorsed nor sponsored by Valve. No data is collected.</p>
+    </div>
+    <ul class="social" aria-label="Follow the project">
+      <li><a href="https://github.com/AxelahtMtg03" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 16 16" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a></li>
+      <li><a href="https://www.instagram.com/axel.aht.mtg/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>Instagram</a></li>
+    </ul>
   </div>
 </footer>
 </body>

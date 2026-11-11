@@ -19,7 +19,7 @@
 <header class="nav">
   <div class="wrap">
     <a class="brand" href="../zh/"><img src="../assets/logo.png" alt="" width="32" height="32">Pantheon</a>
-    <nav aria-label="主导航"><ul><li><a href="#projet">项目</a></li><li><a href="#fonctions">功能</a></li><li><a href="#design">设计</a></li><li><a href="#technique">技术</a></li><li><a href="#essayer">立即体验</a></li></ul></nav>
+    <nav aria-label="主导航"><ul><li><a href="#projet">项目</a></li><li><a href="#fonctions">功能</a></li><li><a href="#demarrer">快速上手</a></li><li><a href="#technique">技术</a></li><li><a href="#essayer">立即体验</a></li></ul></nav>
     <details class="langmenu">
       <summary aria-label="语言">中文（简体）</summary>
       <ul><li><a href="../en/" hreflang="en" lang="en">English</a></li><li><a href="../fr/" hreflang="fr" lang="fr">Français</a></li><li><a href="../es/" hreflang="es" lang="es">Español</a></li><li><a href="../ja/" hreflang="ja" lang="ja">日本語</a></li><li><a href="../zh/" hreflang="zh-CN" lang="zh-CN" aria-current="true">中文（简体）</a></li></ul>
@@ -35,10 +35,9 @@
       <p class="lead">Pantheon 是 Windows 上 Steam 的另一种界面。它把你的成就和进度放在核心位置,采用深色、通透、没有视觉噪音的设计。你的客户端依然是 Steam:Pantheon 只是它的一副新面孔。</p>
       <div class="cta">
         <a class="btn primary" href="#fonctions">了解项目</a>
-        <a class="btn" href="#design">查看设计</a>
+        <a class="btn" href="#essayer">立即体验</a>
       </div>
       <figure class="shot"><img src="../assets/shots/zh/bibliotheque.jpg" width="1800" height="1125" alt="Pantheon 游戏库截图:“继续游玩”横幅,以及显示安装状态、游戏时长和成就进度的封面网格。"></figure>
-      <ul class="facts"><li><b>6</b><span>个界面完成设计与开发</span></li><li><b>45</b><span>项自动化测试</span></li><li><b>0</b><span>收集的数据</span></li><li><b>100%</b><span>支持键盘操作</span></li></ul>
     </div>
   </div>
 
@@ -66,21 +65,22 @@
       <div class="feature"><div class="text"><span class="eyebrow">成就页面</span><h3>已完成游戏的万神殿</h3><p>你收藏的全局视图:已解锁总数、收纳 100% 完成游戏的“众神”区、最接近完成的游戏,以及你获得的最稀有成就。</p></div><figure class="shot"><img loading="lazy" src="../assets/shots/zh/succes.jpg" width="1800" height="1125" alt="成就页面:总数、100% 完成的游戏、最接近完成的游戏。"></figure></div>
       <div class="feature flip"><div class="text"><span class="eyebrow">商店</span><h3>无需离开应用即可浏览</h3><p>特惠、热销榜、新品和搜索,均为只读。购买始终在真正的 Steam 中完成,点击“在 Steam 中查看”即可跳转。</p></div><figure class="shot"><img loading="lazy" src="../assets/shots/zh/boutique.jpg" width="1800" height="1125" alt="展示特惠和折扣价格的 Pantheon 商店。"></figure></div>
       <div class="feature"><div class="text"><span class="eyebrow">好友与下载</span><h3>谁在玩什么,以及安装进行得如何</h3><p>好友按状态排序,并显示他们正在玩的游戏;“聊天”按钮会在 Steam 中打开对话。进行中的下载会显示进度,甚至体现在菜单的角标上。</p></div><figure class="shot"><img loading="lazy" src="../assets/shots/zh/amis.jpg" width="1800" height="1125" alt="分为在线和离线的好友列表,显示正在玩的游戏。"></figure></div>
-      <p class="note mt">所有截图都使用虚构的游戏和好友(应用的演示模式)。</p>
+      <p class="note mt">截图展示的是作者自己的 Steam 游戏库。好友界面使用的是虚构好友。</p>
     </div>
   </section>
 
-  <section id="design" class="band">
+  <section id="demarrer" class="band">
     <div class="wrap">
-      <span class="eyebrow">设计</span>
-      <h2>深色、通透、只有一种强调色</h2>
-      <p class="sub">极少的边框、宽裕的圆角和两套字体:标题和数字用 Space Grotesk,界面用 Inter。蓝色强调色只是一个变量,改一行就能换掉。</p>
-      <div class="swatches" role="list" aria-label="配色方案"><div class="sw" role="listitem"><div class="c1"></div><p><b>背景</b><span>#0B0D12</span></p></div><div class="sw" role="listitem"><div class="c2"></div><p><b>表面</b><span>#12161E</span></p></div><div class="sw" role="listitem"><div class="c3"></div><p><b>抬升表面</b><span>#181D27</span></p></div><div class="sw" role="listitem"><div class="c4"></div><p><b>文字</b><span>#E9ECF3</span></p></div><div class="sw" role="listitem"><div class="c5"></div><p><b>强调色</b><span>#4D8DFF</span></p></div></div>
-      <div class="design-grid">
-        <div class="card"><h3>字体</h3><div class="type-a">Aa 18 / 42</div><p class="type-b">标题和数字用 Space Grotesk,其余一律用 Inter。</p></div>
-        <div class="card"><h3>看得懂的稀有度</h3><div class="rarities"><div><b class="r4">极稀有</b><span>低于 3%</span></div><div><b class="r3">稀有</b><span>3% 至 10%</span></div><div><b class="r2">少见</b><span>10% 至 25%</span></div><div><b class="r1">普通</b><span>25% 及以上</span></div></div></div>
-        <div class="card"><h3>从一开始就无障碍</h3><p>全程可用键盘操作,焦点状态清晰可见,文字对比度至少 4.5:1,触控目标为 44 px,图标按钮都有名称,方便读屏软件使用。</p></div>
-        <div class="card"><h3>为成长而设计</h3><p>所有文字都放在翻译文件中(目前五种语言),强调色只用一个变量。</p></div>
+      <span class="eyebrow">快速上手</span>
+      <h2>几分钟即可开始</h2>
+      <p class="sub">Pantheon 对已安装的游戏开箱即用。设置一个免费的 Steam API 密钥后,还能显示你拥有但尚未安装的游戏、你的成就和好友。</p>
+      <ol class="steps4"><li><h3>安装好 Steam</h3><p>安装 Steam 并像往常一样登录。Pantheon 只读取 Steam 的本地文件,从不索取你的密码。</p></li><li><h3>安装 Pantheon</h3><p>运行安装程序。由于未签名,Windows 可能会弹出警告:请点击“更多信息”,再点击“仍要运行”。</p></li><li><h3>打开它</h3><p>你已安装的游戏会立刻出现,并显示游戏时长。</p></li><li><h3>添加密钥(可选)</h3><p>按照下方指南操作,即可看到所有游戏、成就和好友。</p></li></ol>
+      <div class="keybox">
+        <h3>获取免费的 Steam API 密钥</h3>
+        <ol class="keysteps"><li>在浏览器中登录 Steam,然后点击下方按钮打开密钥页面。</li><li>在“域名”中直接输入:localhost</li><li>接受条款并点击“注册”。</li><li>复制显示的 32 位密钥。</li><li>在 Pantheon 中打开“设置”→“Steam API 密钥”,粘贴后点击“保存密钥”。</li></ol>
+        <div class="cta left"><a class="btn primary" href="https://steamcommunity.com/dev/apikey" target="_blank" rel="noopener noreferrer">打开 Steam 密钥页面</a></div>
+        <p class="keynote">要查看成就和好友,请在 Steam 的隐私设置(个人资料 → 编辑个人资料)中把“游戏详情”和“好友列表”设为公开,并取消勾选“始终将我的总游戏时间设为私密”。</p>
+        <p class="keynote">密钥是个人专用的,切勿分享。Pantheon 将它加密保存在你的电脑上,只会发送给 Steam。</p>
       </div>
     </div>
   </section>
@@ -90,7 +90,7 @@
       <span class="eyebrow">技术</span>
       <h2>既美观,也安全</h2>
       <p class="sub">读取你游戏库的界面,在安全性上必须无可挑剔。这个项目以与设计同样严格的标准构建。</p>
-      <div class="tech"><div class="card"><h3>绝不索取密码</h3><p>无需登录 Steam。应用读取本地文件,并使用你自己的 API 密钥,密钥通过 Windows 保险库加密保存在你的电脑上。</p></div><div class="card"><h3>加固的 Electron</h3><p>上下文隔离、沙盒、严格的安全策略,Steam 链接仅限于白名单中的操作,网络仅限少数几个域名。</p></div><div class="card"><h3>零收集</h3><p>没有账号,没有使用统计,没有服务器:一切都留在你的电脑上。对 Steam 的请求会被缓存并设有上限。</p></div><div class="card"><h3>经过测试</h3><p>45 项自动化测试覆盖 Steam 文件读取、稀有度计算、链接校验、缓存、API 客户端和翻译。</p></div><div class="card"><h3>演示模式</h3><p>只需一个变量,就能在没有 Steam 的情况下用虚拟数据运行一切。本页的截图就是这样制作的。</p></div><div class="card"><h3>快速</h3><p>图片懒加载、按卡片局部更新、屏幕外延迟渲染,让数百款游戏依然流畅。</p></div></div>
+      <div class="tech"><div class="card"><h3>绝不索取密码</h3><p>无需登录 Steam。应用读取本地文件,并使用你自己的 API 密钥,密钥通过 Windows 保险库加密保存在你的电脑上。</p></div><div class="card"><h3>加固的 Electron</h3><p>上下文隔离、沙盒、严格的安全策略,Steam 链接仅限于白名单中的操作,网络仅限少数几个域名。</p></div><div class="card"><h3>零收集</h3><p>没有账号,没有使用统计,没有服务器:一切都留在你的电脑上。对 Steam 的请求会被缓存并设有上限。</p></div><div class="card"><h3>经过测试</h3><p>48 项自动化测试覆盖 Steam 文件读取、稀有度计算、链接校验、缓存、API 客户端和翻译。</p></div><div class="card"><h3>演示模式</h3><p>只需一个变量,就能在没有 Steam 的情况下用虚拟数据运行一切,方便测试和演示。</p></div><div class="card"><h3>快速</h3><p>图片懒加载、按卡片局部更新、屏幕外延迟渲染,让数百款游戏依然流畅。</p></div></div>
       <div class="tags" aria-label="技术栈"><span>Electron</span><span>JavaScript</span><span>HTML / CSS</span><span>Steam Web API</span><span>safeStorage</span><span>NSIS</span></div>
     </div>
   </section>
@@ -110,8 +110,14 @@
 
 <footer>
   <div class="wrap">
-    <p>Pantheon 是 Axel Archambeault 的非商业学生项目,用于探索 Steam 界面的重新设计。截图中的游戏和好友均为虚构。</p>
-    <p>与 Valve 和 Steam 无任何关联。Steam 及 Steam 标志是 Valve Corporation 的商标。Pantheon 未获 Valve 认可或赞助。不收集任何数据。</p>
+    <div>
+      <p>Pantheon 是 Axel Archambeault 的非商业学生项目,用于探索 Steam 界面的重新设计。游戏封面和名称归各自的所有者所有。</p>
+      <p>与 Valve 和 Steam 无任何关联。Steam 及 Steam 标志是 Valve Corporation 的商标。Pantheon 未获 Valve 认可或赞助。不收集任何数据。</p>
+    </div>
+    <ul class="social" aria-label="关注项目">
+      <li><a href="https://github.com/AxelahtMtg03" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 16 16" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a></li>
+      <li><a href="https://www.instagram.com/axel.aht.mtg/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>Instagram</a></li>
+    </ul>
   </div>
 </footer>
 </body>
