@@ -1,5 +1,5 @@
 'use strict';
-// Génère build/icon.png (512 px) et build/icon.ico (PNG 256 px) : anneau bleu sur fond sombre, comme le logo de l'appli.
+// Génère build/icon.png (512 px) et build/icon.ico (PNG 16 à 256 px) : logo « oculus percé » (temple blanc dans un anneau bleu).
 // Aucune dépendance : PNG écrit à la main avec zlib. Usage : node scripts/make-icon.js
 const fs = require('node:fs');
 const path = require('node:path');
@@ -7,15 +7,31 @@ const zlib = require('node:zlib');
 
 const BG = [0x0b, 0x0d, 0x12];
 const ACCENT = [0x4d, 0x8d, 0xff];
-const SS = 3; // suréchantillonnage pour lisser les bords
+const WHITE = [0xf4, 0xf6, 0xfb];
+const SS = 4; // suréchantillonnage pour lisser les bords
+
+// Logo « oculus percé » : anneau bleu autour d'un temple blanc dont le fronton est percé d'un trou rond.
+// Coordonnées du logo sur une grille de 100 ; le temple est dessiné sur sa propre grille puis réduit.
+const K = 0.74; // taille du temple par rapport à l'anneau
+function logoColor(u, v) {
+  const d = Math.hypot(u - 50, v - 50);
+  if (Math.abs(d - 46) <= 2.3) return ACCENT;
+  const x = (u - 50) / K + 50;
+  const y = (v - 50) / K + 50;
+  // fronton (triangle) avec oculus
+  if (y >= 22 && y <= 40 && Math.abs(x - 50) <= ((y - 22) / 18) * 34) return Math.hypot(x - 50, y - 34) <= 3.4 ? BG : WHITE;
+  if (x >= 16 && x <= 84 && y >= 42 && y <= 46) return WHITE; // entablement
+  if (y >= 48 && y <= 68 && [22, 36, 50, 64, 78].some((c) => Math.abs(x - c) <= 3)) return WHITE; // colonnes
+  if (x >= 14 && x <= 86 && y >= 70 && y <= 74) return WHITE; // marche haute
+  if (x >= 10 && x <= 90 && y >= 76 && y <= 80) return WHITE; // marche basse
+  return BG;
+}
 
 function render(size) {
   const px = Buffer.alloc(size * size * 4);
   const c = size / 2;
   const radius = size * 0.22; // coins arrondis
-  const ringR = size * 0.34;
-  const ringW = size * 0.075;
-  const dotR = size * 0.15;
+  const scale = 0.8; // part de l'icône occupée par le logo
   const roundedSquare = (x, y) => {
     const dx = Math.max(Math.abs(x - c) - (c - radius), 0);
     const dy = Math.max(Math.abs(y - c) - (c - radius), 0);
@@ -29,8 +45,7 @@ function render(size) {
           const fx = x + (sx + 0.5) / SS;
           const fy = y + (sy + 0.5) / SS;
           if (!roundedSquare(fx, fy)) continue;
-          const d = Math.hypot(fx - c, fy - c);
-          const col = Math.abs(d - ringR) <= ringW / 2 || d <= dotR ? ACCENT : BG;
+          const col = logoColor(((fx / size - 0.5) / scale) * 100 + 50, ((fy / size - 0.5) / scale) * 100 + 50);
           a++; r += col[0]; g += col[1]; b += col[2];
         }
       }

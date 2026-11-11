@@ -59,16 +59,26 @@ export function icon(name, size = 20) {
   return svg;
 }
 
-export function logoMark(size = 26) {
+// Logo « oculus percé » : anneau bleu et temple blanc dont le fronton est percé d'un trou rond.
+export function logoMark(size = 30) {
   const svg = document.createElementNS(SVG_NS, 'svg');
   svg.setAttribute('width', size);
   svg.setAttribute('height', size);
-  svg.setAttribute('viewBox', '0 0 26 26');
+  svg.setAttribute('viewBox', '0 0 100 100');
   svg.setAttribute('aria-hidden', 'true');
-  const ring = document.createElementNS(SVG_NS, 'circle');
-  for (const [k, v] of Object.entries({ cx: 13, cy: 13, r: 11, fill: 'none', stroke: 'var(--accent)', 'stroke-width': 2 })) ring.setAttribute(k, v);
-  const dot = document.createElementNS(SVG_NS, 'circle');
-  for (const [k, v] of Object.entries({ cx: 13, cy: 13, r: 5, fill: 'var(--accent)' })) dot.setAttribute(k, v);
-  svg.append(ring, dot);
+  const mk = (tag, attrs) => {
+    const el = document.createElementNS(SVG_NS, tag);
+    for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+    return el;
+  };
+  const temple = mk('g', { transform: 'translate(50 50) scale(.74) translate(-50 -50)', fill: '#F4F6FB' });
+  temple.append(
+    mk('path', { d: 'M50 22 L84 40 L16 40 Z M50 30.6 a3.4 3.4 0 1 0 0.01 0 Z', 'fill-rule': 'evenodd' }),
+    mk('rect', { x: 16, y: 42, width: 68, height: 4 }),
+    ...[22, 36, 50, 64, 78].map((c) => mk('rect', { x: c - 3, y: 48, width: 6, height: 20 })),
+    mk('rect', { x: 14, y: 70, width: 72, height: 4 }),
+    mk('rect', { x: 10, y: 76, width: 80, height: 4 }),
+  );
+  svg.append(mk('circle', { cx: 50, cy: 50, r: 46, fill: 'none', stroke: 'var(--accent)', 'stroke-width': 4.6 }), temple);
   return svg;
 }
