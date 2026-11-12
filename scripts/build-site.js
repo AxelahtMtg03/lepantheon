@@ -1,7 +1,7 @@
 'use strict';
 // Génère le site statique dans site/ : une page par langue (site/<code>/index.html) et la page d'accueil en anglais (site/index.html).
 // Usage : node scripts/build-site.js   (aucune dépendance)
-const DOWNLOAD_URL = (() => { const v = require('../package.json').version; return `https://github.com/AxelahtMtg03/lepantheon/releases/download/v${v}/Pantheon-Setup-${v}.exe`; })();
+const DOWNLOAD_URL = (() => { const v = process.env.PANTHEON_RELEASE || require('../package.json').version; return `https://github.com/AxelahtMtg03/lepantheon/releases/download/v${v}/Pantheon-Setup-${v}.exe`; })();
 const fs = require('node:fs');
 const path = require('node:path');
 const content = require('./site-content');

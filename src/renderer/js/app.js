@@ -146,8 +146,13 @@ async function route(info, profile) {
   const current = NAV.some((n) => n.id === section) || section === 'settings' ? section : 'library';
   renderSidebar(current, info, profile);
   // Page de chargement : seulement si la page tarde (> 150 ms), jamais un délai artificiel.
+  // Si la vue a déjà posé son contenu (puis attend des données), on ne le recouvre pas : sinon la page resterait en chargement.
+  let touched = false;
+  const watcher = new MutationObserver(() => { touched = true; });
+  watcher.observe(main, { childList: true });
   const skelTimer = setTimeout(() => {
-    if (seq === routeSeq) main.replaceChildren(...skeletonPage());
+    watcher.disconnect();
+    if (seq === routeSeq && !touched) main.replaceChildren(...skeletonPage());
   }, 150);
   try {
     let v;
@@ -168,6 +173,7 @@ async function route(info, profile) {
     main.replaceChildren(h('div', { class: 'notice' }, h('h2', null, t('error.title')), h('p', null, t('error.text'))));
   }
   clearTimeout(skelTimer);
+  watcher.disconnect();
   if (seq === routeSeq) {
     main.classList.remove('page-in');
     void main.offsetWidth; // relance l'animation d'entrée
