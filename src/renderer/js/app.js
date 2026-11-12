@@ -85,7 +85,6 @@ function renderTopnav(current, info, profile) {
     h('a', { class: 'brand od-brand', href: '#/library', 'aria-label': t('nav.library') }, logoMark(), h('span', { class: 'brand-name' }, t('app.name')), ...(info.mock ? [h('span', { class: 'demo-badge' }, t('app.demo'))] : [])),
     h('nav', { class: 'od-nav', 'aria-label': t('nav.label') }, [...NAV, { id: 'settings' }].map(link)),
     h('div', { class: 'od-right' },
-      h('div', { class: 'updbanner hidden', id: 'updbanner', role: 'status' }, h('span'), h('button', { class: 'btn small primary', type: 'button', onclick: () => api.installUpdate() }, t('upd.bannerBtn'))),
       searchBtn('btn small od-search'),
       avatar),
   );
@@ -119,7 +118,6 @@ function renderSidebar(current, info, profile) {
     h('nav', { 'aria-label': t('nav.label'), style: { display: 'flex', flexDirection: 'column', gap: '6px' } }, NAV.map((n) => navLink(n, current))),
     h('div', { class: 'spacer' }),
     navLink({ id: 'settings', icon: 'settings' }, current),
-    h('div', { class: 'updbanner hidden', id: 'updbanner', role: 'status' }, h('span'), h('button', { class: 'btn small primary', type: 'button', onclick: () => api.installUpdate() }, t('upd.bannerBtn'))),
     h('div', { class: 'profile' },
       h('div', { class: 'profile-row' }, avatar,
         h('div', { style: { display: 'flex', flexDirection: 'column', gap: '2px' } },
@@ -191,6 +189,9 @@ async function start() {
     console.error(err);
   }
   await initI18n(info.language); // la langue doit être chargée avant le premier affichage
+  // Fenêtre « mise à jour prête » : en bas à droite, identique dans les deux dispositions, jamais dans la navigation.
+  document.body.append(h('div', { class: 'updbanner toast hidden', id: 'updbanner', role: 'status' }, h('span'),
+    h('button', { class: 'btn small primary', type: 'button', onclick: () => api.installUpdate() }, t('upd.bannerBtn'))));
   applyPrefs(info.prefs);
 
   // Écran de démarrage : seulement si le vrai chargement dépasse 400 ms, fermé dès que tout est prêt (3 s max), une seule fois.
