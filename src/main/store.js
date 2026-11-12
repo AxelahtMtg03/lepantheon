@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { app } = require('electron');
 const { isAppId } = require('../shared/validation');
+const { normalizePrefs, mergePrefs } = require('../shared/prefs');
 
 let cache = null;
 const file = () => path.join(app.getPath('userData'), 'settings.json');
@@ -17,7 +18,7 @@ function load() {
     // fichier absent ou corrompu : on repart de zéro
   }
   const favorites = Array.isArray(raw.favorites) ? raw.favorites.filter(isAppId).map(Number) : [];
-  cache = { favorites: [...new Set(favorites)] };
+  cache = { favorites: [...new Set(favorites)], prefs: normalizePrefs(raw.prefs, { existing: Object.keys(raw).length > 0 }) };
   for (const k of Object.keys(TEXT_SETTINGS)) if (typeof raw[k] === 'string') cache[k] = raw[k].slice(0, TEXT_SETTINGS[k]);
   return cache;
 }
@@ -60,4 +61,15 @@ function toggleFavorite(appid) {
   return [...s.favorites];
 }
 
-module.exports = { getFavorites, toggleFavorite, getSetting, setSetting };
+function getPrefs() {
+  return { ...load().prefs };
+}
+
+function setPrefs(patch) {
+  const s = load();
+  s.prefs = mergePrefs(s.prefs, patch);
+  save();
+  return { ...s.prefs };
+}
+
+module.exports = { getFavorites, toggleFavorite, getSetting, setSetting, getPrefs, setPrefs };

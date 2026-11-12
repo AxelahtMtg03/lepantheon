@@ -322,3 +322,8 @@ a.cover{display:block;text-decoration:none}
   .skel,.art-skel{display:none!important}
   .card.enter,#main.page-in>*{opacity:1!important;transform:none!important}
 }
+
+/* Réglage « réduire les animations » (en plus de prefers-reduced-motion) */
+html[data-motion="reduced"] *,html[data-motion="reduced"] *::before,html[data-motion="reduced"] *::after{animation:none!important;transition:none!important}
+html[data-motion="reduced"] .skel,html[data-motion="reduced"] .art-skel{display:none!important}
+html[data-motion="reduced"] .card.enter,html[data-motion="reduced"] #main.page-in>*{opacity:1!important;transform:none!important}

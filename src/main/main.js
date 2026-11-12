@@ -12,6 +12,7 @@ const { createProvider } = require('./provider');
 const { createAchievementService } = require('./achievements');
 const { createUpdater } = require('./updater');
 const { isSteamId64 } = require('../shared/validation');
+const { ACCENTS } = require('../shared/prefs');
 const { LANGUAGES, resolveLanguage, normalizeCountry } = require('../shared/languages');
 
 const MOCK = process.env.PANTHEON_MOCK === '1' || process.argv.includes('--mock');
@@ -69,7 +70,10 @@ function handle(channel, fn) {
 }
 
 function registerIpc() {
-  handle('app:info', () => ({ version: app.getVersion(), mock: MOCK, platform: process.platform, language: language() }));
+  // La disposition et l'accent partent avec les infos de départ : aucun flash de la mauvaise interface.
+  const prefsView = (p) => ({ ...p, accentColors: ACCENTS[p.accent] });
+  handle('app:info', () => ({ version: app.getVersion(), mock: MOCK, platform: process.platform, language: language(), prefs: prefsView(store.getPrefs()) }));
+  handle('prefs:set', (patch) => prefsView(store.setPrefs(patch)));
   handle('language:set', (code) => {
     if (typeof code !== 'string' || !Object.hasOwn(LANGUAGES, code)) return { ok: false, error: 'bad-language' };
     store.setSetting('language', code);

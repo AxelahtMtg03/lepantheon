@@ -18,6 +18,7 @@ contextBridge.exposeInMainWorld(
     getFriends: () => call('friends:get'),
     getBadges: () => call('badges:get'),
     setLanguage: (code) => call('language:set', code),
+    setPrefs: (patch) => call('prefs:set', patch),
     getUpdate: () => call('update:get'),
     checkUpdate: () => call('update:check'),
     installUpdate: () => call('update:install'),

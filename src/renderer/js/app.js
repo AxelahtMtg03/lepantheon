@@ -12,6 +12,18 @@ import { buildSplash } from './splash-view.js';
 import { skeletonPage } from './skeleton.js';
 
 const api = window.pantheon;
+
+// Applique disposition, accent et animations réduites (avant le premier affichage, puis à chaque changement des réglages).
+export function applyPrefs(prefs) {
+  if (!prefs) return;
+  const root = document.documentElement;
+  root.dataset.layout = prefs.layout;
+  root.dataset.motion = prefs.reducedMotion ? 'reduced' : 'full';
+  if (prefs.accentColors) {
+    root.style.setProperty('--accent', prefs.accentColors.accent);
+    root.style.setProperty('--on-accent', prefs.accentColors.on);
+  }
+}
 const NAV = [
   { id: 'library', icon: 'library' },
   { id: 'store', icon: 'store' },
@@ -123,6 +135,7 @@ async function start() {
     console.error(err);
   }
   await initI18n(info.language); // la langue doit être chargée avant le premier affichage
+  applyPrefs(info.prefs);
 
   // Écran de démarrage : seulement si le vrai chargement dépasse 400 ms, fermé dès que tout est prêt (3 s max), une seule fois.
   let splashUi = null;
@@ -137,7 +150,7 @@ async function start() {
       splashUi?.hide();
     },
   });
-  splash.start();
+  if (info.prefs?.splash !== false) splash.start();
   const skip = () => splash.skip();
   document.addEventListener('pointerdown', skip, { once: true });
   document.addEventListener('keydown', skip, { once: true });
