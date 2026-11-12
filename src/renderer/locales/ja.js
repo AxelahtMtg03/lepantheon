@@ -289,5 +289,7 @@ export default {
   "upd.status.dev": "アップデートは、インストール済みのアプリでのみ利用できます。",
   "upd.restart": "再起動して更新",
   "upd.banner": "アップデート {v} の準備完了",
-  "upd.bannerBtn": "再起動"
+  "upd.bannerBtn": "再起動",
+  "upd.installing": "Pantheon を更新しています…",
+  "upd.installingHint": "Pantheon は一度閉じ、更新をインストールして、約 1 分後に自動で再起動します。手動で開き直さないでください。"
 };

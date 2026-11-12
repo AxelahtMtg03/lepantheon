@@ -1,4 +1,5 @@
 import { h, icon, logoMark } from './dom.js';
+import { startInstall } from './update-ui.js';
 import { t, initI18n } from './i18n.js';
 import { renderLibrary } from './views/library.js';
 import { renderSettings } from './views/settings.js';
@@ -191,7 +192,7 @@ async function start() {
   await initI18n(info.language); // la langue doit être chargée avant le premier affichage
   // Fenêtre « mise à jour prête » : en bas à droite, identique dans les deux dispositions, jamais dans la navigation.
   document.body.append(h('div', { class: 'updbanner toast hidden', id: 'updbanner', role: 'status' }, h('span'),
-    h('button', { class: 'btn small primary', type: 'button', onclick: () => api.installUpdate() }, t('upd.bannerBtn'))));
+    h('button', { class: 'btn small primary', type: 'button', onclick: () => startInstall(api) }, t('upd.bannerBtn'))));
   applyPrefs(info.prefs);
 
   // Écran de démarrage : seulement si le vrai chargement dépasse 400 ms, fermé dès que tout est prêt (3 s max), une seule fois.

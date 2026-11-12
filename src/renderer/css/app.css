@@ -467,3 +467,5 @@ html[data-layout="odeon"] .od-right{margin-right:0;justify-self:end}
 html .updbanner.toast{position:fixed;right:24px;bottom:24px;z-index:90;display:flex;flex-direction:row;align-items:center;gap:16px;max-width:420px;margin:0;padding:14px 14px 14px 18px;border-radius:16px;background:var(--surface-hi);border:1px solid var(--accent);box-shadow:0 18px 40px -12px rgba(0,0,0,.85);animation:fadeUp .4s cubic-bezier(.2,.7,.2,1) both}
 html .updbanner.toast.hidden{display:none}
 .updbanner.toast span{flex:1;font-size:13px;line-height:1.35}
+.upd-bar{width:260px;margin-top:8px}
+.gs-overlay.upd-wait{animation:none;opacity:1;background:rgba(8,10,16,.94)}

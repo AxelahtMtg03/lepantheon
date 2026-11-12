@@ -289,5 +289,7 @@ export default {
   "upd.status.dev": "更新仅在已安装的应用中可用。",
   "upd.restart": "重启并更新",
   "upd.banner": "更新 {v} 已就绪",
-  "upd.bannerBtn": "重启"
+  "upd.bannerBtn": "重启",
+  "upd.installing": "正在更新 Pantheon…",
+  "upd.installingHint": "Pantheon 将关闭、安装更新，并在大约一分钟后自动重新打开。请不要自己重新打开。"
 };

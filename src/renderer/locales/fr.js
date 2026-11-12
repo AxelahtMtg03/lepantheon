@@ -289,5 +289,7 @@ export default {
   "upd.status.dev": "Les mises à jour ne sont disponibles que dans l'application installée.",
   "upd.restart": "Redémarrer et mettre à jour",
   "upd.banner": "Mise à jour {v} prête",
-  "upd.bannerBtn": "Redémarrer"
+  "upd.bannerBtn": "Redémarrer",
+  "upd.installing": "Mise à jour de Pantheon…",
+  "upd.installingHint": "Pantheon va se fermer, installer la mise à jour et se rouvrir tout seul dans environ une minute. Ne le rouvre pas toi-même."
 };

@@ -1,4 +1,5 @@
 import { h } from '../dom.js';
+import { startInstall } from '../update-ui.js';
 import { t, LANGUAGES, getLang } from '../i18n.js';
 import { layoutChoices } from '../first-run.js';
 
@@ -60,7 +61,7 @@ export async function renderSettings(root, api) {
   const upd = await api.getUpdate();
   const updStatus = h('p', { class: 'hint', role: 'status', 'aria-live': 'polite' });
   const checkBtn = h('button', { class: 'btn', type: 'button', onclick: () => api.checkUpdate() }, t('upd.check'));
-  const restartBtn = h('button', { class: 'btn primary hidden', type: 'button', onclick: () => api.installUpdate() }, t('upd.restart'));
+  const restartBtn = h('button', { class: 'btn primary hidden', type: 'button', onclick: () => startInstall(api) }, t('upd.restart'));
   const autoBox = h('input', { type: 'checkbox', id: 'f-upd-auto', checked: upd.auto, onchange: (e) => api.setAutoUpdate(e.target.checked) });
   function paintUpdate(s) {
     const busy = ['checking', 'available', 'downloading'].includes(s.status);

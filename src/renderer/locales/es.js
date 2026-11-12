@@ -289,5 +289,7 @@ export default {
   "upd.status.dev": "Las actualizaciones solo están disponibles en la aplicación instalada.",
   "upd.restart": "Reiniciar y actualizar",
   "upd.banner": "Actualización {v} lista",
-  "upd.bannerBtn": "Reiniciar"
+  "upd.bannerBtn": "Reiniciar",
+  "upd.installing": "Actualizando Pantheon…",
+  "upd.installingHint": "Pantheon se cerrará, instalará la actualización y se volverá a abrir solo en aproximadamente un minuto. No lo abras tú mismo."
 };
