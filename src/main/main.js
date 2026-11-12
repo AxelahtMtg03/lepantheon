@@ -12,7 +12,7 @@ const { createProvider } = require('./provider');
 const { createAchievementService } = require('./achievements');
 const { createUpdater } = require('./updater');
 const { isSteamId64 } = require('../shared/validation');
-const { ACCENTS } = require('../shared/prefs');
+const { ACCENTS, mergePrefs } = require('../shared/prefs');
 const { LANGUAGES, resolveLanguage, normalizeCountry } = require('../shared/languages');
 
 const MOCK = process.env.PANTHEON_MOCK === '1' || process.argv.includes('--mock');
@@ -71,7 +71,9 @@ function handle(channel, fn) {
 
 function registerIpc() {
   // La disposition et l'accent partent avec les infos de départ : aucun flash de la mauvaise interface.
-  const prefsView = (p) => ({ ...p, accentColors: ACCENTS[p.accent] });
+  // Aide de vérification (ignorée dans l'appli installée) : PANTHEON_PREFS='{"layout":"odeon","firstRunDone":true}'.
+  const devPrefs = (() => { try { return DEV && process.env.PANTHEON_PREFS ? JSON.parse(process.env.PANTHEON_PREFS) : null; } catch { return null; } })();
+  const prefsView = (p) => { const q = devPrefs ? mergePrefs(p, devPrefs) : p; return { ...q, accentColors: ACCENTS[q.accent] }; };
   handle('app:info', () => ({ version: app.getVersion(), mock: MOCK, platform: process.platform, language: language(), prefs: prefsView(store.getPrefs()) }));
   handle('prefs:set', (patch) => prefsView(store.setPrefs(patch)));
   handle('language:set', (code) => {
@@ -218,6 +220,10 @@ function createWindow() {
     win.webContents.once('did-finish-load', () => {
       setTimeout(async () => {
         if (process.env.PANTHEON_CLEAN) await win.webContents.insertCSS('.demo-badge{display:none!important}');
+        if (process.env.PANTHEON_EVAL) {
+          await win.webContents.executeJavaScript(process.env.PANTHEON_EVAL); // aide de vérification (développement seulement)
+          await new Promise((r) => setTimeout(r, 900));
+        }
         if (process.env.PANTHEON_SCROLL) await win.webContents.executeJavaScript('document.getElementById("main").scrollTo(0, 99999)');
         await new Promise((r) => setTimeout(r, 300));
         const img = await win.webContents.capturePage();

@@ -8,6 +8,8 @@ Alternative interface for Steam on Windows (Electron), built as a student projec
 
 Languages: English, Français, Español, 日本語, 中文（简体）. The interface follows the language of Windows and can be changed in Settings. The installer and the website are available in the same five languages.
 
+
+Two layouts, chosen on first launch and changeable in Settings → Layout: **Agora** (sidebar and cover grid) and **Odéon** (one game on stage, rows that scroll). Search (Ctrl + K or `/`) works in both and also finds games you do not own yet. Dev helper: `PANTHEON_PREFS='{"layout":"odeon","firstRunDone":true}'`.
 ## Development
 
 ```bash

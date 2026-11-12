@@ -14,6 +14,8 @@ const filterFns = {
   installed: (g) => g.installed,
   downloading: (g) => g.state === 'downloading',
   favorites: (g, favs) => favs.has(g.appid),
+  unstarted: (g) => !(g.playtimeMin > 0),
+  platinum: (g) => isComplete(g),
   almost: (g) => {
     const p = achievementPct(g);
     return p !== null && p >= 75 && p < 100;
@@ -41,7 +43,7 @@ function tagText(g) {
   return g.installed ? t('card.installed') : t('card.notInstalled');
 }
 
-function actionOf(api, g) {
+export function actionOf(api, g) {
   if (g.state === 'downloading') return { icon: 'pause', aria: 'card.downloadAria', run: () => api.steam.openDownloads() };
   return g.installed
     ? { icon: 'play', aria: 'card.playAria', run: () => api.steam.play(g.appid) }
@@ -124,7 +126,17 @@ function buildContinue(api, games) {
   );
 }
 
-export async function renderLibrary(root, api) {
+// Aperçus « Tout voir » d'Odéon : un filtre et un tri de départ par rangée.
+const PRESETS = {
+  continue: { filter: 'installed', sort: 'recent' },
+  almost: { filter: 'almost', sort: 'achievements' },
+  unstarted: { filter: 'unstarted', sort: 'name' },
+  platinum: { filter: 'platinum', sort: 'name' },
+  recent: { filter: 'all', sort: 'recent' },
+  all: { filter: 'all', sort: 'name' },
+};
+
+export async function renderLibrary(root, api, opts = {}) {
   let data = await api.getLibrary();
   // Rien en local et réseau en cours : on patiente un peu (la page de chargement reste visible), sans bloquer l'appli.
   for (let n = 0; data.loading && data.games.length === 0 && n < 12; n++) {
@@ -133,7 +145,8 @@ export async function renderLibrary(root, api) {
   }
   let games = data.games;
   const favs = new Set(data.favorites);
-  const state = { filter: 'all', sort: 'recent', query: '' };
+  const preset = PRESETS[opts.preset];
+  const state = { filter: preset ? preset.filter : 'all', sort: preset ? preset.sort : 'recent', query: '' };
   const cards = new Map();
   const ctx = {
     api,
@@ -148,7 +161,7 @@ export async function renderLibrary(root, api) {
   };
 
   const sub = h('p', { class: 'page-sub' }, countsText(games));
-  const title = h('div', null, h('h1', { class: 'page-title' }, t('lib.title')), sub);
+  const title = h('div', null, h('h1', { class: 'page-title' }, t(preset ? 'row.' + opts.preset : 'lib.title')), sub);
   const input = h('input', { type: 'search', id: 'lib-search', placeholder: t('lib.search'), autocomplete: 'off', oninput: (e) => { state.query = e.target.value; renderGrid(); } });
   const search = h('label', { class: 'search', for: 'lib-search' }, icon('search', 18), h('span', { class: 'sr-only' }, t('lib.searchLabel')), input);
   const head = h('header', { class: 'page-head' }, title, search);
@@ -162,7 +175,7 @@ export async function renderLibrary(root, api) {
   const chipBtns = FILTERS.map((f) =>
     h('button', { class: 'chip', type: 'button', 'aria-pressed': String(f === state.filter), onclick: () => { state.filter = f; chipBtns.forEach((b, i) => b.setAttribute('aria-pressed', String(FILTERS[i] === f))); renderGrid(); } }, t(`filter.${f}`)),
   );
-  const select = h('select', { id: 'lib-sort', onchange: (e) => { state.sort = e.target.value; renderGrid(); } }, SORTS.map((s) => h('option', { value: s }, t(`sort.${s}`))));
+  const select = h('select', { id: 'lib-sort', onchange: (e) => { state.sort = e.target.value; renderGrid(); } }, SORTS.map((s) => h('option', { value: s, selected: s === state.sort }, t(`sort.${s}`))));
   const toolbar = h('div', { class: 'toolbar' }, h('div', { class: 'chips' }, chipBtns), h('label', { class: 'sort', for: 'lib-sort' }, t('lib.sortBy'), select));
 
   const noticeSlot = h('div');

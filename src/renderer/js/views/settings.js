@@ -1,5 +1,6 @@
 import { h } from '../dom.js';
 import { t, LANGUAGES, getLang } from '../i18n.js';
+import { layoutChoices } from '../first-run.js';
 
 // Réglages (version minimale à l'étape 4 ; l'écran complet est prévu à l'étape 7).
 export async function renderSettings(root, api) {
@@ -76,11 +77,50 @@ export async function renderSettings(root, api) {
     } },
     Object.entries(LANGUAGES).map(([code, l]) => h('option', { value: code, selected: code === getLang() }, l.name)));
 
+  // Disposition, accent et confort : appliqués tout de suite, sans redémarrer.
+  let prefs = appInfo.prefs;
+  const savePrefs = async (patch) => {
+    prefs = await api.setPrefs(patch);
+    document.dispatchEvent(new CustomEvent('prefs-changed', { detail: prefs }));
+    return prefs;
+  };
+  const layoutGroup = layoutChoices(prefs.layout, async (id) => {
+    if (id === prefs.layout) return;
+    await savePrefs({ layout: id });
+    say('layout.saved');
+  });
+  const accentBtns = ['blue', 'white', 'violet', 'red'].map((id) =>
+    h('button', { class: `sw sw-${id}`, type: 'button', role: 'radio', 'aria-checked': String(prefs.accent === id), 'aria-label': t(`accent.${id}`), title: t(`accent.${id}`), 'data-accent': id,
+      onclick: async () => {
+        await savePrefs({ accent: id });
+        accentBtns.forEach((b) => b.setAttribute('aria-checked', String(b.dataset.accent === id)));
+      } }));
+  const accentGroup = h('div', { class: 'sw-group', role: 'radiogroup', 'aria-label': t('accent.title') }, accentBtns);
+  const sw = (key, label) => {
+    const btn = h('button', { class: 'switch', type: 'button', role: 'switch', 'aria-checked': String(prefs[key]), 'aria-labelledby': `sw-${key}`,
+      onclick: async () => {
+        const next = await savePrefs({ [key]: btn.getAttribute('aria-checked') !== 'true' });
+        btn.setAttribute('aria-checked', String(next[key]));
+      } }, h('i'));
+    return h('div', { class: 'switch-row' }, h('span', { id: `sw-${key}` }, label), btn);
+  };
+
   const field = (id, label, input, hint) => h('div', { class: 'field' }, h('label', { for: id }, label), input, hint ? h('p', { class: 'hint' }, hint) : null);
   const steps = h('ol', { class: 'steps' }, ['1', '2', '3', '4'].map((n) => h('li', null, t(`set.key.step${n}`))));
 
   root.replaceChildren(
     h('header', { class: 'page-head' }, h('h1', { class: 'page-title' }, t('nav.settings'))),
+    h('section', { class: 'panel', 'aria-labelledby': 'h-lay' },
+      h('h2', { id: 'h-lay' }, t('layout.title')),
+      layoutGroup,
+      h('h2', { id: 'h-acc2', class: 'sub' }, t('accent.title')),
+      accentGroup,
+    ),
+    h('section', { class: 'panel', 'aria-labelledby': 'h-comfort' },
+      h('h2', { id: 'h-comfort' }, t('comfort.title')),
+      sw('splash', t('comfort.splash')),
+      sw('reducedMotion', t('comfort.motion')),
+    ),
     h('section', { class: 'panel', 'aria-labelledby': 'h-key' },
       h('h2', { id: 'h-key' }, t('set.key.title')),
       h('p', { class: 'hint' }, t('set.key.intro')),

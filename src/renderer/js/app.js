@@ -10,14 +10,21 @@ import { renderDownloads } from './views/downloads.js';
 import { createSplash } from './splash.js';
 import { buildSplash } from './splash-view.js';
 import { skeletonPage } from './skeleton.js';
+import { renderLibraryOdeon } from './views/library-odeon.js';
+import { openSearch, installSearchShortcut } from './search.js';
+import { showFirstRun } from './first-run.js';
+import { shouldShowFirstRun } from './odeon-logic.js';
 
 const api = window.pantheon;
+let layout = 'agora';
+let shell = null; // { current, info, profile } : de quoi redessiner la navigation sans changer de page
 
 // Applique disposition, accent et animations réduites (avant le premier affichage, puis à chaque changement des réglages).
 export function applyPrefs(prefs) {
   if (!prefs) return;
   const root = document.documentElement;
   root.dataset.layout = prefs.layout;
+  layout = prefs.layout;
   root.dataset.motion = prefs.reducedMotion ? 'reduced' : 'full';
   if (prefs.accentColors) {
     root.style.setProperty('--accent', prefs.accentColors.accent);
@@ -46,10 +53,34 @@ function navLink(item, current) {
 // Met à jour une pastille du menu sans reconstruire la barre latérale (garde le focus clavier).
 function setBadge(id, n) {
   badges[id] = n;
-  const el = sidebar.querySelector(`[data-badge="${id}"]`);
-  if (!el) return;
-  el.textContent = n ? String(n) : '';
-  el.classList.toggle('hidden', !n);
+  for (const el of document.querySelectorAll(`[data-badge="${id}"]`)) {
+    el.textContent = n ? String(n) : '';
+    el.classList.toggle('hidden', !n);
+  }
+}
+
+const searchBtn = (cls) => h('button', { class: cls, type: 'button', onclick: () => openSearch(api) }, icon('search', 18), h('span', { class: 'label' }, t('search.open')));
+
+// Odéon : barre de navigation en haut (logo, pilule de pages, recherche, avatar).
+function renderTopnav(current, info, profile) {
+  const topnav = document.getElementById('topnav');
+  const initial = (profile.name || t('profile.player')).trim().charAt(0).toUpperCase();
+  const avatar = h('a', { class: 'avatar od-avatar', href: '#/settings', 'aria-label': t('nav.settings') }, profile.avatarUrl ? h('img', { src: profile.avatarUrl, alt: '' }) : initial);
+  const link = (item) => {
+    const a = h('a', { class: 'od-link', href: `#/${item.id}` }, t(`nav.${item.id}`));
+    if (item.id === current) a.setAttribute('aria-current', 'page');
+    a.append(h('span', { class: `badge${badges[item.id] ? '' : ' hidden'}`, 'data-badge': item.id }, badges[item.id] ? String(badges[item.id]) : ''));
+    return a;
+  };
+  topnav.replaceChildren(
+    h('a', { class: 'brand od-brand', href: '#/library', 'aria-label': t('nav.library') }, logoMark(), h('span', { class: 'brand-name' }, t('app.name')), ...(info.mock ? [h('span', { class: 'demo-badge' }, t('app.demo'))] : [])),
+    h('nav', { class: 'od-nav', 'aria-label': t('nav.label') }, [...NAV, { id: 'settings' }].map(link)),
+    h('div', { class: 'od-right' },
+      h('div', { class: 'updbanner hidden', id: 'updbanner', role: 'status' }, h('span'), h('button', { class: 'btn small primary', type: 'button', onclick: () => api.installUpdate() }, t('upd.bannerBtn'))),
+      searchBtn('btn small od-search'),
+      avatar),
+  );
+  paintUpdateBanner();
 }
 
 // Bandeau « mise à jour prête » : visible seulement quand le téléchargement est terminé.
@@ -62,12 +93,20 @@ function paintUpdateBanner() {
 }
 
 function renderSidebar(current, info, profile) {
+  shell = { current, info, profile };
+  if (layout === 'odeon') {
+    sidebar.replaceChildren();
+    renderTopnav(current, info, profile);
+    return;
+  }
+  document.getElementById('topnav').replaceChildren();
   const online = profile.status === 'online';
   const initial = (profile.name || t('profile.player')).trim().charAt(0).toUpperCase();
   const avatar = h('div', { class: 'avatar' }, profile.avatarUrl ? h('img', { src: profile.avatarUrl, alt: '' }) : initial);
   sidebar.replaceChildren(
     h('div', { class: 'brand' }, logoMark(), h('span', { class: 'brand-name' }, t('app.name'))),
     ...(info.mock ? [h('span', { class: 'demo-badge' }, t('app.demo'))] : []),
+    searchBtn('nav-link nav-search'),
     h('nav', { 'aria-label': t('nav.label'), style: { display: 'flex', flexDirection: 'column', gap: '6px' } }, NAV.map((n) => navLink(n, current))),
     h('div', { class: 'spacer' }),
     navLink({ id: 'settings', icon: 'settings' }, current),
@@ -108,7 +147,8 @@ async function route(info, profile) {
     else if (current === 'friends') v = await renderFriends(main, api, (n) => setBadge('friends', n));
     else if (current === 'downloads') v = await renderDownloads(main, api);
     else if (current === 'achievements') v = await renderAchievements(main, api);
-    else if (current === 'library') v = await renderLibrary(main, api);
+    else if (section === 'all') v = await renderLibrary(main, api, { preset: rest[0] });
+    else if (current === 'library') v = layout === 'odeon' ? await renderLibraryOdeon(main, api) : await renderLibrary(main, api);
     else if (current === 'settings') v = await renderSettings(main, api);
     else main.replaceChildren(...soon(`nav.${current}`));
     if (seq !== routeSeq) v?.dispose?.(); // l'utilisateur a déjà changé de page
@@ -139,6 +179,7 @@ async function start() {
 
   // Écran de démarrage : seulement si le vrai chargement dépasse 400 ms, fermé dès que tout est prêt (3 s max), une seule fois.
   let splashUi = null;
+  let onSplashDone = null;
   const splash = createSplash({
     showDelay: 0, // affiché à chaque lancement, pour que l'animation du logo se voie
     minShow: 1700, // durée de l'animation du logo ; un clic la passe
@@ -148,6 +189,7 @@ async function start() {
     },
     hide() {
       splashUi?.hide();
+      onSplashDone?.();
     },
   });
   if (info.prefs?.splash !== false) splash.start();
@@ -164,6 +206,30 @@ async function start() {
   window.addEventListener('hashchange', () => route(info, profile));
   await route(info, profile);
   splash.ready();
+
+  // Changement de disposition ou d'accent dans les réglages : appliqué tout de suite, sans redémarrer (fondu court).
+  installSearchShortcut(api);
+  document.addEventListener('prefs-changed', (e) => {
+    const before = layout;
+    applyPrefs(e.detail);
+    if (layout !== before && shell) {
+      const app = document.querySelector('.app');
+      app.classList.add('fade');
+      setTimeout(() => {
+        // La page de bibliothèque change de forme selon la disposition ; les autres pages restent telles quelles.
+        if (/^#\/(library|all)?(\/|$)/.test(location.hash || '#/library')) route(shell.info, shell.profile);
+        else renderSidebar(shell.current, shell.info, shell.profile);
+        app.classList.remove('fade');
+      }, 180);
+    }
+  });
+
+  // Premier lancement : « Choisis ton interface », une seule fois, jamais bloquant (Échap garde la présélection).
+  const afterSplash = () => {
+    if (shouldShowFirstRun(info.prefs)) showFirstRun(api, info.prefs, (p) => document.dispatchEvent(new CustomEvent('prefs-changed', { detail: p })));
+  };
+  if (splash.state().shown && !splash.state().done) onSplashDone = afterSplash;
+  else afterSplash();
 
   // Pastilles : téléchargements (lecture locale, toutes les 8 s) et amis connectés (toutes les 5 min, réponses en cache).
   const refreshDownloads = async () => {
