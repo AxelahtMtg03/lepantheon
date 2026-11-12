@@ -338,9 +338,11 @@ html[data-layout="odeon"] .topnav{display:flex;align-items:center;gap:20px;flex:
 html[data-layout="odeon"] .main{padding:8px 48px 48px}
 html[data-layout="odeon"] .main.flush{padding:0}
 html[data-layout="odeon"] .page-title{font-size:52px}
+/* La zone de glisser de la fenêtre couvre le haut de l'écran : tout ce qui se clique dans l'en-tête doit l'exclure. */
+.topnav a,.topnav button,.od-nav,.od-right{-webkit-app-region:no-drag}
 .od-brand{display:flex;align-items:center;gap:10px;padding:0;text-decoration:none;color:var(--text);margin-right:auto;-webkit-app-region:no-drag}
 .od-brand .demo-badge{margin:0 0 0 4px}
-.od-nav{display:flex;gap:4px;padding:5px;border-radius:99px;background:var(--surface);border:1px solid var(--border-soft);position:absolute;left:50%;transform:translateX(-50%)}
+.od-nav{display:flex;gap:2px;padding:5px;border-radius:99px;background:var(--surface);border:1px solid var(--border-soft);position:absolute;left:50%;transform:translateX(-50%)}
 .od-link{display:flex;align-items:center;gap:8px;min-height:40px;padding:0 16px;border-radius:99px;text-decoration:none;font-size:14px;font-weight:500;color:var(--muted);transition:background .2s,color .2s}
 .od-link:hover{color:var(--text);background:var(--surface-hi)}
 .od-link[aria-current="page"]{background:var(--surface-hi);color:var(--text)}
@@ -354,8 +356,11 @@ html[data-layout="odeon"] .updbanner{flex-direction:row;align-items:center;margi
 @media (max-width:1100px){.od-right{margin-right:0}.od-nav{position:static;transform:none}}
 
 .od-page{display:flex;flex-direction:column;gap:24px;padding:24px 48px}
-.od-hero{position:relative;overflow:hidden;min-height:520px;display:flex;align-items:flex-end;justify-content:space-between;gap:32px;padding:0 48px 56px;background:#1A2147;transition:opacity .35s}
-.od-hero.swap{opacity:0}
+.od-hero{position:relative;overflow:hidden;min-height:520px;background:var(--bg)}
+.od-layer{position:absolute;inset:0;overflow:hidden;display:flex;align-items:flex-end;justify-content:space-between;gap:32px;padding:0 48px 56px;background:#1A2147}
+.od-layer.pre{opacity:0}
+.od-layer.in{animation:layerIn .7s ease both}
+@keyframes layerIn{from{opacity:0}to{opacity:1}}
 .od-hero .art{position:absolute;inset:0}
 .od-hero .art img.art-img{object-position:center top}
 .od-circle{position:absolute;right:-8%;top:-30%;width:70%;aspect-ratio:1;border-radius:50%;border:2px solid rgba(255,255,255,.14);animation:float 9s ease-in-out infinite}
@@ -376,7 +381,6 @@ html[data-layout="odeon"] .updbanner{flex-direction:row;align-items:center;margi
 .odc .cover{transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s,border-color .3s}
 .odc:hover,.odc:focus-within{z-index:3;position:relative}
 .odc:hover .cover,.odc:focus-within .cover{transform:translateY(-18px) scale(1.22);border-color:rgba(255,255,255,.3);box-shadow:0 22px 40px -16px var(--glow),0 18px 36px -22px rgba(0,0,0,.9)}
-.odc:hover+.odc,.odc:has(+.odc:hover){transform:translateY(-6px) scale(1.07)}
 .odc .veil{display:none}
 .od-play{left:auto;right:8px;top:8px;width:36px;height:36px;opacity:0}
 .odc:hover .od-play,.odc:focus-within .od-play{opacity:1;transform:scale(1)}

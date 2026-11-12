@@ -13,6 +13,15 @@ import { skeletonPage } from './skeleton.js';
 import { renderLibraryOdeon } from './views/library-odeon.js';
 import { openSearch, installSearchShortcut } from './search.js';
 import { showFirstRun } from './first-run.js';
+import { renderSearchResults } from './views/search-results.js';
+
+const safeDecode = (s) => {
+  try {
+    return decodeURIComponent(s || '').slice(0, 100);
+  } catch {
+    return '';
+  }
+};
 import { shouldShowFirstRun } from './odeon-logic.js';
 
 const api = window.pantheon;
@@ -147,6 +156,7 @@ async function route(info, profile) {
     else if (current === 'friends') v = await renderFriends(main, api, (n) => setBadge('friends', n));
     else if (current === 'downloads') v = await renderDownloads(main, api);
     else if (current === 'achievements') v = await renderAchievements(main, api);
+    else if (section === 'search') v = await renderSearchResults(main, api, safeDecode(rest[0]));
     else if (section === 'all') v = await renderLibrary(main, api, { preset: rest[0] });
     else if (current === 'library') v = layout === 'odeon' ? await renderLibraryOdeon(main, api) : await renderLibrary(main, api);
     else if (current === 'settings') v = await renderSettings(main, api);

@@ -11,7 +11,7 @@ function priceLine(price) {
   return h('span', { class: 'card-meta price' }, old ? h('s', { class: 'price-old' }, old) : null, old ? ' ' : null, now || t('store.soon'));
 }
 
-function storeCard(item) {
+export function storeCard(item) {
   const { bg, layers } = artLayers(item, 'cover');
   const disc = item.price && item.price.discountPct > 0 ? h('span', { class: 'tag disc' }, `-${item.price.discountPct} %`) : null;
   const cover = h('a', { class: 'cover', href: `#/store/${item.appid}`, 'aria-label': t('store.openAria', { name: item.name }), style: { background: bg, display: 'block' } }, layers, h('span', { class: 'tile-title' }, item.name), disc);

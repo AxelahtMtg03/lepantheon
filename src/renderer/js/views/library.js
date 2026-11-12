@@ -146,7 +146,7 @@ export async function renderLibrary(root, api, opts = {}) {
   let games = data.games;
   const favs = new Set(data.favorites);
   const preset = PRESETS[opts.preset];
-  const state = { filter: preset ? preset.filter : 'all', sort: preset ? preset.sort : 'recent', query: '' };
+  const state = { filter: preset ? preset.filter : 'all', sort: preset ? preset.sort : 'recent', query: opts.query || '' };
   const cards = new Map();
   const ctx = {
     api,
@@ -161,8 +161,8 @@ export async function renderLibrary(root, api, opts = {}) {
   };
 
   const sub = h('p', { class: 'page-sub' }, countsText(games));
-  const title = h('div', null, h('h1', { class: 'page-title' }, t(preset ? 'row.' + opts.preset : 'lib.title')), sub);
-  const input = h('input', { type: 'search', id: 'lib-search', placeholder: t('lib.search'), autocomplete: 'off', oninput: (e) => { state.query = e.target.value; renderGrid(); } });
+  const title = h('div', null, h('h1', { class: 'page-title' }, opts.title || t(preset ? 'row.' + opts.preset : 'lib.title')), sub);
+  const input = h('input', { type: 'search', id: 'lib-search', value: state.query, placeholder: t('lib.search'), autocomplete: 'off', oninput: (e) => { state.query = e.target.value; renderGrid(); } });
   const search = h('label', { class: 'search', for: 'lib-search' }, icon('search', 18), h('span', { class: 'sr-only' }, t('lib.searchLabel')), input);
   const head = h('header', { class: 'page-head' }, title, search);
 
@@ -200,6 +200,8 @@ export async function renderLibrary(root, api, opts = {}) {
     // On ne touche au DOM que si l'ordre ou le contenu change (garde le focus clavier).
     if (els.length !== grid.children.length || els.some((e, i) => e !== grid.children[i])) grid.replaceChildren(...els);
     empty.classList.toggle('hidden', visible.length > 0);
+    // Pendant une recherche, le bandeau « Continuer à jouer » ne doit pas rester à l'écran.
+    banner?.classList.toggle('hidden', q !== '');
   }
 
   const bannerKey = () => {

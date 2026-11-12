@@ -29,7 +29,9 @@ export async function renderLibraryOdeon(root, api) {
   const rowsEl = h('div', { class: 'od-rows' });
   const noticeSlot = h('div', { class: 'od-notice' });
 
-  function paintHero(g) {
+  // Une « couche » = un grand écran complet. Changer de jeu pose la nouvelle couche par-dessus l'ancienne
+  // et la fait apparaître en fondu (~0,7 s) une fois son image chargée : pas de flash ni de saut.
+  function buildLayer(g) {
     const { bg, layers } = artLayers(g, 'hero');
     const kind = heroKind(g);
     const act = actionOf(api, g);
@@ -37,8 +39,7 @@ export async function renderLibraryOdeon(root, api) {
     const total = g.achievements ? g.achievements.total : 0;
     const left = total - (g.achievements ? g.achievements.unlocked : 0);
     const tagline = total > 0 && left > 0 ? t('hero.missing', { n: left }) : g.playtimeMin > 0 ? formatPlaytime(g.playtimeMin) : t('meta.never');
-    hero.style.setProperty('background', bg);
-    hero.replaceChildren(
+    return h('div', { class: 'od-layer', style: { background: bg } },
       h('div', { class: 'art' }, layers),
       h('div', { class: 'od-circle', 'aria-hidden': 'true' }),
       h('div', { class: 'od-shade' }),
@@ -58,21 +59,39 @@ export async function renderLibraryOdeon(root, api) {
     );
   }
 
-  // Fondu entre deux jeux (~0,7 s) : le contenu est remplacé quand l'ancien a disparu.
-  let swapTimer = null;
+  const paintHero = (g) => hero.replaceChildren(buildLayer(g));
+
+  let swapSeq = 0;
   function setHero(g, instant = false) {
     if (!g || (selected && g.appid === selected.appid && !instant)) return;
     selected = g;
-    clearTimeout(swapTimer);
     if (instant) {
       paintHero(g);
       return;
     }
-    hero.classList.add('swap');
-    swapTimer = setTimeout(() => {
-      paintHero(selected);
-      hero.classList.remove('swap');
-    }, 260);
+    const mine = ++swapSeq;
+    const layer = buildLayer(g);
+    layer.classList.add('pre');
+    const old = [...hero.children];
+    hero.append(layer);
+    let shown = false;
+    const show = () => {
+      if (shown || mine !== swapSeq) return;
+      shown = true;
+      layer.classList.remove('pre');
+      layer.classList.add('in');
+      setTimeout(() => {
+        if (!layer.isConnected) return;
+        old.forEach((o) => o.remove());
+        layer.classList.remove('in');
+      }, 760);
+    };
+    const img = layer.querySelector('img.art-img');
+    if (img && !img.complete) {
+      img.addEventListener('load', show, { once: true });
+      img.addEventListener('error', show, { once: true });
+      setTimeout(show, 600); // image lente : on change quand même
+    } else show();
   }
 
   function buildTile(g) {
@@ -170,7 +189,6 @@ export async function renderLibraryOdeon(root, api) {
     dispose() {
       clearInterval(timer);
       if (fast) clearInterval(fast);
-      clearTimeout(swapTimer);
       window.removeEventListener('resize', onResize);
       root.classList.remove('flush');
     },

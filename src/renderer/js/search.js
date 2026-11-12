@@ -119,8 +119,12 @@ export async function openSearch(api) {
       return;
     }
     if (e.key === 'Enter' && document.activeElement === input) {
-      const first = results.querySelector('button.gs-item');
-      if (first) first.click();
+      // Entrée : la page « Résultats » avec tous les jeux correspondants (les flèches puis Entrée ouvrent un jeu précis).
+      const term = input.value.trim();
+      if (!term) return;
+      e.preventDefault();
+      close();
+      location.hash = `#/search/${encodeURIComponent(term.slice(0, 100))}`;
       return;
     }
     if (e.key === 'Tab') {

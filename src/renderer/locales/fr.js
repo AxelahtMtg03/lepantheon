@@ -66,6 +66,7 @@ export default {
   'search.owned': 'Dans ta bibliothèque',
   'search.notOwned': 'Pas encore à toi',
   'search.none': 'Aucun résultat',
+  'search.resultsFor': 'Résultats pour « {q} »',
   'search.close': 'Fermer',
   'search.viewSteam': 'Voir sur Steam',
   'search.offline': 'La boutique est injoignable pour le moment. La recherche dans ta bibliothèque fonctionne toujours.',

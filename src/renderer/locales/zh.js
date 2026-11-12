@@ -66,6 +66,7 @@ export default {
   "search.owned": "在你的游戏库中",
   "search.notOwned": "尚未拥有",
   "search.none": "没有结果",
+  "search.resultsFor": "“{q}”的搜索结果",
   "search.close": "关闭",
   "search.viewSteam": "在 Steam 查看",
   "search.offline": "暂时无法连接商店。游戏库内的搜索仍可使用。",

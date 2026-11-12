@@ -66,6 +66,7 @@ export default {
   "search.owned": "ライブラリ内",
   "search.notOwned": "まだ持っていないゲーム",
   "search.none": "結果なし",
+  "search.resultsFor": "「{q}」の検索結果",
   "search.close": "閉じる",
   "search.viewSteam": "Steam で見る",
   "search.offline": "現在ストアに接続できません。ライブラリ内の検索は使えます。",

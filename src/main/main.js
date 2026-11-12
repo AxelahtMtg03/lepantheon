@@ -28,6 +28,11 @@ const country = () => normalizeCountry(app.getLocaleCountryCode());
 // Anciennes versions (l'appli s'appelait « Le Pantheon ») : on garde leur dossier de données. La clé d'API chiffrée y est
 // liée par Windows et par Chromium : la copier ailleurs la rendrait illisible. Les nouvelles installations utilisent « Pantheon ».
 function useLegacyDataFolder() {
+  // Aide de vérification (développement seulement) : dossier de données séparé, pour tester sans toucher à l'appli installée.
+  if (!app.isPackaged && process.env.PANTHEON_USERDATA) {
+    app.setPath('userData', process.env.PANTHEON_USERDATA);
+    return;
+  }
   const legacy = path.join(app.getPath('appData'), 'Le Pantheon');
   const hasData = ['apikey.bin', 'settings.json'].some((f) => require('node:fs').existsSync(path.join(legacy, f)));
   if (hasData) app.setPath('userData', legacy);
