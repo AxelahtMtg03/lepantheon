@@ -454,3 +454,11 @@ button.gs-item:hover,button.gs-item:focus-visible{background:var(--surface-hi)}
 .gs-field input::-webkit-search-cancel-button{display:none}
 .gs-results::-webkit-scrollbar{width:10px}
 .gs-results::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:99px;border:2px solid var(--surface)}
+
+/* En-tête Odéon : trois zones (logo | menu centré | recherche), le menu ne passe jamais sous la recherche */
+html[data-layout="odeon"] .topnav{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;padding:0 150px 0 24px}
+html[data-layout="odeon"] .od-nav{position:static;transform:none;left:auto;min-width:0}
+html[data-layout="odeon"] .od-brand{margin-right:0;justify-self:start}
+html[data-layout="odeon"] .od-right{margin-right:0;justify-self:end}
+@media (max-width:1180px){html[data-layout="odeon"] .topnav{padding-right:150px;grid-template-columns:auto 1fr auto}html[data-layout="odeon"] .od-nav{justify-self:center}.od-search .label{display:none}.od-search{padding:0 12px}.od-link{padding:0 11px}}
+@media (max-width:1180px){html[data-layout="odeon"] .topnav{grid-template-columns:auto minmax(0,1fr) auto}html[data-layout="odeon"] .od-brand .brand-name,html[data-layout="odeon"] .od-brand .demo-badge{display:none}.od-nav{max-width:100%;overflow:hidden}.od-link{font-size:13px;padding:0 10px}}
